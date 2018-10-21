@@ -1,15 +1,18 @@
 import string
 
+
 def rotate(iterable, shift):
     return iterable[shift:] + iterable[:shift]
 
 shift = int(input('Enter shift: '))
-source_text = input('Enter text to ciper: ')
+source = input('Enter text to ciper: ')
 
-lowercase_trantab = source_text.maketrans(string.ascii_lowercase, rotate(string.ascii_lowercase, shift))
-uppercase_trantab = source_text.maketrans(string.ascii_uppercase, rotate(string.ascii_uppercase, shift))
+rotated_lowercase = rotate(string.ascii_lowercase, shift)
+rotated_uppercase = rotate(string.ascii_uppercase, shift)
 
-source_text = source_text.translate(lowercase_trantab)
-print(source_text.translate(uppercase_trantab))
+lowercase_trantab = source.maketrans(string.ascii_lowercase, rotated_lowercase)
+uppercase_trantab = source.maketrans(string.ascii_uppercase, rotated_uppercase)
 
+cipher = source.translate(lowercase_trantab).translate(uppercase_trantab)
 
+print(cipher)

@@ -9,6 +9,5 @@ if string_is_24_hour_time(time24):
 
     noon = 'pm' if hours >= 12 else 'am'
     print('%.2d:%.2d %s' % (hours % 12, minutes, noon))
-    
 else:
-    print('not a valid time')    
+    print('not a valid time')
