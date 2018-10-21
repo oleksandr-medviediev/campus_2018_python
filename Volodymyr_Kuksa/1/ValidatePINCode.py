@@ -6,3 +6,4 @@ if input_string.isdigit() and is_valid_length:
     print(True)
 else:
     print(False)
+

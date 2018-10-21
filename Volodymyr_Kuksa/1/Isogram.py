@@ -12,3 +12,4 @@ for character in input_string:
 
 else:
     print(True)
+
