@@ -1,10 +1,9 @@
-#for floor
 import math
 
 s = input('Enter a string: ')
 
 if len(s) == 0:
-    #nothing to print
+    # nothing to print
     pass
 else:
     if len(s) % 2 == 0:
