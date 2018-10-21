@@ -1,8 +1,8 @@
-str = input("input your string: ")
+string = input("input your string: ")
 x = 0
 o = 0
 
-for i in str:
+for i in string:
     if i == 'x':
         x += 1
     elif i == 'o':

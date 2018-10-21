@@ -1,2 +1,3 @@
-str = input("input your string: ")
+string = input("input your string: ")
 print(str[::-1])
+

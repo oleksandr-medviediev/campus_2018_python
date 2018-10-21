@@ -1,8 +1,8 @@
 import re
 
-str = input("input your string: ")
+string = input("input your string: ")
 
-if re.match('[0-9]{4,6}', str):
+if re.match('[0-9]{4,6}', string):
     print (True)
 else:
     print (False)

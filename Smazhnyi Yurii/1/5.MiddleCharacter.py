@@ -1,13 +1,14 @@
-str = input("input your string: ")
+string = input("input your string: ")
 
-strLen = len(str)
+strLen = len(string)
 
 if strLen != 0:
     isEven = strLen % 2 == 0
     index = strLen // 2
 
     if isEven: 
-        print(str[index - 1] + str[index])
+        print(string[index - 1] + string[index])
 
     else:
-        print(str[index])
+        print(string[index])
+

@@ -1,10 +1,10 @@
 import re
 
-s = input("input your string: ")
+string = input("input your string: ")
 
-if re.match('([01]?[0-9]|2[0-3]):[0-5][0-9]',s):
+if re.match('([01]?[0-9]|2[0-3]):[0-5][0-9]',string):
 
-    strList = s.split(':')
+    strList = string.split(':')
 
     hour = int(strList[0])
 

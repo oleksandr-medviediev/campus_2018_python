@@ -1,6 +1,6 @@
-str = input("input your string: ")
+string = input("input your string: ")
 
-listStr = list(str.split())
+listStr = list(string.split())
 
 output = ""
 

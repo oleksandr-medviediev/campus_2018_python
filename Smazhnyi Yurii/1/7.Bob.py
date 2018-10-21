@@ -1,15 +1,15 @@
-import re
+string = input("input your string: ")
 
-str = input("input your string: ")
+isYelling = string.isupper();
 
-if len(str) == 0:
+if len(string) == 0:
     print("Fine. Be that way!")
-elif str[-1] == '?':
-    if re.match('[a-z]+',str):
+elif string[-1] == '?':
+    if not isYelling:
         print("Sure.")
     else:
         print("Whoa, chill out!")
-elif str[-1] == '!':
+elif string[-1] == '!':
     print("Calm down, I know what I'm doing!")
 else:
     print("Whatever.")
