@@ -1,10 +1,10 @@
 string = input("input your string: ")
 
-listStr = list(string.split())
+list_str = list(string.split())
 
 output = ""
 
-for i in listStr:
+for i in list_str:
     output += (i.capitalize()) + " "
 
 print(output)

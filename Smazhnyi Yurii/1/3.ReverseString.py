@@ -1,2 +1,2 @@
 string = input("input your string: ")
-print(str[::-1])
+print(string[::-1])

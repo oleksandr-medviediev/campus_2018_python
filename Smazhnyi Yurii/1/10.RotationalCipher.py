@@ -1,11 +1,11 @@
 shift = int(input("input shift: "))
 string = input("input your string: ")
 
-newString = ""
+new_string = ""
 
 for i in range(len(string)):
-    intValue = ord(string[i])
-    intValue += shift
-    newString += chr(intValue)
+    int_value = ord(string[i])
+    int_value += shift
+    new_string += chr(int_value)
 
-print(newString)
+print(new_string)

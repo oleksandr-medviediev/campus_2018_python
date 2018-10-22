@@ -1,12 +1,12 @@
 string = input("input your string: ")
 
-strLen = len(string)
+str_len = len(string)
 
-if strLen != 0:
-    isEven = strLen % 2 == 0
-    index = strLen // 2
+if str_len != 0:
+    is_even = str_len % 2 == 0
+    index = str_len // 2
 
-    if isEven: 
+    if is_even: 
         print(string[index - 1] + string[index])
 
     else:

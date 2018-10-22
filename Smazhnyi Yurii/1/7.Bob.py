@@ -1,11 +1,11 @@
 string = input("input your string: ")
 
-isYelling = string.isupper();
+is_yelling = string.isupper();
 
 if len(string) == 0:
     print("Fine. Be that way!")
 elif string[-1] == '?':
-    if not isYelling:
+    if not is_yelling:
         print("Sure.")
     else:
         print("Whoa, chill out!")
