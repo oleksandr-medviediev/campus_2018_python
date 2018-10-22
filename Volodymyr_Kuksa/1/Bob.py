@@ -25,4 +25,3 @@ while is_conversation_going:
         print('- Whoa, chill out!')
     else:
         print('- Whatever.')
-

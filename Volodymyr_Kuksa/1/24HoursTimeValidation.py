@@ -18,4 +18,3 @@ elif minutes < 0 or minutes > 59:
     print(False)
 else:
     print(True)
-

@@ -27,4 +27,3 @@ for character in input_string:
         result += alphabet[rotated_index]
 
 print(result)
-

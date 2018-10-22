@@ -6,4 +6,3 @@ if len(input_string) % 2 != 0:
     print(input_string[center_index])
 else:
     print(input_string[center_index:center_index + 2])
-

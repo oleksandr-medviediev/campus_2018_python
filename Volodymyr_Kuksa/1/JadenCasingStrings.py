@@ -7,4 +7,3 @@ for word in input_words:
     resulting_string += word.capitalize() + ' '
 
 print(resulting_string)
-

@@ -37,4 +37,3 @@ elif is_am:
     print(input_string + ' am')
 else:
     print('%02d:%02d pm' % (hours - 12, minutes))
-
