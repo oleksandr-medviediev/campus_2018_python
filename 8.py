@@ -25,4 +25,4 @@ if hours.isnumeric() and minutes.isnumeric():
 else:
 
     print(False)
-        
+  
