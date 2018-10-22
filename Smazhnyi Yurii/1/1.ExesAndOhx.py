@@ -1,11 +1,11 @@
 string = input("input your string: ")
-x = 0
-o = 0
+xCount = 0
+oCount = 0
 
 for i in string:
     if i == 'x':
-        x += 1
+        xCount += 1
     elif i == 'o':
-        o += 1
+        oCount += 1
 
-print(x == o)
+print(xCount == oCount)

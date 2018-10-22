@@ -11,4 +11,3 @@ if strLen != 0:
 
     else:
         print(string[index])
-
