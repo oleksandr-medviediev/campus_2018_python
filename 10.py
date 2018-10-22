@@ -1,35 +1,56 @@
+import string
+
 print("Rotational cipher+")
 
 def process_char(char, rotation, alphabet):
+
     index = alphabet.find(char)
     cipher_index = index + rotation
 
     if cipher_index > len(alphabet) - 1:
+        
         cipher_index -= len(alphabet)
 
     return alphabet[cipher_index]
 
-alphabet = "abcdefghijklmnopqrstuvwxyz"
-alphabet_upper = alphabet.upper()
 
-rotation_count = int(input("Enter rotation count: "))
 
-if rotation_count > len(alphabet) - 1:
+
+alphabet = string.ascii_lowercase
+alphabet_upper = string.ascii_uppercase
+
+rotation_count = input("Enter rotation count: ")
+
+if not rotation_count.isnumeric():
+
     print("invalid rotation")
 
 else:
-    user_input = input("Enter string: ")
-    output = str()
 
-    for x in user_input:
-        if x.isalpha() == True:
-            if x.isupper() == True:
-                output += process_char(x, rotation_count, alphabet_upper)
+    rotation_count = int(rotation_count)
 
-            else:
-                output += process_char(x, rotation_count, alphabet)
-                
-        else:
-            output += x
+    if rotation_count > len(alphabet) - 1:
 
-    print(output)
+        print("invalid rotation")
+
+    else:
+
+        user_input = input("Enter string: ")
+        output = str()
+
+        for x in user_input:
+
+            char = x
+            if char.isalpha():
+
+                if char.isupper():
+
+                    char = process_char(char, rotation_count, alphabet_upper)
+
+                else:
+
+                    char = process_char(char, rotation_count, alphabet)
+                    
+            output += char
+
+        print(output)

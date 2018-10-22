@@ -3,35 +3,45 @@ print("Time must be validated.")
 
 user_input = input("Enter time: ")
 
-formatted_time = []
-is_am = False
+formatted_time = str()
 
 if len(user_input) != 5:
+
     print("not valid time")
 
-else:
-    hours = int(user_input[:2])
-    minutes = int(user_input[3:])
+hours = user_input[:2]
+minutes = user_input[3:]
 
-    if hours < 0 or hours > 23:
+if hours.isnumeric() and minutes.isnumeric():
+    
+    hours_in_int = int(hours)
+    minutes_in_int = int(minutes)
+    
+    if (hours_in_int < 0 or hours_in_int > 23) or (minutes_in_int < 0 or minutes_in_int > 59):
+
         print("not valid time")
-
-    elif minutes < 0 or minutes > 59:
-        print("not valid time")
-
+        
     else:
-        if hours > 12:    
-            formatted_time.append(str(hours - 12))
 
-        else:
-            is_am = True
-            formatted_time.append(str(hours))
+        if hours_in_int > 12:
 
-        formatted_time.append(str(minutes))
-        formatted_time_string = ':'.join(formatted_time)
+            formatted_time = '{:02d}:{:02d} pm'.format(hours_in_int - 12, minutes_in_int) 
 
-        if is_am == True:
-            print(formatted_time_string + " am")
-            
-        else:
-            print(formatted_time_string + " pm")
+        elif hours_in_int == 12:
+
+            formatted_time = '12:{:02d} pm'.format(minutes_in_int) 
+
+        elif hours_in_int == 0:
+
+            formatted_time = '12:{:02d} am'.format(minutes_in_int) 
+
+        else: 
+
+            formatted_time = '{:02d}:{:02d} am'.format(hours_in_int, minutes_in_int) 
+
+    print(formatted_time)
+          
+else:
+
+    print("not valid time")
+    

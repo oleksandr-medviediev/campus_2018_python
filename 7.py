@@ -7,26 +7,20 @@ print("He answers \"Whatever.\" to anything else.")
 
 user_input = input("Say something to Bob: ")
 
-bob_answer_on_question = "Sure"
-bob_answer_on_yell = "Whoa, chill out!"
-bob_answer_on_yell_question = "Calm down, I know what I'm doing!"
-bob_answer_on_nothing = "Fine. Be that way!"
-bob_answer_on_everything_else = "Whatever."
-
 if len(user_input) == 0:
-    print(bob_answer_on_nothing)
+    print("Fine. Be that way!")
 
 elif user_input[-1] == '?':
-    if user_input[-2].isupper() == True:
-        print(bob_answer_on_yell_question)
+    if user_input[-2].isupper():
+        print("Calm down, I know what I'm doing!")
         
     else:
-        print(bob_answer_on_question)
+        print("Sure")
 
 else:
-    if user_input[-1].isupper() == True:
-        print(bob_answer_on_yell)
+    if user_input[-1].isupper():
+        print("Whoa, chill out!")
 
     else:
-        print(bob_answer_on_everything_else)
+        print("Whatever.")
     

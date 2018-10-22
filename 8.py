@@ -5,15 +5,24 @@ user_input = input("Enter time: ")
 if len(user_input) != 5:
     print(False)
 
-else:
-    hours = int(user_input[:2])
-    minutes = int(user_input[3:])
+hours = user_input[:2]
+minutes = user_input[3:]
 
-    if hours < 0 or hours > 23:
+if hours.isnumeric() and minutes.isnumeric():
+    
+    hours_in_int = int(hours)
+    minutes_in_int = int(minutes)
+    
+    if hours_in_int < 0 or hours_in_int > 23:
         print(False)
 
-    elif minutes < 0 or minutes > 59:
+    elif minutes_in_int < 0 or minutes_in_int > 59:
         print(False)
         
     else:
         print(True)
+
+else:
+
+    print(False)
+        

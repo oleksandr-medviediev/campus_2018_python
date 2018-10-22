@@ -3,15 +3,19 @@ print("and PIN codes cannot contain anything but exactly 4 digits or exactly 6 d
 
 user_input = input("Enter PIN: ")
 user_input_len = len(user_input)
-is_pin_valid = False
+is_pin_valid = True
 
-if user_input_len == 4 or user_input_len == 6:
+if user_input_len != 4 and user_input_len != 6:
+
+    is_pin_valid = False
+
+else:
+
     for x in user_input:
-        if x.isnumeric() == False:
+
+        if not x.isnumeric():
+
             is_pin_valid = False
             break
-            
-        else:
-            is_pin_valid = True
 
 print(is_pin_valid)

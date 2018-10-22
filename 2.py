@@ -7,6 +7,7 @@ words = user_input.split()
 capitalized_words = []
 
 for x in words:
+    
     temp = x.capitalize()
     capitalized_words.append(temp)
 

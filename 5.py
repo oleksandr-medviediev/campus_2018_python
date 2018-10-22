@@ -9,13 +9,14 @@ user_input_len = len(user_input)
 output = str()
 
 if user_input_len % 2 == 0:
-    first_middle = int(user_input_len / 2 - 1)
-    second_middle = int(user_input_len / 2)
+    
+    first_middle = user_input_len // 2 - 1
+    second_middle = user_input_len // 2
 
     output += user_input[first_middle]
     output += user_input[second_middle]
     
 else:
-    output += user_input[int(user_input_len / 2)]
+    output += user_input[user_input_len // 2]
 
 print(output)
