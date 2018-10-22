@@ -23,4 +23,3 @@ else:
 
     else:
         print("Whatever.")
-    
