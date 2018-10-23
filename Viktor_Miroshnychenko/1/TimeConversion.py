@@ -1,5 +1,6 @@
 import sys
 
+
 def Castable(s):
     try:
         int(s)

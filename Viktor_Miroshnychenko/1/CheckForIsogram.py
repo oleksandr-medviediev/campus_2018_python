@@ -14,7 +14,4 @@ for char in string:
         succeed = False
         break;
 
-if succeed:
-    print(True)
-else:
-    print(False)
+print(succeed)

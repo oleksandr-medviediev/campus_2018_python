@@ -1,6 +1,6 @@
 input_string = input("Enter string \n")
 
-odd = bool(len(input_string)%2)
+odd = bool(len(input_string) % 2)
 
 mid = int(len(input_string) / 2)
    

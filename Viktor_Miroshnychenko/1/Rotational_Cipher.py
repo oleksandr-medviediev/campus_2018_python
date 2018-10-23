@@ -1,4 +1,3 @@
-import sys
 string = input("Enter string to rotate \n")
 shift = input("Enter rotation value \n")
 
@@ -9,8 +8,8 @@ alph = "abcdefghijklmnopqrstuvwxyz"
 rotated_string = ""
 
 for char in string:
-    iter = alph.find(char)
-    iter = (iter + shift) % len(alph)
-    rotated_string += alph[iter]
+    position = alph.find(char)
+    position = (position + shift) % len(alph)
+    rotated_string += alph[position]
 
 print(rotated_string)

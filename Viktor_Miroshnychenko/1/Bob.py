@@ -1,24 +1,17 @@
-import sys
-
 replic_to_bob = input("Speak to Bob \n")
+bob_answer = ""
 
 if replic_to_bob == "":
-    print("Fine. Be that way!")
-    sys.exit()
-
-last_char = replic_to_bob[-1]
-pre_last_char = replic_to_bob[-2]
-
-if last_char == "?":
-    if pre_last_char == "!":
-        print("Calm down, I know what I'm doing!")
-    else:
-        print("Sure")
-elif last_char == "!":
-    if pre_last_char == "?":
-        print("Calm down, I know what I'm doing!")
-    else:
-        print("Whoa, chill out!")
+    bob_answer = "Fine. Be that way!"
+elif len(replic_to_bob) > 1 and replic_to_bob.endswith("!?"):
+    bob_answer = "Calm down, I know what I'm doing!"
+elif replic_to_bob.endswith("?"):
+    bob_answer = "Sure"
+elif len(replic_to_bob) > 1 and replic_to_bob.endswith("?!"):
+    bob_answer = "Calm down, I know what I'm doing!"
+elif replic_to_bob.endswith("!"):
+    bob_answer = "Whoa, chill out!"
 else:
-    print("Whatever.")
+    bob_answer = "Whatever."
 
+print(bob_answer)

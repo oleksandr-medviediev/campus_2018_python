@@ -1,4 +1,6 @@
 import sys
+
+
 time = input("Print  time \n")
 
 def Castable(s):
