@@ -1,1 +1,6 @@
+<<<<<<< master
+.vscode/
+__pycache__
+=======
 .vscode
+>>>>>>> master
