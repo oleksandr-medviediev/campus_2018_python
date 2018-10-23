@@ -1,4 +1,5 @@
 def shift_char(char):
+
 	if char.islower():
 		ord_start = ord('a')
 	else:

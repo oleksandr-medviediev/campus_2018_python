@@ -1,6 +1,6 @@
-str = input('Please, enter some string:\n')
+input_str = input('Please, enter some string:\n')
 
-words = str.split()
+words = input_str.split()
 
 for i in range(len(words)):
 	words[i] = words[i].capitalize()

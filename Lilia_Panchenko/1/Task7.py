@@ -1,5 +1,6 @@
 import string
 
+
 input_str = input('Your message: ')
 
 for_question = 'Sure.'
