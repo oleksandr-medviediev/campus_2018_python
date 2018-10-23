@@ -15,5 +15,4 @@ def find_odd_in_second_way(list_of_numbers):
             return i
 
 
-
 print(find_odd_in_second_way([1, 2, 3, 1, 3, 2, 1]))
