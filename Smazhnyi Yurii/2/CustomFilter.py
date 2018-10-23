@@ -1,6 +1,12 @@
 def custom_filter(condition, sequence):
 
-    """Just Custom filter()"""
+    """
+    Just Custom filter()
+
+    @param condition: condition to check
+    @param sequence: sequnce that will be filtered
+    @returns: filtered list
+    """
 
     output = []
 

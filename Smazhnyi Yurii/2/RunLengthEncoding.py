@@ -1,6 +1,11 @@
 def encode(endoding_string):
     
-    """Takes string and encodes it using Run-length encoding. Returns encoded string."""
+    """
+    Takes string and encodes it using Run-length encoding.
+
+    @param encoding_string: string to encode
+    @returns: encoded string
+    """
 
     output_string = ""
     current_char = ''
@@ -28,7 +33,12 @@ def encode(endoding_string):
 
 def decode(decoding_string):
     
-    """Takes string and decodes it using Run-length decoding. Returns decoded string."""
+    """
+    Takes string and decodes it using Run-length decoding.
+    
+    @param encoding_string: string to decode
+    @returns: decoded string
+    """
 
     output_string = ""
     current_count_str = ""

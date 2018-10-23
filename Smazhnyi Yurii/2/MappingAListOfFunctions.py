@@ -3,7 +3,13 @@ import math
 
 def map_functions(value, *list_of_functions):
     
-    """Take value and apply list of functions to it. Returns list of outputs."""
+    """
+    Take value and apply list of functions to it. Returns list of outputs.
+
+    @param value: value for applying
+    @param *list_of_functions: list of functions for applying
+    @returns: list of results
+    """
 
     output_list = []
 
