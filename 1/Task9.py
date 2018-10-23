@@ -1,4 +1,5 @@
 def is_time_valid(time_str):
+
 	time_strings = time_str.split(':')
 	len_time_strings = len(time_strings)
 
@@ -23,6 +24,7 @@ def is_time_valid(time_str):
 			is_valid = False
 
 	return is_valid, hours, minutes
+
 
 input_str = input('Please, input time to convert:\n')
 		

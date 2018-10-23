@@ -1,4 +1,4 @@
-str = input('Please, enter some string:\n')
-str = str[::-1]
+input_str = input('Please, enter some string:\n')
+input_str = input_str[::-1]
 
-print(str)
+print(input_str)

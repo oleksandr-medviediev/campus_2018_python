@@ -15,6 +15,7 @@ def odd_int1(list1):
 		if count_elements[i] % 2 == 0:
 			return i
 			
+
 def odd_int2(list1):
 	"""
 	odd_int2(list1)
@@ -62,6 +63,7 @@ def odd_int3(list1):
 				
 		if count_curr_value % 2 == 0:
 			return curr_value
+
 
 print(odd_int1.__doc__)
 print(odd_int2.__doc__)

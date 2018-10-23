@@ -1,4 +1,5 @@
 def m_map (func, sequence):
+	
 	"""
 	m_map(func, sequence)
 	It's a custom map fuction. It perform given function on each element of sequence

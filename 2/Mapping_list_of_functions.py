@@ -1,4 +1,5 @@
 def map_functions(object, list_functions):
+	
 	"""
 	map_functions(object, list_functions)
 	It's a special map fuction. It perform given list of functions on object
