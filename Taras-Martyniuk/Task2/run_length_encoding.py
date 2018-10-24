@@ -1,4 +1,4 @@
-from itertools import groupby
+from itertools import groupby, tee
 
 def group_encode(char, group):
 
@@ -31,18 +31,10 @@ def decode(string):
     res = []
 
     char_digits_groups = groupby(string, lambda x : x.isdigit())
+    t = tee(char_digits_groups, 2)
 
-    for char_pair, digit_pair in char_digits_groups:
-        print(char_pair[0])
-        print(list(char_pair[1]))
-
-        print(digit_pair[0])
-        print(list(digit_pair[1]))
-
-    # for i in range(0, len(string), 2):
-    #     char = string[i]
-    #     times_present = int(string[i + 1])
-    #     res.append(char * times_present)
+    for smth in t:
+        print(*smth)
 
     return "".join(res)
 
