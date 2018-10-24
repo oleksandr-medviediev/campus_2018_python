@@ -7,7 +7,7 @@ def my_map(func, *iterables):
     :return: nothing
     :rtype: None
     """
-    
+
     argz = list(zip(*iterables[0]))
 
     for pack in argz:
@@ -17,3 +17,4 @@ def my_map(func, *iterables):
 if __name__ == "__main__":
     arr = [[1,2,3], [3,4,5], [3,4,5]]
     my_map(lambda x,y,z: print(x,y,z), arr)
+    

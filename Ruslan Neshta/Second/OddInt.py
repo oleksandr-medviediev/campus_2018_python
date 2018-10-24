@@ -20,7 +20,7 @@ def find_odd_set_method(array):
     :return: int that appeared odd times in array
     :rtype: int
     """
-    
+
     odds = set()
     for num in array:
         try:
@@ -35,3 +35,4 @@ if __name__ == "__main__":
     arr = [1, 2, 3, 1, 3, 2, 1]
     number = find_odd_set_method(arr)
     print(number)
+    

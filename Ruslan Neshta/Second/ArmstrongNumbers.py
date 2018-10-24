@@ -7,7 +7,7 @@ def is_armstrong(num):
     :return: is num an armstrong number
     :rtype: bool
     """
-    
+
     line = str(num)
     sum = 0
 
@@ -20,3 +20,4 @@ def is_armstrong(num):
 if __name__ == "__main__":
     integer = 153
     print(is_armstrong(integer))
+    

@@ -23,3 +23,4 @@ if __name__ == "__main__":
     nums = [1,2,3,4,5]
     odds = my_filter(lambda x: x % 2, nums)
     print(odds)
+    

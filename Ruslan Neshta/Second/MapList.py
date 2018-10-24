@@ -9,7 +9,7 @@ def map_list(arg, *funcs):
      :return: nothing
      :rtype: None
     """
-    
+
     for foo in funcs[0]:
         foo(arg)
 
@@ -17,3 +17,4 @@ def map_list(arg, *funcs):
 if __name__ == "__main__":
     functions_to_apply = (math.sin, math.cos, math.tan)
     map_list(3.14, functions_to_apply)
+    

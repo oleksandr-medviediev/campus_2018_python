@@ -34,3 +34,4 @@ def determine_allergies(num):
 if __name__ == "__main__":
     result = determine_allergies(257)
     print(result)
+    
