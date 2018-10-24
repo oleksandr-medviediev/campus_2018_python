@@ -1,2 +1,5 @@
 def custom_map(func, items):
-    return [func(item) for item in items]
+
+    mapped_items = [func(item) for item in items]
+
+    return mapped_items

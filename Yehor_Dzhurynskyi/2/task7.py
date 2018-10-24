@@ -1,4 +1,5 @@
 def encode(in_string):
+
     res = ''
     curr_len = len(in_string)
     while (curr_len > 0):
@@ -10,10 +11,12 @@ def encode(in_string):
         if occurrence_count != 1:
             res += str(occurrence_count)
         res += symbol
+
     return res
 
 
 def decode(in_string):
+
     res = ''
     n = 0
     for ch in in_string:
@@ -22,4 +25,5 @@ def decode(in_string):
             n = 0
         else:
             n = n * 10 + int(ch)
+
     return res
