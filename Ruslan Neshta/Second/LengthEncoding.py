@@ -79,4 +79,3 @@ if __name__ == "__main__":
 
     res2 = encode(res1)
     print(res1, ' -> ', res2)
-    

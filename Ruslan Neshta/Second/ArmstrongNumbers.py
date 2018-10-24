@@ -20,4 +20,3 @@ def is_armstrong(num):
 if __name__ == "__main__":
     integer = 153
     print(is_armstrong(integer))
-    
