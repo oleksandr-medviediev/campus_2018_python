@@ -3,14 +3,7 @@ print("The string can contain any char.")
 
 user_input = input("Enter your string: ")
 
-count = 0
-
-for x in user_input:
-    
-    if x == 'x' or x == 'X':
-        count += 1
-
-    elif x == 'o' or x == 'O':
-        count -= 1
+count = user_input.count('x') + user_input.count('X')
+count -= user_input.count('o') - user_input.count('O')
 
 print(count == 0)
