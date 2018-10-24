@@ -18,10 +18,9 @@ def determine_allergies(num):
         ('cats', 128)
     ]
 
-    if num >= 256:
-        num-=256
-    
+    num = num % 256  
     res = []
+
     for el in reversed(scores):
         
         if num >= el[1]:
@@ -32,5 +31,5 @@ def determine_allergies(num):
 
 
 if __name__ == "__main__":
-    result = determine_allergies(257)
+    result = determine_allergies(280)
     print(result)
