@@ -1,5 +1,3 @@
-
-
 def compress(string):
     """
     Does length encoding on given string.

@@ -1,5 +1,3 @@
-
-
 def array_difference(arr1, arr2):
     """
     Subtracts one list from another and returns the result

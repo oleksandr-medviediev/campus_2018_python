@@ -1,5 +1,3 @@
-
-
 def my_map(func, *iterables):
     """
     Calls given function on given container

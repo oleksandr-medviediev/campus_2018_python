@@ -1,5 +1,3 @@
-
-
 def determine_allergies(num):
     """
     An allergy test produces a single numeric score which contains the information about all the allergies the person has.

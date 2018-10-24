@@ -1,5 +1,3 @@
-
-
 def is_armstrong(num):
     """
     Checks if given number is Armstrong number.

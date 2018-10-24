@@ -1,5 +1,3 @@
-
-
 def find_odd_linear_search(array):
     """
     Returns int that appears odd number of times

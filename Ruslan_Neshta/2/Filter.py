@@ -1,5 +1,3 @@
-
-
 def my_filter(function, iterable):
     """
     Return an iterator yielding those items of iterable for which function(item)
