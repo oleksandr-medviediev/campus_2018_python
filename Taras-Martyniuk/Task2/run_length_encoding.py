@@ -3,6 +3,12 @@ from itertools import groupby
 
 def group_encode(char, group):
 
+    """
+        :param char: char
+        :param group: iterable
+        :returns: string in format "{char}{length of iterable}"
+    """
+
     len_str = str(len(list(group)))
     return char + len_str
 
@@ -21,7 +27,9 @@ def run_length_encode(string):
 
 def pairwise(iterable):
 
-    "s -> (s0, s1), (s2, s3), (s4, s5), ..."
+    """
+        :returns: iterator over iterable that yields 2 elements at a time
+    """
 
     a = iter(iterable)
     return zip(a, a)

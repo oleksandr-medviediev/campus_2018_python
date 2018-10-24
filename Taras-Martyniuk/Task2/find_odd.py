@@ -11,6 +11,7 @@ def find_odd(numbers):
     first_odd = next((x for x in numbers if x % 2 == 1), None)
     return first_odd
 
+
 with_odd = [2, 4, 6, 8, 1, 10]
 assert find_odd(with_odd) == 1
 
