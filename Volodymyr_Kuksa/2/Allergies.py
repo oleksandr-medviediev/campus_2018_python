@@ -11,7 +11,7 @@ def determine_allergies(allergy_score):
     allergy_names = ['eggs', 'peanuts', 'shellfish', 'strawberries', 'tomatoes', 'chocolate', 'pollen', 'cats']
     allergy_values = [1, 2, 4, 8, 16, 32, 64, 128]
 
-    result = list()
+    result = []
 
     for i in range(len(allergy_names)):
 

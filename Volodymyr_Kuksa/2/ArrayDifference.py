@@ -11,7 +11,7 @@ def array_diff1(a, b):
     :return: difference array.
     :rtype: list.
     """
-    result = list()
+    result = []
 
     for element in a:
 

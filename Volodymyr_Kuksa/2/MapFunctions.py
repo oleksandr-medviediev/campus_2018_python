@@ -13,7 +13,7 @@ def map_functions(argument, functions):
     :return: list of results.
     :rtype: list.
     """
-    results = list()
+    results = []
 
     for func in functions:
 
