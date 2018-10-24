@@ -11,7 +11,7 @@ def custom_map(func, *iterables):
     :rtype: list
     """
 
-    results = [ func(*args) for args in zip(*iterables) ]
+    results = [func(*args) for args in zip(*iterables)]
     return results
 
 
