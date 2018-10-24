@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Second/ArmstrongNumbers.py
 FirstTasks.py
 test.py
@@ -8,3 +9,11 @@ Second/LengthEncoding.py
 Second/Map.py
 Second/MapList.py
 Second/OddInt.py
+=======
+<<<<<<< master
+.vscode/
+__pycache__
+=======
+.vscode
+>>>>>>> master
+>>>>>>> 35de778dc878ff01cd79dc50d99e3abc42ddf485
