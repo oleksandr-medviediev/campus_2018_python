@@ -23,5 +23,3 @@ def decode(in_string):
         else:
             n = n * 10 + int(ch)
     return res
-
-print(decode("32AB3CD4E"))
