@@ -9,6 +9,7 @@ def armstrong(number):
     powers = [x ** len(digits) for x in digits]
     return sum(powers)
 
+
 def is_armstrong(number):
 
     """
