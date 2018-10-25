@@ -11,6 +11,11 @@ allergies = (
 
 
 def determine_allergies(mask):
+    """
+    determine which allergies coded in bit mask
+        :param mask: integer bit mask of allergies
+        :return: collection of allergy names
+    """
 
     mask = mask & 255
 

@@ -1,4 +1,9 @@
 def encode(in_string):
+    """
+    encodes string in RLE form
+        :param in_string: string that should be encoded
+        :return: encoded string
+    """
 
     res = ''
     curr_len = len(in_string)
@@ -16,6 +21,11 @@ def encode(in_string):
 
 
 def decode(in_string):
+    """
+    decodes string from RLE form
+        :param in_string: string that should be decoded
+        :return: decoded string
+    """
 
     res = ''
     n = 0
