@@ -1,10 +1,10 @@
 string = input('enter the string\n')
 
-list = string.split()
+words_list = string.split()
 
-for i in range(len(list)):
-    list[i] = list[i].capitalize()
+for i, el in enumerate(words_list):
+    words_list[i] = words_list[i].capitalize()
 
     
-string = " ".join(list)
+string = " ".join(words_list)
 print(string)

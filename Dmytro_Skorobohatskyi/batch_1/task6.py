@@ -1,9 +1,8 @@
-str = input('enter the string\n')
+string = input('enter the string\n')
 
-length = len(str)
+length = len(string)
 
 is_lenght_right = length == 4 or length == 6
-is_pin_valid = is_lenght_right and str.isdigit()
+is_pin_valid = is_lenght_right and string.isdigit()
 
 print(is_pin_valid)
-

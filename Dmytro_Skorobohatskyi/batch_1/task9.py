@@ -34,4 +34,3 @@ if is_time_valid:
     print(formatted_time)
 else:
     print("not a valid time")
-        

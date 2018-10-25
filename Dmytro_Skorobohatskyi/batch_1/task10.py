@@ -6,11 +6,11 @@ if key <= 26:
 
     string = input("enter the string\n")
 
-    list = []
-    list.extend(string)
+    char_list = []
+    char_list.extend(string)
 
-    for i in range(len(list)):
-        char = list[i]
+    for i in range(len(char_list)):
+        char = char_list[i]
         if char.isalpha():
             ascii_code = ord(char)
             new_ascii_code = ascii_code + key
@@ -19,9 +19,9 @@ if key <= 26:
                 new_ascii_code -= 26
 
             new_char = chr(new_ascii_code)
-            list[i] = new_char
+            char_list[i] = new_char
 
-    string = ''.join(list)
+    string = ''.join(char_list)
     print(string)
 
 else:
