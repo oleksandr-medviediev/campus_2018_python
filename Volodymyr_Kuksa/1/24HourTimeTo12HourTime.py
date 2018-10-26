@@ -36,4 +36,4 @@ elif hours == 0 and minutes == 0:
 elif is_am:
     print(input_string + ' am')
 else:
-    print('{:0>2}:{:0>2} pm'.format(hours - 12, minutes))
+    print(f'{hours - 12}:{minutes}')
