@@ -1,7 +1,7 @@
 time = input("enter time in 24 format\n")
 
 numbers = time.split(":")
-number_set = set(("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"))
+
 is_time = True
 
 if len(numbers) != 2:
@@ -9,7 +9,7 @@ if len(numbers) != 2:
 else:
     for number in numbers:
         for i in number:
-            if i not in number_set:
+            if not i.isdigit():
                 is_time = False
                 break
 if is_time:
