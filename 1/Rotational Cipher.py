@@ -8,16 +8,12 @@ key = 2 if key < 2 else key
 
 result = ""
 
-for letter in inp:
-	if letter.isalpha():
-		num = ord(letter)
-		if (num + key) > 122: 
-			x = (num + key) - 122
-			result += chr(x + ord('a') - 1)
-		elif((num + key <= 122)):
-			result += chr(num + key)
-	else:
-		result += letter
+for char in inp:
+    if char.isalpha():
+        result += chr(ord(char) + key)
+    else:
+        result += chr(int(char) + key)
+
 print(result)
 
 input()
