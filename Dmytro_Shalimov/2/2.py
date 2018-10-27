@@ -3,6 +3,15 @@ print("Implement a difference function, which subtracts one list from another an
 
 
 def list_difference_1(list_1, list_2):
+     """
+    Function sums given lists and create new one without duplicates.
+    Argumetns must be of the same type.
+
+    :param list list_1: a list 
+    :param list list_2: a list with elements of the same typr as list_1
+    :return: list of unique elements from sum of list_1 and list_2
+    :rtype: list 
+    """
 
     lists_sum = list_1 + list_2
 
@@ -19,7 +28,15 @@ def list_difference_1(list_1, list_2):
 
 
 def list_difference_2(list_1, list_2):
+    """
+    Function converts given lists to sets and subtracts set2 from set1.
+    Argumetns must be of the same type.
 
+    :param list list_1: a list 
+    :param list list_2: a list with elements of the same typr as list_1
+    :return: list with subtraction result
+    :rtype: list 
+    """
     return list(set(list_1) - set(list_2))
 
 

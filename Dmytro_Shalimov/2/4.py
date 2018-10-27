@@ -1,6 +1,14 @@
 print("Write a function which applies a bunch of functions, which may be an iterable such as a list, for example, to one Python object.")
 
 def apply_functions_to_object(functions, arg):
+    """
+    Function passes arg to list of functions and return list of new arg values
+
+    :param list functions: list of functions which can take process arg
+    :param arg: any type which can be passed to any function from functions list 
+    :return: list of processed arg by each function
+    :rtype: list
+    """
 
     new_list = []
 

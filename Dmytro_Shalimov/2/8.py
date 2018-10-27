@@ -1,9 +1,15 @@
 print("An Armstrong number is a number that is the sum of its own digits each raised to the power of the number of digits.")
 
 
-
 def check_if_armstrong_number(num):
+    """
+    Function checks if given number is Armstrong number(a number that is the sum of its own digits each raised to the power of the number of digits)
 
+    :param str num: string with number
+    :return: True if is Armstrong number, False otherwise
+    :rtype: bool
+    """
+    
     if not num.isnumeric():
 
         return False

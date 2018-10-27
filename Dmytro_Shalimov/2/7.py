@@ -2,6 +2,13 @@ print("Implement run-length encoding and decoding.")
 
 
 def encode(arg):
+    """
+    Function encodes given string to run-length format
+
+    :param str arg: string with letters
+    :return: run-length encoded string
+    :rtype: str 
+    """
 
     count = 1
     previous_char = ''
@@ -42,6 +49,13 @@ def encode(arg):
 
 
 def decode(arg):
+    """
+    Function decodes given encoded string in run-length format
+
+    :param str arg: encoded string
+    :return: decoded string of letters
+    :rtype: str 
+    """
 
     decoded_string = str()
     char_count = ''

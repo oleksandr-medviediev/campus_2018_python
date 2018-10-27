@@ -6,7 +6,16 @@ allergies = {1: "eggs", 2: "peanuts", 4: "shellfish",
 max_allergen = 128
 
 def process_allergies(arg, next_allergen, determined_allergies):
+    """
+    Function recursively process given arg, at exit point returns list of found allergies by value in arg.
     
+    :param int arg: current allergy score
+    :param int next_allergen: current allergen score to compare with
+    :param list determined_allergies: list of already found allergies
+    :return: list of found allegies
+    :rtype: list
+    """
+
     new_determined_allergies = determined_allergies
     
     if arg == 0:
@@ -26,6 +35,13 @@ def process_allergies(arg, next_allergen, determined_allergies):
 
 
 def determine_allergies(arg):
+    """
+    Function given arg, returns list of found allergies by value in arg.
+    
+    :param int arg: current allergy score
+    :return: list of found allegies
+    :rtype: list
+    """
 
     determined_allergies = []
 

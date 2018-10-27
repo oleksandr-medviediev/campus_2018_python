@@ -1,6 +1,14 @@
 print("Implement custom_filter function, which will behave like the original Python filter() function.")
 
 def my_filter(functor, sequence):
+    """
+    Function check each element in given sequence by given functor and return new list with values which satisfy functor conditions
+
+    :param functor: function which can process element from sequence
+    :param sequence: sequence which element can be passed to functor
+    :return: new list of sequence elements which satisfy functor conditions
+    :rtype: list
+    """
 
     filtered_list = []
 

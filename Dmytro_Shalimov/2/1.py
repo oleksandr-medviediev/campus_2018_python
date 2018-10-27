@@ -5,6 +5,15 @@ print("There will always be only one integer that appears an odd number of times
 print("Do it in 3 different ways (create a separate function for each solution).")
 
 def find_odd_number_1(sequence):
+    """
+    Function find int which appears in function odd number of times.
+    There should be only one int that appears an odd number of times.
+    Uses method count()
+
+    :param list sequence: a list of ints
+    :return: int which appears odd number of times
+    :rtype: int 
+    """
 
     number = 0
 
@@ -20,6 +29,15 @@ def find_odd_number_1(sequence):
 
 
 def find_odd_number_2(sequence):
+     """
+    Function find int which appears in function odd number of times.
+    There should be only one int that appears an odd number of times.
+    Uses Counter class
+
+    :param list sequence: a list of ints
+    :return: int which appears odd number of times
+    :rtype: int 
+    """
 
     temp = Counter(sequence)
 

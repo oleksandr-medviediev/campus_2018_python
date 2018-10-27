@@ -3,6 +3,14 @@ print("Implement custom_map function, which will behave like the original Python
 
 
 def my_map(functor, list_arg):
+    """
+    Function applies given functor to each element of list
+
+    :param functor: any function which can take as argument element from list_arg
+    :param list list_arg: list of any elements which can be passed to functor
+    :return: new list of of elements from list_arg provessed by functor
+    :rtype: list
+    """
 
     new_list = []
 
@@ -15,7 +23,14 @@ def my_map(functor, list_arg):
 
 
 def double_func(arg):
+    """
+    Function doubles given arg
 
+    :param arg:
+    :return: double arg
+    :rtype: arg type
+    """
+    
     return arg + arg
 
 
