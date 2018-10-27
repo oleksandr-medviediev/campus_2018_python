@@ -102,6 +102,7 @@ def spell_number(number):
     result_string = ' '.join(result)
     return result_string
 
+
 if __name__ == '__main__':
     result = spell_number(245300)
     print(result)
