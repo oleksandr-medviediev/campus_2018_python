@@ -1,3 +1,14 @@
+BRACKETS = ('(', ')', '{', '}', '[', ']')
+
+BRACKET_PAIRS = {
+    '(': ')',
+    '{': '}',
+    '[': ']'
+}
+
+OPENING_BRACKETS = tuple(BRACKET_PAIRS.keys())
+
+
 def is_bracket_pair(opening, closing):
     """
     Return True if opening and closing is a pair of matching brackets, False otherwise.
@@ -11,10 +22,7 @@ def is_bracket_pair(opening, closing):
     :return: True if opening and closing is a pair of matching brackets, False otherwise.
     :rtype: bool.
     """
-    bracket_pairs = {'(': ')', '{': '}', '[': ']'}
-    opening_brackets = tuple(bracket_pairs.keys())
-
-    return opening_brackets.count(opening) and bracket_pairs[opening] == closing
+    return OPENING_BRACKETS.count(opening) and BRACKET_PAIRS[opening] == closing
 
 
 def check_brackets(string):
@@ -27,25 +35,17 @@ def check_brackets(string):
     :return: True if string contains only properly matched brackets or no brackets at all, False otherwise.
     :rtype: bool.
     """
-    brackets = ('(', ')', '{', '}', '[', ']')
+    bracket_stack = []
 
-    only_brackets = [c for c in string if brackets.count(c)]
+    for c in (c for c in string if BRACKETS.count(c)):
 
-    i = 0
-
-    while i < len(only_brackets) - 1:
-
-        current_bracket = only_brackets[i]
-        next_bracket = only_brackets[i + 1]
-
-        if is_bracket_pair(current_bracket, next_bracket):
-
-            del only_brackets[i:i + 2]
-
-            i = 0
-
+        if not len(bracket_stack) or not is_bracket_pair(bracket_stack[-1], c):
+            bracket_stack.append(c)
         else:
+            bracket_stack.pop()
 
-            i += 1
+    return not len(bracket_stack)
 
-    return not len(only_brackets)
+
+test_str = '{([world])[hello]}'
+print(check_brackets(test_str))
