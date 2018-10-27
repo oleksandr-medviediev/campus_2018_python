@@ -1,5 +1,5 @@
 def find_odd1(numbers):
-    """function returns an alement with odd number of occurencies"""
+    """return an alement with odd number of occurencies"""
     presences = {}   
 
     for number in numbers:
@@ -12,7 +12,7 @@ def find_odd1(numbers):
             return number
 
 def find_odd2(numbers):
-    """function returns an alement with odd number of occurencies"""
+    """return an alement with odd number of occurencies"""
     for number in numbers:
         count = 0
         
@@ -25,7 +25,7 @@ def find_odd2(numbers):
             return number
 
 def find_odd3(numbers):
-    """function returns an alement with odd number of occurencies"""
+    """return an alement with odd number of occurencies"""
     for number in numbers:
         if numbers.count(number) % 2 == 1:
             return number
