@@ -1,5 +1,15 @@
 def encode(string):
 
+    """ Function encode string by run-length-encoding.
+
+    Args:
+        string(str): string to encode
+
+    Returns:
+        str: encoded string
+        
+    """
+    
     if string == None or len(string) == 0:
         return ""
     
@@ -26,6 +36,16 @@ def encode(string):
 
 def decode(string):
 
+    """ Function decode string by run-length-encoding.
+
+    Args:
+        string(str): string to decode
+
+    Returns:
+        str: decoded string
+        
+    """
+    
     result_list = []
 
     process_list = []

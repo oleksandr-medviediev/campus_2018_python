@@ -1,6 +1,16 @@
 #approach 1
 def find_odd_amount_int_1(numbers):
 
+    """ Function returns number which appears in collection odd times.
+
+    Args:
+        numbers(list): list of numbers
+
+    Returns:
+        number(int): number which appears in numbers odd times
+        
+    """
+    
     result = 0
 
     for i, el in enumerate(numbers):
@@ -15,6 +25,16 @@ def find_odd_amount_int_1(numbers):
 #approach 2
 def find_odd_amount_int_2(numbers):
 
+    """ Function returns number which appears in collection odd times.
+
+    Args:
+        numbers(list): list of numbers
+
+    Returns:
+        number(int): number which appears in numbers odd times
+        
+    """
+    
     numbers_counter = {}
 
     for i, el in enumerate(numbers):
@@ -33,6 +53,16 @@ def find_odd_amount_int_2(numbers):
 #approach 3
 def find_odd_amount_int_3(numbers):
 
+    """ Function returns number which appears in collection odd times.
+
+    Args:
+        numbers(list): list of numbers
+
+    Returns:
+        number(int): number which appears in numbers odd times
+        
+    """
+    
     process_list = numbers.copy()
     stack = []
 

@@ -1,5 +1,15 @@
 def determine_allergies(score):
 
+    """ Function determines allergies by allergies score.
+
+    Args:
+        score(int): summary score of allergies
+
+    Returns:
+        list: list of allergies' names
+        
+    """
+    
     #ignore some allergens
     score %= 256
     

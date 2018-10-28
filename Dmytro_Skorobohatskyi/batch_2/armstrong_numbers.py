@@ -1,4 +1,14 @@
 def amount_digits(number):
+
+    """ Function recognize amount of digit in number.
+
+    Args:
+        number(int): specified number
+
+    Returns:
+        int: amount of digits in number
+        
+    """
     
     counter = 0
 
@@ -11,6 +21,17 @@ def amount_digits(number):
 
 def check_if_armstrong_number(number):
 
+    """ Function checks if passed number is armstrong.
+
+    Args:
+        number(int): specified number
+
+    Returns:
+        bool: Return True if number is armstrong,
+              otherwise - return False 
+        
+    """
+    
     sum = 0
 
     number_length = amount_digits(number)
