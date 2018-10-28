@@ -17,7 +17,7 @@ def custom_map(func, *args):
 
         number_of_iterations = min(number_of_iterations, len(arg))
 
-    result = list()
+    result = []
 
     for i in range(number_of_iterations):
 

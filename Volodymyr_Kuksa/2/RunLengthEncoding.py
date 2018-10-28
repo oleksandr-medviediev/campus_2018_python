@@ -8,7 +8,7 @@ def encode_character(count, char):
     :return: string with run length encoded char.
     :rtype: str.
     """
-    result = str()
+    result = ''
 
     if count > 1:
 
@@ -29,7 +29,7 @@ def encode(string):
     :return: run length encoded string.
     :rtype: str.
     """
-    result = str()
+    result = ''
 
     char = '\0'
     count = 0
@@ -62,7 +62,7 @@ def decode_char(count, char):
     :return: decoded char as a string.
     :type: string.
     """
-    result = str()
+    result = ''
 
     if not count:
 
@@ -85,7 +85,7 @@ def decode(encoded_string):
     :return: run length decoded string.
     :rtype: str.
     """
-    result = str()
+    result = ''
     count = 0
 
     for c in encoded_string:

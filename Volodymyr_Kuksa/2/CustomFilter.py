@@ -11,7 +11,7 @@ def custom_filter(func, array):
     :return: list of filtered.
     :rtype: list.
     """
-    results = list()
+    results = []
 
     for element in array:
 
