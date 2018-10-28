@@ -1,12 +1,29 @@
-# span 
-HighCard, Pair, TwoPair, Three, Straight, Flush, FullHouse, Four, StraightFlush, Five = range(10)
+from itertools import groupby
+from collections import Counter
 
-ranks = {
+
+"""
+    poker hand types
+"""
+HighCard, Pair, TwoPair, Three, Straight, Flush, FullHouse, Four, StraightFlush, RoyalFlush = range(10)
+
+high_ranks = {
     'J' : 11,
     'Q' : 12,
     'K' : 13,
     'A' : 14
 }
+
+suits = {'D', 'S', 'C', 'H'}
+HAND_SIZE = 5
+
+
+def most_common(collection):
+    """
+        returns the most frequently encountered element 
+    """
+    data = Counter(collection)
+    return max(collection, key=data.get)
 
 
 def parse_card(card):
@@ -20,9 +37,9 @@ def parse_card(card):
     rank_char = card[0]
     res = None
     
-    if rank_char in ranks:
+    if rank_char in high_ranks:
         assert len(card) == 2
-        res = ranks[rank_char], card[1]
+        res = high_ranks[rank_char], card[1]
 
     elif rank_char == '1':
         assert len(card) == 3
@@ -31,6 +48,9 @@ def parse_card(card):
     else:
         assert len(card) == 2
         res = int(rank_char), card[1]
+
+    if res[1] not in suits:
+        raise "Wrong suit char"
     
     return res
 
@@ -43,13 +63,46 @@ def get_hand_type(hand):
         :returns: poker hand enum
     """
     cards = map(parse_card, hand.split(' '))
+    ranks, suits = zip(*cards)
+    assert len(ranks) == 5 and len(suits) == 5
+    ranks = list(ranks)
+    ranks.sort()
 
-    for card in cards:
-        print(card)
+    counter = Counter(ranks)
+    commonnest_rank_count = counter.most_common(1)[0][1]
+    second_commonnest_rank_count = counter.most_common(2)[1][1]
 
-    print('\n\n')
+    is_straight = ranks[-1] - ranks[0] == HAND_SIZE - 1
+    is_flush = len(set(suits)) == 1
 
-    return HighCard
+    hand_type = -1
+
+    if is_straight and is_flush:
+        royal_start = 10
+        hand_type = RoyalFlush if ranks[0] == royal_start else StraightFlush
+
+    elif commonnest_rank_count == 4:
+        hand_type = Four
+    
+    elif commonnest_rank_count == 3 and second_commonnest_rank_count == 2:
+        hand_type = FullHouse
+
+    elif is_flush:
+        hand_type = Flush
+
+    elif is_straight:
+        hand_type = Straight
+
+    elif commonnest_rank_count == 3:
+        hand_type = Three
+    
+    elif commonnest_rank_count == 2:
+        hand_type = TwoPair if second_commonnest_rank_count == 2 else Pair
+
+    else:
+        hand_type = HighCard
+
+    return hand_type
 
 
 def get_upper_hand(hands):
@@ -59,19 +112,17 @@ def get_upper_hand(hands):
     """
     types = [get_hand_type(h) for h in hands]
     max_hand_type = max(types)
-
     max_type_hand_indices = [i for i, t in enumerate(types) if t == max_hand_type]
-    # if more than one, compare between hands
-
-
-
     
-hands = ["10D 5S 6S 8D 3C",
-         "2S 4C 7S 9H 10H",
-         "7S 7C 7H 9D 9H",
-         "3S 4S 5D 6H JH"]
+    return [hands[i] for i in max_type_hand_indices] 
+
+
+hands = ["10D QS 6S 8D 3C", # high
+         "2S 4C 7S 10S 10H", # pair
+         "3S 3D 3C 9H 9S", # full house
+         "10S JS QS KS AS"] # royal flush
 
 
 
-get_upper_hand(hands)
+print(get_upper_hand(hands))
 
