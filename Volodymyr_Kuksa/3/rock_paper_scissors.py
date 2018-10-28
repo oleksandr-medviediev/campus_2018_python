@@ -167,7 +167,7 @@ def display_leader_board(rank):
     """
     print('\nLeader Board:')
 
-    for place, player in enumerate(rank[::-1]):
+    for place, player in enumerate(reversed(rank)):
 
         print(f'{place + 1}. {player}')
 
