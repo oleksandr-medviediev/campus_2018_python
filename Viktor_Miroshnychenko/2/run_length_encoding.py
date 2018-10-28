@@ -26,7 +26,6 @@ def encode(string):
     return ret_val
 
 
-
 def decode(string):
     """
     :param string: = string to decode:
@@ -51,9 +50,5 @@ def decode(string):
     return ret_val
 
     
-
-    
-
-
 print(encode("FHHGKKSSFEFELJNFELAAAAAAAAAAAAAAAa"))
 print(decode("1F3AJ8G9HIOD7D8D5DGJ2DD"))

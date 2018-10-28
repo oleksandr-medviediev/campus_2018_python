@@ -1,4 +1,14 @@
 def my_filter(function, container):
+    """
+    :param function: function that used as a filter to container
+    :type function: function
+
+    :param container: container that must be filtered
+    :type container: any iterable container
+
+    :return: filtered container
+    :rtype: list
+    """
     return_val = list()
     for var in container:
         if function(var):
