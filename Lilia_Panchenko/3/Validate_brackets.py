@@ -1,8 +1,8 @@
 def bracket_type(bracket):
 	BRACKES = { '(' : 1, ')' : 1, '{' : 2, '}' : 2, '[' : 3, ']' : 3 }
-	type = BRACKETS [bracket] 
+	br_type = BRACKETS [bracket] 
 	
-	return type
+	return br_type
 
 
 input_str = input("Enter your string, please: \n")
