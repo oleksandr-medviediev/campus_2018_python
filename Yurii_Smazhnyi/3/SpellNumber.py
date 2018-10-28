@@ -6,13 +6,15 @@ tens = ("", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eight
       
 scale_numbers = ("", "Thousand", "Million", "Billion")
 
-def parse_hundred(string):
 
+def parse_hundred(string):
     """
     Takes string up to 3 digits and returns spelling of it.
 
-    @param string: string for parsing
-    @returns: spelled number
+    :param string: string for parsing
+    :string type: str.
+    :returns: spelled number
+    :rtype: str.
 
     """
 
@@ -58,8 +60,10 @@ def say_number(number):
     """
     Takes number and spells it.
 
-    @param number: number for spelling
-    @returns: string with spelling of number
+    :param number: number for spelling
+    :number type: int.
+    :returns: string with spelling of number
+    :rtype: str.
     """
 
     output = ""
@@ -75,7 +79,6 @@ def say_number(number):
         output += scale_numbers[len(hundred_list) - 1 - i] + " "
 
     return output
-
 
 
 print(say_number(999999999999))

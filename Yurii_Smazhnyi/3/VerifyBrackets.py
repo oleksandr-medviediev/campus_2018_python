@@ -1,15 +1,18 @@
 brackets_dict = {'[' : ']', '{' : '}', '(' : ')'}
 
-def verify_brackets(string):
 
+def verify_brackets(string):
     """
     Verifies given string for correct open/close of brackets.
 
-    @param string: string with brackets.
-    @returns: result of verifying
+    :param string: string with brackets.
+    :string type: str.
+    :returns: result of verifying
+    :rtype: bool.
     """
 
     unclosed_brackets = []
+    result = True
 
     for ch in string:
 
@@ -19,22 +22,22 @@ def verify_brackets(string):
 
         elif ch in brackets_dict.values():
 
-            try:
+            if len(unclosed_brackets) == 0:
+                
+                result = False
+                break
 
-                bracket = unclosed_brackets.pop()
+            bracket = unclosed_brackets.pop()
 
-                if ch != brackets_dict[bracket]:
-                    return False
+            if bracket not in brackets_dict:
 
-            except IndexError:
+                result = False
+                break
 
-                return False
-
-            except KeyError:
-
+            if ch != brackets_dict[bracket]:
                 return False
     
-    return unclosed_brackets == []
+    return result
 
 
-print(verify_brackets("[{{qwerty}]}"))
+print(verify_brackets("{[{qwerty}]}"))

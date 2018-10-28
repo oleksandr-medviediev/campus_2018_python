@@ -1,13 +1,13 @@
 import math
 
 def encode(string):
-
-
     """
     Verifies given string for correct open/close of brackets.
 
-    @param string: string with brackets.
-    @returns: result of verifying
+    :param string: string with brackets.
+    :type string: str.
+    :returns: result of verifying
+    :rtype: str
     """
 
     output_string = ""
@@ -22,21 +22,9 @@ def encode(string):
     columns_count = math.sqrt(len(output_string))
     columns_count = math.ceil(columns_count)
 
-    lists = [output_string[i:i+columns_count] for i in range(0, len(output_string),columns_count)]
-    
-    rows_count = len(lists)
+    result = [output_string[i::columns_count] for i in range(columns_count)]
 
-    output_string = ""
-
-    for j in range(columns_count):
-
-        for i in range(rows_count):
-
-            if j < len(lists[i]):
-
-                output_string += lists[i][j] 
-
-    return output_string
+    return "".join(result)
 
 
 print(encode("If man was meant to stay on the ground, god would have given us roots."))

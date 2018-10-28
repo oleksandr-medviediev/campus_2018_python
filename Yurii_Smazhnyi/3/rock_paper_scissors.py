@@ -8,14 +8,13 @@ APPLY_WEAPON = { WEAPON_TYPES[0] : WEAPON_TYPES[2],
 
 
 def is_valid(weapon_list):
-
     """
     Check is list of weapons not contains all type of weapons.
 
     :param weapon_list: all ingame weapons
-    :param type: list of strings.
+    :weapon_list type: list of strings.
     :returns: result of check.
-    :return type: bool.
+    :rtype: bool.
     """
 
     weapon_count = 0
@@ -29,12 +28,13 @@ def is_valid(weapon_list):
 
 
 def get_win_weapon(weapon_list):
-
     """
     Checks whether list of weapons is valid
 
     :param weapon_list: list of weapons.
+    :weapon_list type: list of str.
     :returns: result of check.
+    :rtype: str.
     """
 
     for weapon in weapon_list:
@@ -44,12 +44,13 @@ def get_win_weapon(weapon_list):
 
 
 def play_round(amount_of_players):
-
     """
     Play round of rock-paper-scissors game
 
     :param amount_of_players: current amount of players.
+    :amount_of_players: int.
     :returns: amount of players that stayed alive.
+    :rtype: int.
     """
 
     while True:
@@ -90,12 +91,13 @@ def play_round(amount_of_players):
 
 
 def print_leaderboard(position, amount_of_players):
-
     """
     Prints Leaderboard
 
     :param position: index of players in leaderboard.
     :param amount_of_players: size of leaderboard.
+    :position type: int.
+    :amount_of_players: int.
     :returns: None
     """
 
@@ -111,11 +113,22 @@ def print_leaderboard(position, amount_of_players):
 
 def start_game():
 
-    amount_of_players = int(input("Number of players:"))
-    players_left = amount_of_players
+    amount_of_players = ""
 
-    if amount_of_players < 2:
-        return
+    while not amount_of_players:
+
+        amount_of_players = input("Number of players:")
+
+        if not amount_of_players.isnumeric():
+            amount_of_players = ""
+            continue
+
+        amount_of_players = int(amount_of_players)
+        players_left = amount_of_players
+
+        if players_left < 2:
+            continue
+
 
     while True:   
         
