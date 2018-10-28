@@ -20,8 +20,10 @@ def distribute_weapons(players):
     number_of_bots = len(players)
 
     if 'You' in players:
+
         number_of_bots -= 1
         while True:
+
             chosen_weapon = input('Your weapon (scissors/paper/rock): ')
             if chosen_weapon not in WEAPON_COLLECTION:
 
@@ -87,7 +89,6 @@ while True:
 
         print('Wrong input! Number of players should be positive number [2, ...)')
         continue
-
     number_of_players = int(number_of_players_str)
     break
 
@@ -106,6 +107,7 @@ while True:
         print(f'{player}: {weapon}')
 
     if is_draw(weapons):
+
         print(' - Draw')
         continue
 
@@ -117,8 +119,8 @@ while True:
     players = list(filter(is_winner, players))
 
     if len(players) == 1:
+
         winner_message = f' - {players[0]} won!'
         print(winner_message)
-
         print_leaderboard()
         break

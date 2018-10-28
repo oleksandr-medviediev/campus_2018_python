@@ -2,6 +2,12 @@ import math
 
 
 def encode(in_string):
+    """
+    encodes string using square crypto method
+        :param str in_string: text that should be encoded
+        :return: encoded string
+        :rtype: str
+    """
 
     normalized_string = ''.join(ch for ch in in_string.lower() if ch.isalnum())
 
@@ -15,6 +21,12 @@ def encode(in_string):
 
 
 def decode(in_string):
+    """
+    decodes string using square crypto method
+        :param str in_string: text that should be decoded
+        :return: decoded string
+        :rtype: str
+    """
 
     width = math.ceil(math.sqrt(len(in_string)))
     height = math.ceil(len(in_string) / width)

@@ -36,6 +36,11 @@ NUM_POS_TO_TEXT = {
 
 
 def number_to_text(num):
+    """
+        :param int num: integer number from 0 to 999999999999
+        :return: textual representation of number
+        :rtype: str
+    """
 
     text_list = []
     num_str = str(num)
@@ -71,4 +76,9 @@ def number_to_text(num):
 
 
 def say_number(num):
+    """
+    prints integer number in textual representation
+        :param int num: number which sould be printed
+    """
+
     print(f'{str(num)}={number_to_text(num)}')
