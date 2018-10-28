@@ -167,12 +167,9 @@ def display_leader_board(rank):
     """
     print('\nLeader Board:')
 
-    place = 1
+    for place, player in enumerate(rank[::-1]):
 
-    for player in rank[::-1]:
-
-        print(f'{place}. {player}')
-        place += 1
+        print(f'{place + 1}. {player}')
 
 
 def run_game():
