@@ -1,3 +1,6 @@
+import random
+
+
 def determine_allergies(allergies_score):
     """
         This function checks allergies by simple bitwise masking
@@ -13,14 +16,9 @@ def determine_allergies(allergies_score):
         128: "cats"
     }
 
-    result = list()
+    result = [allergies.get(key) for key in allergies if key & allergies_score]
 
-    for key in allergies: 
-        
-        if key & allergies_score: result.append(allergies.get(key))
+    return result or None
 
-    if len(result): return result
-    else: return "None"
 
-import random
 print(determine_allergies(random.randrange(1024)))

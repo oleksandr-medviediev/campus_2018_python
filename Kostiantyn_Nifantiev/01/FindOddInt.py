@@ -1,12 +1,9 @@
 numeric_string = input('Enter string with numbers to check. Use "," as delimiter: ')
 numeric_tokens = numeric_string.split(',')
-numbers_list = list()
 
-for token in numeric_tokens:
-
-    if token.isnumeric(): numbers_list.append(int(token))
-
+numbers_list = [int(token) for token in numeric_tokens if token.isnumeric()]
 print(numbers_list)
+
 
 def first(num_list):
     """
@@ -16,11 +13,7 @@ def first(num_list):
 
     for i in range(len(num_list)):
     
-        entries = num_list
-        
-        for num in num_list:
-        
-            if num_list[i] == num: entries += 1
+        entries = num_list.count(num_list[i])
         
         if entries % 2: 
             
@@ -29,25 +22,29 @@ def first(num_list):
 
     return result
 
+
 def second(num_list):
     """
         More elegant xor-based method
     """
-    accumulator = int()
+    accumulator = 0
 
-    for num in num_list: accumulator ^= num
+    for num in num_list:
+
+        accumulator ^= num
     
-    if num_list.count(0) % 2: return 0
+    if num_list.count(0) % 2:
 
-    elif accumulator: return accumulator
+        return 0
 
-    else: return('There is no odd-times appearing int!')
+    return accumulator or 'There is no odd-times appearing int!'
+
 
 def third(num_list):
     """
         More pythonic (i hope) version
     """
-    result = 'There is no odd-times appearing int!'
+    result = None
 
     for num in num_list:
 
@@ -56,7 +53,8 @@ def third(num_list):
             result = num
             break
 
-    return result
+    return result or 'There is no odd-times appearing int!'
+
 
 print(first(numbers_list))
 print(second(numbers_list))

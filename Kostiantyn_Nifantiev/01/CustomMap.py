@@ -1,29 +1,26 @@
-def custom_map(function, *args):
+def custom_map(my_function, *args):
     """
         This custom map could work with multiple input sequences
     """
-    result = list()
 
     if not len(args):
 
         print('Wrong input')
-        return result
+        return None
 
-    min_arg_len = len(args[0])
+    zipped_args = zip(*args)
 
-    for arg in args:
-
-        if min_arg_len > len(arg): min_arg_len = len(arg)
-
-    for index in range(min_arg_len):
-
-        arguments_pack = list()
-
-        for arg in args: arguments_pack.append(arg[index])
-
-        result.append(function(*arguments_pack))
+    result = [my_function(*arg) for arg in zipped_args]
 
     return result
 
 
-print(custom_map(lambda x, y: x * y, [1, 2, 3], [1, 2, 3, 4]))
+def my_test_function(x, y):
+
+    return x * y
+
+
+first_list = [1, 2, 3, 5, 5]
+second_list = [1, 2, 3, 4]
+
+print(custom_map(my_test_function, first_list, second_list))

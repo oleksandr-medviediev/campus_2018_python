@@ -5,16 +5,21 @@ def check_if_armstrong_number(number):
         but string should be numeric
     """
     token_string = str(number)
-    if not token_string.isnumeric(): return 'Wrong input!'
+
+    if not token_string.isnumeric(): 
+        
+        return 'Wrong input!'
 
     accumulator = int()
-    pow = len(token_string)
+    power = len(token_string)
 
-    for char in token_string: accumulator += int(char) ** pow
+    for char in token_string: 
+        
+        accumulator += int(char) ** power
 
-    if token_string == str(accumulator): return True
+    return bool(token_string == str(accumulator))
 
-    else: return False
 
 num_to_check = input('Enter integer for check for Armstrongness: ')
+
 print(check_if_armstrong_number(num_to_check))

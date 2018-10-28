@@ -6,14 +6,17 @@ def custom_filter(predicate, array):
     if not len(array): 
         
         print('Wrong input!') 
-        return
+        return None
     
-    result = list()
-    
-    for item in array:
-    
-        if predicate(item): result.append(item)
+    result = [item for item in array if predicate(item)]
 
     return result
 
-print(custom_filter(lambda x: x < 10, [1, 2, 3, 5, 8, 13, 21]))
+
+def my_predicate(x):
+
+        return bool(x < 10)
+
+
+list_to_filter = [11, 1, 2, 3, 5, 8, 13, 21]
+print(custom_filter(my_predicate, list_to_filter))

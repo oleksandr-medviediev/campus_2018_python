@@ -3,23 +3,25 @@ def array_dif_v1(first_array, second_array):
         This version accumulates result by checking every number
         in first array for presence in second one
     """
-    result = list()
-
-    for element in first_array:
-
-        if not second_array.count(element): result += element
+    result = [element for element in first_array if not second_array.count(element)]
 
     return result
+
 
 def array_dif_v2(first_array, second_array):
     """
         This version removes elements from copy of initial array
+        def predicate(x) used instead of lambda to avoid complex expression in filter function call
     """
-    result = set(first_array)
+    result = first_array
 
-    for element in second_array: 
-        try: result.remove(element)
-        except: continue
+    for element in second_array:
+
+        def predicate(x):
+
+            return bool(x != element)
+
+        result = list(filter(predicate, result))
 
     return result
 
@@ -32,5 +34,3 @@ second_collection = second_input_string.split(',')
 
 print(array_dif_v1(first_collection, second_collection))
 print(array_dif_v2(first_collection, second_collection))
-print(first_collection)
-input()

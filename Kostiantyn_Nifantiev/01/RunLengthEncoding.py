@@ -1,23 +1,24 @@
-def encode(iterable):
+def encode(instring):
     """
         Runlength encoder
     """
-    if not len(iterable): return "Empty input!"
+    if not len(instring):
 
-    if not iterable.isalpha(): return "Non-character string! Remove all numbes and special symbols, please!"
+        print("Empty input!")
+        return None
     
     result = str()
-    lastItem = iterable[0]
+    last_item = instring[0]
     count = 0
 
-    for item in iterable:
+    for item in instring:
 
-        if item != lastItem: 
+        if item != last_item:
             
             result += str(count)
-            result += str(lastItem)
+            result += str(last_item)
             count = 1
-            lastItem = item
+            last_item = item
 
         else:
 
@@ -26,17 +27,23 @@ def encode(iterable):
     else:
 
         result += str(count)
-        result += str(lastItem)
+        result += str(last_item)
     
     return result
+
 
 def decode(data):
     """
         Runlength decoder
     """
-    result = str()
+    if data is None:
+
+        print("Invalid incoming data!")
+        return None
+
+    result = ""
     
-    number_accumulator = str()
+    number_accumulator = ""
 
     for character in data:
 
@@ -47,13 +54,16 @@ def decode(data):
         else: 
             
             result += character * int(number_accumulator)
-            number_accumulator = str()
+            number_accumulator = ""
 
     return result
 
+
 val_to_encode = input('Enter your string to encode. It should contain only characters and spaces: \n')
 print(val_to_encode)
+
 encoded = encode(val_to_encode)
+
 print(encoded)
 print(decode(encoded))
 
