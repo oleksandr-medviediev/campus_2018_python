@@ -1,7 +1,5 @@
 def find_odd_in_one_way(list_of_numbers):
-
     """
-    def find_odd_in_one_way(list_of_numbers)
     Finds an integer that present in the list_of_number odd number of times
     This function works as efficient as possible for this task
 
@@ -16,9 +14,7 @@ def find_odd_in_one_way(list_of_numbers):
 
 
 def find_odd_in_second_way(list_of_numbers):
-
     """
-    def find_odd_in_second_way(list_of_numbers)
     Finds an integer that present in the list_of_number odd number of times.
     This function is likely to work less efficient than find_odd_in_one_way function
 

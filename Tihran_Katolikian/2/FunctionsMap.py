@@ -1,9 +1,7 @@
 import math
 
 def func_map(element, *funcs):
-
     """
-    func_map(element, *funcs)
     Invokes all of *funcs passing element in it
 
     :param element: element that will be used as an argument for each of *funcs

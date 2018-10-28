@@ -1,7 +1,5 @@
 def custom_map(func, *iterables):
-
     """
-    def custom_map(func, *iterables)
     Invokes func passing as arguments tuples made from *iterables argument.
 
     :param func: a function which expects len(*iterables) number of arguments

@@ -1,8 +1,6 @@
 def array_diff_first(list_to_be_filtered, filter_values):
-
     """
-    array_diff_first(list_to_be_filtered, filter_values)
-    Removed all elements in list_to_be_filtered which present in
+    Removes all elements in list_to_be_filtered which present in
     filter_values
 
     :param list_to_be_filtered: list which is going to be filtered
@@ -17,10 +15,8 @@ def array_diff_first(list_to_be_filtered, filter_values):
 
 
 def array_diff_second(list_to_be_filtered, filter_values):
-
     """
-    array_diff_second(list_to_be_filtered, filter_values)
-    Removed all elements in list_to_be_filtered which present in
+    Removes all elements in list_to_be_filtered which present in
     filter_values
 
     :param list_to_be_filtered: list which is going to be filtered
