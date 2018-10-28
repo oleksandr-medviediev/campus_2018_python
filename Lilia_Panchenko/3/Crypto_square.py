@@ -41,7 +41,7 @@ def normalize_str(input_str):
 
 
 def calculate_rows_cols(input_str):
-	
+
 	len_input = len(input_str)
 
 	cols = rows = sqrt_int(len_input)
@@ -85,7 +85,7 @@ def encrypt(input_str):
 	return encrypted_str
 
 
-def decrypt(rows, cols, input_str):
+def decrypt(input_str):
 	"""
 	:param : input_str :  string to decrypt
 
@@ -131,8 +131,8 @@ input_str = input('Enter string to encrypt:\n')
 
 normal_input = normalize_str(input_str)
 
-encrypted_str = encrypt(rows, cols, normal_input)
+encrypted_str = encrypt(normal_input)
 print('Encryption : ', encrypted_str)
 
-decrypted_str = decrypt(rows, cols, encrypted_str)
+decrypted_str = decrypt(encrypted_str)
 print('Decryption : ', decrypted_str)
