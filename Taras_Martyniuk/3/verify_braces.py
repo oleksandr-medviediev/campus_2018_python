@@ -6,13 +6,18 @@ def verify_braces(string):
         are matched and nested correctly.
     """
 
-    last_open = None
-    matched_bracket = True
-    matched_brace = True
-    matched_parantheses = True
+    opening = '({['
+    closing = ')}]'
+    mapping = dict(zip(opening, closing))
+    match_queue = []
 
     for ch in string:
-        if ch == '[':
-            if mat
+        if ch in opening:
+            match_queue.append(mapping[ch])
+        elif ch in closing:
+            if not match_queue or ch != match_queue.pop():
+                return False
+    return not match_queue
 
-    
+assert not verify_braces('___sss___   ()   [')
+assert verify_braces('___sss((___  []  )){}')
