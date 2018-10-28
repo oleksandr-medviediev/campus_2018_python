@@ -11,7 +11,7 @@ def determine_allergies(score):
     allergens = ["eggs", "peanuts", "shellfish", "strawberries",
                  "tomatoes", "chocolate", "pollen", "cats"]
 
-    def filter_function(x): return score >> x & 1
+    filter_function = lambda x: score >> x & 1
 
     iters = filter(filter_function, range(len(allergens)))
     result = list(map(lambda x: allergens[x], iters))

@@ -14,7 +14,7 @@ def is_armstrong(number):
     sum = 0
 
     for digit in digits_string:
-        sum += int(digit)**digits_number
+        sum += int(digit) ** digits_number
 
     return number == sum
 
