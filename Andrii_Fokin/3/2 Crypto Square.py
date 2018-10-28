@@ -32,7 +32,5 @@ def decode(sentence_hashed):
     return result
 
 
-
-
 print(encode("If man was meant to stay on the ground, god would have given us roots."))
 print(decode("imtgdvsfearwermayoogoanouuiontnnlvtwttddesaohghnsseoau"))
