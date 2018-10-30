@@ -1,7 +1,7 @@
 from random import randint
 from random import shuffle
 
-GAME_CHARACTERS = {'Empty': ' ', 'Trap': 'X', 'Treasure': 'O'}
+GAME_CHARACTERS = {'Empty': ' ', 'Trap': 'X', 'Treasure': 'O', 'Spawn': '@', 'Visited': '.'}
 
 
 def generate_flat_map(size_total):
@@ -69,7 +69,7 @@ def generate_map(size):
 
 def print_map(game_map):
     """
-    Print game_map with borders.
+    Print game_map with borders and legend.
 
     :param game_map: map to print.
     :type game_map: 2d list of one-character strings.
@@ -85,8 +85,13 @@ def print_map(game_map):
 
     print(horizontal_border)
 
+    print(f"{GAME_CHARACTERS['Treasure']} - treasures.")
+    print(f"{GAME_CHARACTERS['Trap']} - traps.")
+    print(f"{GAME_CHARACTERS['Spawn']} - spawn point.")
+    print(f"{GAME_CHARACTERS['Visited']} - visited tiles.")
+
 
 if __name__ == '__main__':
-    
+
     new_map = generate_map(randint(5, 10))
     print_map(new_map)
