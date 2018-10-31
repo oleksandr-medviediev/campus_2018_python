@@ -1,5 +1,8 @@
 def input_number():
-    """Requests input until number is entered, returns number"""
+    """Requests input until number is entered
+	Returns:
+		string with number
+	"""
     while True:
         number = input('Enter number:\n')
         if number.isdigit():
@@ -11,7 +14,13 @@ def input_number():
 
 
 def check_if_armstrong_number(number_str):
-    """Checks if given number is Armstrong number"""
+    """Checks if given number is Armstrong number
+	
+	 Args:
+        number_str(str): specified number
+    Returns:
+        bool: true if given number is Armstrong number
+	"""
     digits = [int(ch)**(len(number_str)) for ch in number_str]
     result = 0
     for i in digits:
