@@ -1,4 +1,4 @@
-from MatrixProcessingFunc import *
+from MatrixProcessingFunc import get_matrix, read_matrix_rows, read_matrix_columns
 
 while True:
     

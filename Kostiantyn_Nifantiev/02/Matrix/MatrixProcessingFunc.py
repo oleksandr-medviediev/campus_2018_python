@@ -20,5 +20,6 @@ def read_matrix_columns(matrix):
     splitted_matrix = [row.split(',') for row in matrix.split('\n')]
 
     columns = [column for column in zip(*splitted_matrix)]
+    result = '\n'.join([','.join(column) for column in columns])
 
-    return '\n'.join([','.join(column) for column in columns])
+    return result
