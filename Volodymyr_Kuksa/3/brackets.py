@@ -9,22 +9,6 @@ BRACKET_PAIRS = {
 OPENING_BRACKETS = tuple(BRACKET_PAIRS.keys())
 
 
-def is_bracket_pair(opening, closing):
-    """
-    Return True if opening and closing is a pair of matching brackets, False otherwise.
-
-    :param opening: an opening bracket.
-    :type opening: single-character str.
-
-    :param closing: a closing bracket.
-    :type closing: single-character str.
-
-    :return: True if opening and closing is a pair of matching brackets, False otherwise.
-    :rtype: bool.
-    """
-    return OPENING_BRACKETS.count(opening) and BRACKET_PAIRS[opening] == closing
-
-
 def check_brackets(string):
     """
     Return True if string contains only properly matched brackets or no brackets at all, False otherwise.
@@ -39,8 +23,12 @@ def check_brackets(string):
 
     for c in (c for c in string if BRACKETS.count(c)):
 
-        if not len(bracket_stack) or not is_bracket_pair(bracket_stack[-1], c):
+        if not len(bracket_stack):
             bracket_stack.append(c)
+
+        elif not (OPENING_BRACKETS.count(bracket_stack[-1]) and BRACKET_PAIRS[bracket_stack[-1]] == c):
+            bracket_stack.append(c)
+
         else:
             bracket_stack.pop()
 
