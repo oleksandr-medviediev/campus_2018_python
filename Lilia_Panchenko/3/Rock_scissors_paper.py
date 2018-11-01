@@ -34,10 +34,10 @@ player_in_game = True
 while players_amount > 1:
 	if player_in_game:
 		player_response = inp_player_weapon()
-	
+		print(f'\nyou: {WEAPONS[player_response]}')
+			
 	bots = { k: choice([1,2,3]) for k,v in bots.items() }
 
-	print(f'\nyou: {WEAPONS[player_response]}')
 	to_print = [f'{key}: {WEAPONS[value]}'for key, value in bots.items()]
 	print('\n'.join(to_print), '\n')
 	
@@ -65,26 +65,21 @@ while players_amount > 1:
 	
 		bots = {k : v for k,v in bots.items() if k not in losers}
 
-		print('bots', bots)
-		print('losers', losers)
-
 		players_amount = len(bots) + int(player_in_game)
 	
 
 losers.reverse()
 
-to_print = []
+to_print = ['Leaderboard']
 
 bots_left = list(bots.keys())
-print(bots_left)
 
 if player_in_game:
-	to_print.append('You won!')
-	to_print.extend('1. You')
+	to_print.append('You won!\n1. You')
 	to_print.extend([f'{i + 1}. {bots_left[i]}' for i in range(len(bots_left))])
 	to_print.extend([f'{i + len(bots_left) + 1}. {losers[i]}' for i in range(len(losers))])
 else:
 	to_print.extend([f'{i + 1}. {bots_left[i]}' for i in range(len(bots_left))])
 	to_print.extend([f'{i + len(bots_left) + 1}. {losers[i]}' for i in range(len(losers))])
 
-print('Leaderboard\n','\n'.join(to_print))
+print("\n".join(to_print))
