@@ -111,7 +111,7 @@ input_str = ''
 hands = []
 hand_ranks = []
 input_str = input('Enter hand: \n')
-while input_str != 'q' && input_str != '':
+while input_str != 'q' and input_str != '':
 
 	hand = input_str.split()
 	hand = [(c[:len(c) - 1], c[-1]) for c in hand]
