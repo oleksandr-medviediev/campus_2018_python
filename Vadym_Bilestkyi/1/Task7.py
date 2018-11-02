@@ -1,11 +1,11 @@
 def evaluate_bobby(request):
     if request:
-        if request[-1] == '?':
+        if request.endswith('?'):
             if request.isupper():
                 return 'Calm down, I know what I\'m doing!'
             else:
                 return 'Sure.'
-        elif request[-1] == '!' or request.isupper():
+        elif request.endswith('!') or request.isupper():
             return 'Whoa, chill out!'
         elif 'Bob' in request:
             return 'Fine. Be that way!'
