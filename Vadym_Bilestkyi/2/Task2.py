@@ -3,7 +3,7 @@ def array_diff1(array1, array2):
     for element in array2:
         while True:
             try:
-                    result.remove(element)
+                result.remove(element)
             except ValueError:
                 break
 
