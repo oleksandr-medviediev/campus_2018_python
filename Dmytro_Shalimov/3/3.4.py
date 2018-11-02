@@ -1,10 +1,13 @@
 from collections import Counter
 
 
-RANKS = {'2' : 2, '3' : 3, '4' : 4, '5' : 5, '6' : 6, '7' : 7, '8' : 8, '9' : 9, '10' : 10, 'J' : 11, 'Q' : 12, 'K' : 13, 'A' : 14}
+RANKS = {'2' : 2, '3' : 3, '4' : 4, '5' : 5, '6' : 6,
+         '7' : 7, '8' : 8, '9' : 9, '10' : 10, 'J' : 11, 'Q' : 12, 'K' : 13, 'A' : 14}
 
-POINTS_MODIFIER_PER_COMBINATIONS = {"Straight flush" : 100000000, "Four of a kind" : 10000000, "Full house" : 1000000, "Flush" : 100000,
- "Straight" : 10000, "Three of a kind" : 1000, "Two pair" : 100, "One pair" : 10, "High card" : 1}
+POINTS_MODIFIER_PER_COMBINATIONS = {"Straight flush" : 100000000, "Four of a kind" : 10000000,
+                                    "Full house" : 1000000, "Flush" : 100000, "Straight" : 10000,
+                                    "Three of a kind" : 1000, "Two pair" : 100, "One pair" : 10,
+                                    "High card" : 1}
 
 
 is_least_straight = False
@@ -92,7 +95,8 @@ def check_straight(ranks):
 
 def check_and_process_straight_flush(current_hand, suits, ranks):
     """
-    Checks for 'Straight' and 'Flush' combinations, if they are present - writes score to appropriate hand and returns True, otherwise - returns False
+    Checks for 'Straight' and 'Flush' combinations,
+     if they are present - writes score to appropriate hand and returns True, otherwise - returns False
 
     :param str current_hand: current hand
     :param list suits: list of suits
@@ -133,7 +137,8 @@ def check_and_process_straight_flush(current_hand, suits, ranks):
 
 def check_and_process_is_four_of_a_kind(current_hand, ranks):
     """
-    Checks for 'Four of a kind' combination, if present - writes score to appropriate hand and returns True, otherwise - returns False
+    Checks for 'Four of a kind' combination,
+     if present - writes score to appropriate hand and returns True, otherwise - returns False
 
     :param str current_hand: current hand
     :param list ranks: list of current ranks
@@ -156,7 +161,8 @@ def check_and_process_is_four_of_a_kind(current_hand, ranks):
 
 def check_and_process_full_house_or_three_of_a_kind(current_hand, ranks):
     """
-    Checks for 'Full House' and 'Three of a kind' combinations, if they are present - writes score to appropriate hand and returns True, otherwise - returns False
+    Checks for 'Full House' and 'Three of a kind' combinations,
+     if they are present - writes score to appropriate hand and returns True, otherwise - returns False
 
     :param str current_hand: current hand
     :param list ranks: list of ranks
@@ -185,7 +191,8 @@ def check_and_process_full_house_or_three_of_a_kind(current_hand, ranks):
 
 def check_and_process_one_or_two_pairs(current_hand, ranks):
     """
-    Checks for 'One pair' and 'Two pairs' combinations, if they are present - writes score to appropriate hand and returns True, otherwise - returns False
+    Checks for 'One pair' and 'Two pairs' combinations,
+     if they are present - writes score to appropriate hand and returns True, otherwise - returns False
 
     :param str current_hand: current hand
     :param list ranks: list of ranks
@@ -201,7 +208,8 @@ def check_and_process_one_or_two_pairs(current_hand, ranks):
     if count_ranks[0][1] == 2 and count_ranks[1][1] == 2:
 
         is_one_or_two_pairs = True
-        hands_and_score[current_hand] = POINTS_MODIFIER_PER_COMBINATIONS["Two pair"] * max(count_ranks[0][0], count_ranks[1][0])
+        hands_and_score[current_hand] = (POINTS_MODIFIER_PER_COMBINATIONS["Two pair"] *
+                                         max(count_ranks[0][0], count_ranks[1][0]))
 
     elif count_ranks[0][1] == 2:
 
@@ -224,22 +232,13 @@ def process_hand(current_hand):
 
     ranks.sort(reverse = True)
 
-    if check_and_process_straight_flush(current_hand, suits, ranks):
-        return None
-
-    if check_and_process_is_four_of_a_kind(current_hand, ranks):
-        return None
-
-    if check_and_process_full_house_or_three_of_a_kind(current_hand, ranks):
-        return None
-
-    if check_and_process_one_or_two_pairs(current_hand, ranks):
-        return None
+    (check_and_process_straight_flush(current_hand, suits, ranks) or
+    check_and_process_is_four_of_a_kind(current_hand, ranks) or
+    check_and_process_full_house_or_three_of_a_kind(current_hand, ranks) or
+    check_and_process_one_or_two_pairs(current_hand, ranks))
 
     hands_and_score[current_hand] = POINTS_MODIFIER_PER_COMBINATIONS["High card"] * ranks[0]
 
-
-################################################
 
 hands_and_score = hands_input()
 

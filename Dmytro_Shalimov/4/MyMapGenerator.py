@@ -1,9 +1,12 @@
 from MyLogger import logger
 from random import shuffle
+from random import randrange
 
 EMPTY_CELL = '#'
 TREASURE = 'T'
 TRAP = 'C'
+PLAYER = 'P'
+
 
 def map_size_input():
     """
@@ -43,6 +46,34 @@ def map_size_input():
     return map_size
 
 
+def generate_player_position(generated_map):
+    """
+    Generates random position for player
+
+    :param list generated_map: list with generated empty cells, traps and treasures
+    :return: generated map with placed player
+    :rtype: list
+    """
+
+    logger.debug('Entered generate_player_position(generated_map) function')
+
+    generated_map_with_player = generated_map
+    player_position = 0
+
+    logger.info('Generating player position')
+    while True:
+        
+        player_position = randrange(len(generated_map_with_player))
+
+        if generated_map_with_player[player_position] == EMPTY_CELL:
+
+            generated_map_with_player[player_position] = PLAYER
+            break
+
+    logger.debug('Returning generated_map_with_player')
+    return generated_map_with_player
+
+
 def generate_map(size):
     """
     Generates map of given size
@@ -77,7 +108,10 @@ def generate_map(size):
     logger.debug('Adding empty cells')
     generated_map.extend([EMPTY_CELL for x in range(0, empty_cells_amount)])
 
-    logger.debug('Shuffling items')
+    logger.debug('Placing player')
+    generated_map = generate_player_position(generated_map)
+
+    logger.debug('Shuffling map')
     shuffle(generated_map)
 
     logger.debug('Splitting on rows')
@@ -85,10 +119,3 @@ def generate_map(size):
 
     logger.debug('Returning generated_map')
     return generated_map
-
-input = map_size_input()
-
-gen_map = generate_map(input)
-
-for i in range(0, len(gen_map)):
-    print(gen_map[i])
