@@ -1,7 +1,11 @@
 def array_diff1(array1, array2):
     result = array1[:]
     for element in array2:
-        result.remove(element)
+        while True:
+            try:
+                    result.remove(element)
+            except ValueError:
+                break
 
     return result
 
