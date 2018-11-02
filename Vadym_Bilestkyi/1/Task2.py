@@ -1,6 +1,7 @@
 def is_same_amount_of_oxs(word):
     word = word.lower()
-    return word.count('x') == word.count('o')
+    is_same_amount = (word.count('x') == word.count('o'))
+    return is_same_amount
 
 
 print(is_same_amount_of_oxs('ooxx'))

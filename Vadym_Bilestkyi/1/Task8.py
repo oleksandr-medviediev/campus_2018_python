@@ -4,7 +4,8 @@ def is_valid_time(time):
     except ValueError:
         return False
 
-    return 0 <= int(hours) < 24 and 0 <= int(minutes) < 60
+    validation_condition = (0 <= int(hours) < 24 and 0 <= int(minutes) < 60)
+    return validation_condition
 
 
 if __name__ == '__main__':

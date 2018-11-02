@@ -12,7 +12,8 @@ def from_24_to_12(time):
         hours -= 12
         day_part = 'pm'
 
-    return '{}:{} {}'.format(hours, minutes, day_part)
+    formatted_time = '{}:{} {}'.format(hours, minutes, day_part)
+    return formatted_time
 
 
 print(from_24_to_12('20:59'))
