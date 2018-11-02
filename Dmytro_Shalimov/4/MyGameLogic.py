@@ -196,7 +196,7 @@ def update_player(current_data):
     while True:
 
         logger.debug('Waiting for user input')
-        user_input = input('Where do you want to go(up, down, left, right, left): ')
+        user_input = input('Where do you want to go(up, down, left, right): ')
         user_input = user_input.lower()
 
         logger.debug('Validating user input')
