@@ -1,41 +1,76 @@
 from random import choice
 
 
-
-def is_confusion(choices):
-    """function defines if more
-    than 2 types of weapon is chosen
-    and confuse happened"""
-
-    return len(set(choices)) > 2
-
-def beats(weapon1, weapon2):
-    """function defines if weapon1 beats weapon2"""
-
-    return (weapon1 == "scissors" and weapon2 == "paper" or
-            weapon1 == "paper" and weapon2 == "rock" or
-            weapon1 == "rock" and weapon2 == "scissors")
-
-
-
 WEAPONS = ["scissors", "rock", "paper"]
 
-while True:
+def is_confusion(choices):
+    """define if more than 2 types of
+    weapon is chosen and confuse happened"""
+
+    confusion = len(set(choices)) == 3 or len(set(choices)) == 1
+
+    return confusion
+
+
+answer = 'y'
+
+while answer == 'y':
 
     num_of_players = int(input("Number of players: "))
 
-    choices = {}
-    choices["You"] = input("Your weapon: ")
-    choices.update({"Bot " + str(i) : choice(weapons) for i in range(1, num_of_players)})
+    participants = ["You"]
+    participants.extend(["Bot " + str(i) for i in range(1, num_of_players)])
 
-    for player, choice in choices.items():
-        print(player + " : " + choice)
+    leaderboard = []
 
+    while  len(participants) > 1:
 
-    if is_confusion(choices.items()):
-        """"""
+        choices = []
 
+        if "You" in participants:
+            choices.append(input("Your weapon: "))
+
+        choices += [choice(WEAPONS) for i in range(1, len(participants))]
+
+        if "You" in participants:
+            for partcipant, weapon in zip(participants, choices):
+                print(partcipant + " : " + weapon)
+
+        if is_confusion(choices):
+
+            if "You" in participants:
+                print("Confusion!")
+
+            continue
+
+        else:
+        
+            new_participants = []
+
+            dominant = ""
+
+            if "scissors" in choices and "paper" in choices:
+                dominant = "scissors"
+            elif "paper" in choices and "rock" in choices:
+                dominant = "paper"
+            elif "rock" in choices and "scissors" in choices:
+                dominant = "rock"
+
+            for idx, weapon in enumerate(choices):
+                if weapon == dominant:
+                    new_participants.append(participants[idx])
+                else:
+                    leaderboard.insert(0, participants[idx])
+
+            participants = new_participants
+
+    if "You" in participants:
+        print("You won!")
     else:
+        print("You lose!")
 
-        for player, choice in choices.items():
-            
+    print("Leaders:\n")
+    for position, participant in enumerate(leaderboard):
+        print(F"{position + 1}. {participant}")
+
+    answer = input("Play again? (y/n)\n")
