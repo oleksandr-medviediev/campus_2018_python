@@ -1,10 +1,11 @@
 def convert_to_matrix(string):
-
     """
     Converts string to matrix.
 
-    @param string: matrix as string.
-    @returns: matrix as list of lists of elements
+    :param string: matrix as string.
+    "string type: str.
+    :returns: matrix as list of lists of elements
+    :rtype: list of lists of ints.
     """
 
     matrix = string.split('\n')
@@ -21,12 +22,13 @@ def convert_to_matrix(string):
 
 
 def read_matrix_rows(string):
-
     """
-    reads rows of matrix.
+    Reads rows of matrix.
 
-    @param string: matrix as string.
-    @returns: formatted string with matrix's rows.
+    :param string: matrix as string.
+    "type string: str.
+    :returns: formatted string with matrix's rows.
+    "rtype" str.
     """
 
     matrix = convert_to_matrix(string)
@@ -44,12 +46,13 @@ def read_matrix_rows(string):
 
 
 def read_matrix_columns(string):
-
     """
     reads columns of matrix.
 
-    @param string: matrix as string.
-    @returns: formatted string with matrix's columns.
+    :param string: matrix as string.
+    :string type: str.
+    :returns: formatted string with matrix's columns.
+    "rtype: str.
     """
 
     matrix = convert_to_matrix(string)
