@@ -1,8 +1,10 @@
 def is_valid_time(time):
-    try:
-        hours, minutes = time.split(':')
-    except ValueError:
+    time_parts = time.split(':')
+
+    if len(time_parts) != 2:
         return False
+
+    hours, minutes = time_parts
 
     validation_condition = (0 <= int(hours) < 24 and 0 <= int(minutes) < 60)
     return validation_condition
