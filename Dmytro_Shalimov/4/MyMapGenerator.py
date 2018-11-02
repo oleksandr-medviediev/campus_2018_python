@@ -1,11 +1,32 @@
-from MyLogger import logger
+import logging
 from random import shuffle
 from random import randrange
+
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+debug_formatter = logging.Formatter('%(asctime)s - %(name)s - %(message)s')
+info_formatter = logging.Formatter('%(message)s')
+
+file_handler = logging.FileHandler('DebugLog.txt')
+file_handler.setLevel(logging.DEBUG)
+file_handler.setFormatter(debug_formatter)
+
+stream_handler = logging.StreamHandler()
+stream_handler.setLevel(logging.INFO)
+stream_handler.setFormatter(info_formatter)
+
+logger.addHandler(file_handler)
+logger.addHandler(stream_handler)
+
 
 EMPTY_CELL = '#'
 TREASURE = 'T'
 TRAP = 'C'
 PLAYER = 'P'
+TRAPPED_PLAYER = 'X'
+CELL_TYPES_INFO_MESSAGES = {TREASURE: 'There is a treasure nearby', TRAP: 'Careful! A trap is near'}
 
 
 def map_size_input():
@@ -60,13 +81,14 @@ def generate_player_position(generated_map):
     generated_map_with_player = generated_map
     player_position = 0
 
-    logger.info('Generating player position')
+    logger.debug('Generating player position')
     while True:
         
         player_position = randrange(len(generated_map_with_player))
 
         if generated_map_with_player[player_position] == EMPTY_CELL:
 
+            logger.debug('Player position generated')
             generated_map_with_player[player_position] = PLAYER
             break
 
@@ -74,18 +96,49 @@ def generate_player_position(generated_map):
     return generated_map_with_player
 
 
-def generate_map(size):
+def get_player_position(generated_map):
     """
-    Generates map of given size
+    Returns player position
 
-    :param int size: size of map
-    :return: list of lists as map 
+    :return: tuple with player position indeces (row, column)
+    :rtype: tuple
     """
 
-    logger.debug('Entered generate_map(size) function')
+    logger.debug('Entered get_player_position(generated_map) function')
+    player_position = (None, None)
+
+    logger.debug('Finding player')
+    for i, row in enumerate(generated_map):
+
+        for j, column in enumerate(row):
+
+            if column == PLAYER:
+
+                logger.debug('Player is found')
+                player_position = (i, j)
+                break
+        
+        if player_position[0] != None:
+            break
+
+    logger.debug('Returning from get_player_position(generated_map)')
+    return player_position
+
+
+def generate_map():
+    """
+    Generates map of given size with player, traps and treasures
+
+    :return: tuple with list of lists as map, treasures amount in int and player position tuple (row, column)
+    :rtype: tuple 
+    """
+
+    logger.debug('Entered generate_map() function')
+
+    map_size = map_size_input()
 
     logger.debug('Calculating map area')
-    map_area = size * size
+    map_area = map_size * map_size
 
     logger.debug('Calculating treasures amount')
     treasures_amount = map_area // 20
@@ -115,7 +168,10 @@ def generate_map(size):
     shuffle(generated_map)
 
     logger.debug('Splitting on rows')
-    generated_map = [generated_map[i : i + size] for i in range(0, len(generated_map), size)]
+    generated_map = [generated_map[i : i + map_size] for i in range(0, len(generated_map), map_size)]
 
-    logger.debug('Returning generated_map')
-    return generated_map
+    logger.debug('Getting player position')
+    player_position = get_player_position(generated_map)
+
+    logger.debug('Returning generated data from generate_map()')
+    return (generated_map, treasures_amount, player_position)
