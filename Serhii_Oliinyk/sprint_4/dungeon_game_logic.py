@@ -1,4 +1,6 @@
-def run_game(my_map, player_poition):
+import dungeon_game_load_and_save as io
+
+def run_game(my_map, player_position):
     """
     Check if player find treasure and win or find trap and lose.
 
@@ -16,24 +18,30 @@ def run_game(my_map, player_poition):
         "a": "left",
         "d": "right",
         "w": "up",
-        "s": "down"
+        "s": "down",
+        "save": ""
     }
 
     result = False
     
     while True:
-        directions = check_player_position(my_map, player_poition)
+        directions = check_player_position(my_map, player_position)
 
         value = input("Choose direction a-left, d-right, w-up, s-down")
         if (value in direction_map) == False:
             print("Incorect input direction!")
             continue
+
+        if value == "save":
+            io.save_game(my_map)
+            result = None
+            break
         
         if (direction_map[value] in directions) == False:
             print("You cannot move in this direction!")
         
-        new_x = player_poition[0]
-        new_y = player_poition[1]
+        new_x = player_position[0]
+        new_y = player_position[1]
         if value == "a":
             new_y -= 1
         elif value == "d":
@@ -50,10 +58,10 @@ def run_game(my_map, player_poition):
             result = False
             break
         else:
-            my_map[player_poition[0]][player_poition[1]] = "_"
-            player_poition[0] = new_x
-            player_poition[1] = new_y
-            my_map[player_poition[0]][player_poition[1]] = "p"
+            my_map[player_position[0]][player_position[1]] = "_"
+            player_position[0] = new_x
+            player_position[1] = new_y
+            my_map[player_position[0]][player_position[1]] = "p"
 
     return result
         

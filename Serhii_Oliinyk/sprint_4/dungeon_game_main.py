@@ -30,8 +30,15 @@ def spawn_player(my_map):
 
 
 if __name__ == '__main__':
-    my_map = map.createMap()
-    position = spawn_player(my_map)
+    option = int(input("Press 1 to create new game and press 2 to load game state"))
+    my_map = []
+    position = [0, 0]
+
+    if option == 1:
+        my_map = map.createMap()
+        position = spawn_player(my_map)
+    elif option == 2:
+        position = logic.io.load_file(my_map)
 
     result = logic.run_game(my_map, position)
     if result:
