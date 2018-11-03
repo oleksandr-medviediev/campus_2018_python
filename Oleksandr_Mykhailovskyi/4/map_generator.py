@@ -72,3 +72,19 @@ def generate_map(x):
 
     random.shuffle(game_map)
     return format_map(game_map, x)
+
+
+def generate_random_map(probabilistic=False):
+    """
+    Returns map of random size between 5 and 10.
+
+    Args:
+        probabilistic (bool): whether to generate map filled
+                            by cell's probability.
+    Returns:
+        [[str...]...] - game map.
+    """
+    size = random.uniform(5, 10)
+    if probabilistic:
+        return generate_prob_map(size)
+    return generate_map(size)
