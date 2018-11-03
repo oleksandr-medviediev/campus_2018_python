@@ -2,11 +2,7 @@ import random
 import logging
 
 import map_generator
-from map_generator import map_elements
-from map_generator import map_cells_repr
-from map_generator import player_repr
-from map_generator import fog_repr
-from map_generator import unknown_repr
+from map_generator import *
 import savegame_utility
 
 logger = logging.getLogger('Utilities_app')
@@ -21,13 +17,14 @@ logger.addHandler(logging_fh)
 position = [-1, -1]
 view_depth = [1, 1]
 
-actions_list = ["up", "left", "down", "right"]
+actions_list = ["up", "left", "down", "right", "save"]
 
 action_dict = {
     actions_list[0]: "w",
     actions_list[1]: "a",
     actions_list[2]: "s",
-    actions_list[3]: "d"
+    actions_list[3]: "d",
+    actions_list[4]: "save"
 }
 
 
@@ -158,6 +155,22 @@ def move_player(action, position, game_map):
     return position
 
 
+def on_action(action, position, game_map):
+    """
+    Args:
+        action (str): actions from the actions list
+        position ([int, int]): playuer's position
+        game_map ([[str...]...]): game map
+    """
+
+    if action == actions_list[4]:
+        savegame_utility.save(game_map, position)
+        logger.info("game saved")
+        print("game saved")
+    else:
+        position = move_player(action, position, game_map)
+
+
 def generate_random_position(game_map):
     """
     Args:
@@ -262,8 +275,8 @@ def game_step(game_map):
         return True
     logger.info("action received & checked")
 
-    position = move_player(action, position, game_map)
-    logger.info("new position for player acquired")
+    on_action(action, position, game_map)
+    logger.info("on action script performed")
 
     step_result = game_update_position(position, game_map)
     logger.info("new position checked and used, step performed")
@@ -279,7 +292,4 @@ def game_step(game_map):
         res = False
 
     logger.info("step ended.")
-
-    savegame_utility.perform_save(game_map, position)
-    print(savegame_utility.perform_load())
     return res
