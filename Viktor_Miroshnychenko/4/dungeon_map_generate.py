@@ -22,7 +22,7 @@ def generate_map(size):
             
             coef = randint(0, MAX_RAND_COEF)
             if coef < CLEAR_COEF:
-                row.append("0")
+                row.append(" ")
             elif coef < BOMB_COEF:
                 row.append("!")
             else:
@@ -42,10 +42,10 @@ def set_player_randomly(dung_map):
     :rtype: list[x,y]
     """
 
-    map_size = len(dung_map)
+    map_size = len(dung_map) - 1
     x = randint(0, map_size)
     y = randint(0, map_size)
-    while(dung_map[x][y] != "0"):
+    while(dung_map[x][y] != " "):
         x = randint(0, map_size)
         y = randint(0, map_size)
 
