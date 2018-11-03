@@ -7,11 +7,12 @@ from map_generator import map_cells_repr
 from map_generator import player_repr
 from map_generator import fog_repr
 from map_generator import unknown_repr
+import savegame_utility
 
 logger = logging.getLogger('Utilities_app')
 logger.setLevel(logging.INFO)
 
-logging_fh = logging.FileHandler('utilities.log')
+logging_fh = logging.FileHandler('game.log')
 logging_fh.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logging_fh.setFormatter(formatter)
@@ -278,4 +279,7 @@ def game_step(game_map):
         res = False
 
     logger.info("step ended.")
+
+    savegame_utility.perform_save(game_map, position)
+    print(savegame_utility.perform_load())
     return res
