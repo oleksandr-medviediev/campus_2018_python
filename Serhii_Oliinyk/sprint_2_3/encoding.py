@@ -14,26 +14,28 @@ def encode(string):
     count = 1
 
     for i in range(1, len(array)):
-        if(array[i-1] != array[i] and count == 1):
-            result.append(array[i-1])
-        elif(array[i-1] != array[i] and count >= 1):
-            data = str(count) + array[i - 1]
-            result.append(data)
-            count = 1
-            if(i == len(array) - 1):
-                result.append(array[i])
-        elif(array[i-1] == array[i]):
-            count += 1
-            if(i == len(array) - 1):
+        if array[i - 1] != array[i]:
+            if count == 1:
+                result.append(array[i - 1])
+            else:
                 data = str(count) + array[i - 1]
                 result.append(data)
-        elif(count == 1):
-            result.append(result[i])
+                count = 1
+                if i == (len(array) - 1):
+                    result.append(array[i])
+        elif array[i - 1] == array[i]:
+            count += 1
+            if i == len(array) - 1:
+                data = str(count) + array[i - 1]
+                result.append(data)
+        elif count == 1:
+            result.append(array[i])
 
     if(len(result) == 0):
         result = array
 
     resultString = ''.join(result)
+
     return resultString
 
 

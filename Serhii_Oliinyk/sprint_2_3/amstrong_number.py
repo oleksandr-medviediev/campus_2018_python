@@ -16,10 +16,15 @@ def is_amstrong_number(value):
         number = int(i) ** len(array)
         sum += number
 
+    result = False
+
     if(sum == value):
-        return True
+        result = True
     else:
-        return False
+        result =  False
+
+    return result
+
 
 
 if __name__ == '__main__':

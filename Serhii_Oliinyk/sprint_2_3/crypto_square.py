@@ -56,6 +56,7 @@ def encrypt(string):
         Return str.
 
     """
+
     string = string.lower()
     string = string.replace(" ", "")
     string = string.replace(".", "")
@@ -66,7 +67,7 @@ def encrypt(string):
     rows = columns = 0
     index = 2
 
-    while(True):
+    while True:
         rows = index
         columns = len(string) / rows
         if((rows >= columns) and (columns - rows <= 1)):
@@ -103,7 +104,7 @@ def decrypt(string):
     rows = columns = 0
     index = 2
 
-    while(True):
+    while True:
         rows = index
         columns = len(string) / rows
         if((rows >= columns) and (columns - rows <= 1)):
