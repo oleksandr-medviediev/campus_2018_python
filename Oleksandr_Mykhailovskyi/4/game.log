@@ -244,3 +244,63 @@
 2018-11-03 18:58:53,305 - Utilities_app - INFO - new position checked and used, step performed
 2018-11-03 18:58:53,305 - Utilities_app - INFO - game lost.
 2018-11-03 18:58:53,305 - Utilities_app - INFO - step ended.
+2018-11-03 19:03:53,917 - Utilities_app - DEBUG - setting-up started...
+2018-11-03 19:03:53,918 - Utilities_app - DEBUG - map generated
+2018-11-03 19:03:53,918 - Utilities_app - DEBUG - start position generated
+2018-11-03 19:03:53,918 - Utilities_app - DEBUG - setting-up ended.
+2018-11-03 19:03:56,076 - Utilities_app - INFO - game loaded
+2018-11-03 19:03:56,077 - Utilities_app - DEBUG - step started...
+2018-11-03 19:03:56,083 - Utilities_app - DEBUG - output completed
+2018-11-03 19:04:00,347 - Utilities_app - DEBUG - action received & checked
+2018-11-03 19:04:00,347 - Utilities_app - DEBUG - on action script performed
+2018-11-03 19:04:00,347 - Utilities_app - DEBUG - new position checked and used, step performed
+2018-11-03 19:04:00,347 - Utilities_app - DEBUG - step ended.
+2018-11-03 19:04:00,347 - Utilities_app - DEBUG - step started...
+2018-11-03 19:04:00,348 - Utilities_app - DEBUG - output completed
+2018-11-03 19:04:00,883 - Utilities_app - DEBUG - action received & checked
+2018-11-03 19:04:00,884 - Utilities_app - DEBUG - on action script performed
+2018-11-03 19:04:00,884 - Utilities_app - DEBUG - new position checked and used, step performed
+2018-11-03 19:04:00,884 - Utilities_app - DEBUG - step ended.
+2018-11-03 19:04:00,884 - Utilities_app - DEBUG - step started...
+2018-11-03 19:04:00,884 - Utilities_app - DEBUG - output completed
+2018-11-03 19:04:01,195 - Utilities_app - DEBUG - action received & checked
+2018-11-03 19:04:01,195 - Utilities_app - DEBUG - on action script performed
+2018-11-03 19:04:01,195 - Utilities_app - DEBUG - new position checked and used, step performed
+2018-11-03 19:04:01,195 - Utilities_app - DEBUG - step ended.
+2018-11-03 19:04:01,195 - Utilities_app - DEBUG - step started...
+2018-11-03 19:04:01,196 - Utilities_app - DEBUG - output completed
+2018-11-03 19:04:01,467 - Utilities_app - DEBUG - action received & checked
+2018-11-03 19:04:01,467 - Utilities_app - DEBUG - on action script performed
+2018-11-03 19:04:01,468 - Utilities_app - DEBUG - new position checked and used, step performed
+2018-11-03 19:04:01,468 - Utilities_app - DEBUG - step ended.
+2018-11-03 19:04:01,468 - Utilities_app - DEBUG - step started...
+2018-11-03 19:04:01,469 - Utilities_app - DEBUG - output completed
+2018-11-03 19:04:01,707 - Utilities_app - DEBUG - action received & checked
+2018-11-03 19:04:01,708 - Utilities_app - DEBUG - on action script performed
+2018-11-03 19:04:01,708 - Utilities_app - DEBUG - new position checked and used, step performed
+2018-11-03 19:04:01,708 - Utilities_app - DEBUG - step ended.
+2018-11-03 19:04:01,708 - Utilities_app - DEBUG - step started...
+2018-11-03 19:04:01,709 - Utilities_app - DEBUG - output completed
+2018-11-03 19:04:01,947 - Utilities_app - DEBUG - action received & checked
+2018-11-03 19:04:01,948 - Utilities_app - DEBUG - on action script performed
+2018-11-03 19:04:01,948 - Utilities_app - DEBUG - new position checked and used, step performed
+2018-11-03 19:04:01,948 - Utilities_app - DEBUG - step ended.
+2018-11-03 19:04:01,948 - Utilities_app - DEBUG - step started...
+2018-11-03 19:04:01,949 - Utilities_app - DEBUG - output completed
+2018-11-03 19:04:03,244 - Utilities_app - DEBUG - action received & checked
+2018-11-03 19:04:03,244 - Utilities_app - DEBUG - on action script performed
+2018-11-03 19:04:03,244 - Utilities_app - DEBUG - new position checked and used, step performed
+2018-11-03 19:04:03,244 - Utilities_app - DEBUG - step ended.
+2018-11-03 19:04:03,244 - Utilities_app - DEBUG - step started...
+2018-11-03 19:04:03,245 - Utilities_app - DEBUG - output completed
+2018-11-03 19:04:03,708 - Utilities_app - DEBUG - action received & checked
+2018-11-03 19:04:03,708 - Utilities_app - DEBUG - on action script performed
+2018-11-03 19:04:03,708 - Utilities_app - DEBUG - new position checked and used, step performed
+2018-11-03 19:04:03,708 - Utilities_app - DEBUG - step ended.
+2018-11-03 19:04:03,708 - Utilities_app - DEBUG - step started...
+2018-11-03 19:04:03,709 - Utilities_app - DEBUG - output completed
+2018-11-03 19:04:04,196 - Utilities_app - DEBUG - action received & checked
+2018-11-03 19:04:04,196 - Utilities_app - DEBUG - on action script performed
+2018-11-03 19:04:04,196 - Utilities_app - DEBUG - new position checked and used, step performed
+2018-11-03 19:04:04,196 - Utilities_app - INFO - game won.
+2018-11-03 19:04:04,197 - Utilities_app - DEBUG - step ended.
