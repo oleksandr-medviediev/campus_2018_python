@@ -150,3 +150,97 @@
 2018-11-03 18:53:10,297 - Utilities_app - INFO - step ended.
 2018-11-03 18:53:10,297 - Utilities_app - INFO - step started...
 2018-11-03 18:53:10,298 - Utilities_app - INFO - output completed
+2018-11-03 18:56:36,449 - Utilities_app - INFO - setting-up started...
+2018-11-03 18:56:36,450 - Utilities_app - INFO - map generated
+2018-11-03 18:56:36,450 - Utilities_app - INFO - start position generated
+2018-11-03 18:56:36,450 - Utilities_app - INFO - setting-up ended.
+2018-11-03 18:56:41,640 - Utilities_app - INFO - step started...
+2018-11-03 18:56:41,640 - Utilities_app - INFO - output completed
+2018-11-03 18:57:25,057 - Utilities_app - INFO - setting-up started...
+2018-11-03 18:57:25,057 - Utilities_app - INFO - map generated
+2018-11-03 18:57:25,058 - Utilities_app - INFO - start position generated
+2018-11-03 18:57:25,058 - Utilities_app - INFO - setting-up ended.
+2018-11-03 18:57:27,183 - Utilities_app - INFO - game loaded
+2018-11-03 18:57:27,184 - Utilities_app - INFO - step started...
+2018-11-03 18:57:27,184 - Utilities_app - INFO - output completed
+2018-11-03 18:57:30,471 - Utilities_app - INFO - action received & checked
+2018-11-03 18:57:30,471 - Utilities_app - INFO - on action script performed
+2018-11-03 18:57:30,471 - Utilities_app - INFO - new position checked and used, step performed
+2018-11-03 18:57:30,471 - Utilities_app - INFO - step ended.
+2018-11-03 18:57:30,472 - Utilities_app - INFO - step started...
+2018-11-03 18:57:30,472 - Utilities_app - INFO - output completed
+2018-11-03 18:57:30,679 - Utilities_app - INFO - action received & checked
+2018-11-03 18:57:30,679 - Utilities_app - INFO - on action script performed
+2018-11-03 18:57:30,679 - Utilities_app - INFO - new position checked and used, step performed
+2018-11-03 18:57:30,679 - Utilities_app - INFO - step ended.
+2018-11-03 18:57:30,679 - Utilities_app - INFO - step started...
+2018-11-03 18:57:30,680 - Utilities_app - INFO - output completed
+2018-11-03 18:57:30,887 - Utilities_app - INFO - action received & checked
+2018-11-03 18:57:30,888 - Utilities_app - INFO - on action script performed
+2018-11-03 18:57:30,888 - Utilities_app - INFO - new position checked and used, step performed
+2018-11-03 18:57:30,888 - Utilities_app - INFO - step ended.
+2018-11-03 18:57:30,888 - Utilities_app - INFO - step started...
+2018-11-03 18:57:30,889 - Utilities_app - INFO - output completed
+2018-11-03 18:57:31,055 - Utilities_app - INFO - action received & checked
+2018-11-03 18:57:31,056 - Utilities_app - INFO - on action script performed
+2018-11-03 18:57:31,056 - Utilities_app - INFO - new position checked and used, step performed
+2018-11-03 18:57:31,056 - Utilities_app - INFO - game lost.
+2018-11-03 18:57:31,056 - Utilities_app - INFO - step ended.
+2018-11-03 18:57:31,238 - Utilities_app - INFO - setting-up started...
+2018-11-03 18:57:31,239 - Utilities_app - INFO - map generated
+2018-11-03 18:57:31,239 - Utilities_app - INFO - start position generated
+2018-11-03 18:57:31,239 - Utilities_app - INFO - setting-up ended.
+2018-11-03 18:57:31,455 - Utilities_app - INFO - step started...
+2018-11-03 18:57:31,456 - Utilities_app - INFO - output completed
+2018-11-03 18:57:35,350 - Utilities_app - INFO - action received & checked
+2018-11-03 18:57:35,358 - Utilities_app - INFO - game saved
+2018-11-03 18:57:35,358 - Utilities_app - INFO - on action script performed
+2018-11-03 18:57:35,358 - Utilities_app - INFO - new position checked and used, step performed
+2018-11-03 18:57:35,358 - Utilities_app - INFO - step ended.
+2018-11-03 18:57:35,358 - Utilities_app - INFO - step started...
+2018-11-03 18:57:35,360 - Utilities_app - INFO - output completed
+2018-11-03 18:57:39,125 - Utilities_app - INFO - setting-up started...
+2018-11-03 18:57:39,126 - Utilities_app - INFO - map generated
+2018-11-03 18:57:39,126 - Utilities_app - INFO - start position generated
+2018-11-03 18:57:39,126 - Utilities_app - INFO - setting-up ended.
+2018-11-03 18:57:41,031 - Utilities_app - INFO - game loaded
+2018-11-03 18:57:41,032 - Utilities_app - INFO - step started...
+2018-11-03 18:57:41,039 - Utilities_app - INFO - output completed
+2018-11-03 18:58:02,518 - Utilities_app - INFO - setting-up started...
+2018-11-03 18:58:02,518 - Utilities_app - INFO - map generated
+2018-11-03 18:58:02,518 - Utilities_app - INFO - start position generated
+2018-11-03 18:58:02,518 - Utilities_app - INFO - setting-up ended.
+2018-11-03 18:58:04,359 - Utilities_app - INFO - step started...
+2018-11-03 18:58:04,359 - Utilities_app - INFO - output completed
+2018-11-03 18:58:05,654 - Utilities_app - INFO - action received & checked
+2018-11-03 18:58:05,654 - Utilities_app - INFO - on action script performed
+2018-11-03 18:58:05,655 - Utilities_app - INFO - new position checked and used, step performed
+2018-11-03 18:58:05,655 - Utilities_app - INFO - step ended.
+2018-11-03 18:58:05,655 - Utilities_app - INFO - step started...
+2018-11-03 18:58:05,655 - Utilities_app - INFO - output completed
+2018-11-03 18:58:05,886 - Utilities_app - INFO - action received & checked
+2018-11-03 18:58:05,886 - Utilities_app - INFO - on action script performed
+2018-11-03 18:58:05,887 - Utilities_app - INFO - new position checked and used, step performed
+2018-11-03 18:58:05,887 - Utilities_app - INFO - step ended.
+2018-11-03 18:58:05,887 - Utilities_app - INFO - step started...
+2018-11-03 18:58:05,887 - Utilities_app - INFO - output completed
+2018-11-03 18:58:07,054 - Utilities_app - INFO - action received & checked
+2018-11-03 18:58:07,055 - Utilities_app - INFO - on action script performed
+2018-11-03 18:58:07,055 - Utilities_app - INFO - new position checked and used, step performed
+2018-11-03 18:58:07,056 - Utilities_app - INFO - game won.
+2018-11-03 18:58:07,056 - Utilities_app - INFO - step ended.
+2018-11-03 18:58:11,718 - Utilities_app - INFO - setting-up started...
+2018-11-03 18:58:11,719 - Utilities_app - INFO - map generated
+2018-11-03 18:58:11,719 - Utilities_app - INFO - start position generated
+2018-11-03 18:58:11,719 - Utilities_app - INFO - setting-up ended.
+2018-11-03 18:58:49,013 - Utilities_app - INFO - setting-up started...
+2018-11-03 18:58:49,014 - Utilities_app - INFO - map generated
+2018-11-03 18:58:49,014 - Utilities_app - INFO - start position generated
+2018-11-03 18:58:49,014 - Utilities_app - INFO - setting-up ended.
+2018-11-03 18:58:51,075 - Utilities_app - INFO - step started...
+2018-11-03 18:58:51,076 - Utilities_app - INFO - output completed
+2018-11-03 18:58:53,304 - Utilities_app - INFO - action received & checked
+2018-11-03 18:58:53,305 - Utilities_app - INFO - on action script performed
+2018-11-03 18:58:53,305 - Utilities_app - INFO - new position checked and used, step performed
+2018-11-03 18:58:53,305 - Utilities_app - INFO - game lost.
+2018-11-03 18:58:53,305 - Utilities_app - INFO - step ended.
