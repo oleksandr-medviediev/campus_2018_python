@@ -1,23 +1,9 @@
 import random
-import logging
+from logging_utility import *
 
 import map_generator
 from map_generator import *
 import savegame_utility
-
-# Logger, handlers
-logger = logging.getLogger('Utilities_app')
-logger.setLevel(logging.DEBUG)
-
-logging_fh = logging.FileHandler('game.log')
-logging_fh.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logging_fh.setFormatter(formatter)
-logger.addHandler(logging_fh)
-
-logging_ch = logging.StreamHandler()
-logging_ch.setLevel(logging.INFO)
-logger.addHandler(logging_ch)
 
 # Game info
 position = [-1, -1]

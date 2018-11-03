@@ -1,4 +1,5 @@
 import random
+from logging_utility import *
 
 player_repr = "P"
 fog_repr = "-"
@@ -21,8 +22,10 @@ def shuffle_map(game_map):
     Args:
         game_map (list[str]): game map
     """
+    logger.debug("map shuffle started")
     for i in game_map:
         random.shuffle(i)
+    logger.debug("map shuffle ended")
 
 
 def format_map(game_map, x):
@@ -53,15 +56,18 @@ def generate_prob_map(x):
     Returns:
         [[str...]...] - game map.
     """
+    logger.debug("probabilistic map generation started")
     if not isinstance(x, int):
+        logger.debug("probabilistic map gen failed, argument inconsistency")
         return None
-
+        
     probabilities = [i[2]*100 for i in map_elements]
     cells = [i[1] for i in map_elements]
     game_map = random.choices(cells, weights=probabilities, k=x * x)
 
     game_map = format_map(game_map, x)
     shuffle_map(game_map)
+    logger.debug("probabilistic map gen succeeded")
     return game_map
 
 
@@ -74,7 +80,9 @@ def generate_map(x):
     Returns:
         [[str...]...] - game map.
     """
+    logger.debug("map generation started")
     if not isinstance(x, int):
+        logger.debug("map gen failed, arguments incosistency")
         return None
 
     cells_amounts = []
@@ -91,6 +99,7 @@ def generate_map(x):
 
     game_map = format_map(game_map, x)
     shuffle_map(game_map)
+    logger.debug("map gen succeeded")
     return game_map
 
 
@@ -104,7 +113,9 @@ def generate_random_map(probabilistic=False):
     Returns:
         [[str...]...] - game map.
     """
+    logger.debug("map generation started")
     size = int(random.uniform(10, 20))
+    logger.debug("random size generated")
     if probabilistic:
         return generate_prob_map(size)
     return generate_map(size)
