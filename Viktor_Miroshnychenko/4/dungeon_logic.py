@@ -85,7 +85,7 @@ def make_move_if_possible(position, size, command):
     :param command: command to move right or left, higher or lower
     :type command: str
 
-    :return: True if possible , False otherwise and update position
+    :return: True if possible , False otherwise
     :rtype: bool
     """
 
@@ -118,7 +118,7 @@ def make_move_if_possible(position, size, command):
         else:
             position[0] += 1
 
-    return  [ret_val, position]
+    return  ret_val
     
 
 def make_move(dun_map, position, size, command):
@@ -139,12 +139,14 @@ def make_move(dun_map, position, size, command):
     :rtype: element of GAME_STATE
     """
 
+    print(position)
     dun_map[position[0]][position[1]] = '0'
     move_ret_val = make_move_if_possible(position, size, command)
     if move_ret_val == False:
+
+        print('Move is not possible')
         return 'ingame'
 
-    print(position)
     cage_state = check_pos(dun_map, position)
     game_state = 'ingame'
 
