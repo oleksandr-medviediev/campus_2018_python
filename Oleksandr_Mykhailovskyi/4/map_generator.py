@@ -15,7 +15,7 @@ map_elements = [
 
 def shuffle_map(game_map):
     """
-    Because ranom.shuffle with list worked somewhat strangely - 
+    Because random.shuffle with list worked somewhat strangely - 
     need to shuffle every sub-list independently.
 
     Args:
