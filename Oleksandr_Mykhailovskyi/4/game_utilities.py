@@ -162,18 +162,19 @@ def get_warning(position, game_map):
         str - warning if something is present in player's view.
         str - empty otherwise.
     """
+    print(position)
     mwarning = ""
-    if game_map[position[0]][position[0] + view_depth[0]] == map_cells_repr[1] or \
-        game_map[position[0]][position[0] - view_depth[0]] == map_cells_repr[1] or \
-        game_map[position[0] + view_depth[0]][position[0]] == map_cells_repr[1] or \
-            game_map[position[0] - view_depth[0]][position[0]] == map_cells_repr[1]:
+    if game_map[position[0]][position[1] + view_depth[1]] == map_cells_repr[1] or \
+        game_map[position[0]][position[1] - view_depth[1]] == map_cells_repr[1] or \
+        game_map[position[0] + view_depth[0]][position[1]] == map_cells_repr[1] or \
+            game_map[position[0] - view_depth[0]][position[1]] == map_cells_repr[1]:
 
         mwarning = "Achtung, you just might win!\n"
 
-    if game_map[position[0]][position[0] + view_depth[0]] == map_cells_repr[2] or \
-        game_map[position[0]][position[0] - view_depth[0]] == map_cells_repr[2] or \
-        game_map[position[0] + view_depth[0]][position[0]] == map_cells_repr[2] or \
-            game_map[position[0] - view_depth[0]][position[0]] == map_cells_repr[2]:
+    if game_map[position[0]][position[1] + view_depth[1]] == map_cells_repr[2] or \
+        game_map[position[0]][position[1] - view_depth[1]] == map_cells_repr[2] or \
+        game_map[position[0] + view_depth[0]][position[1]] == map_cells_repr[2] or \
+            game_map[position[0] - view_depth[0]][position[1]] == map_cells_repr[2]:
         mwarning += "Achtung, you can loose!\n"
 
     return mwarning
