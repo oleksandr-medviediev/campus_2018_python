@@ -1,11 +1,28 @@
 import random
 
+player_repr = "P"
+fog_repr = "-"
+unknown_repr = "?"
+map_cells_repr = [".", "!", "x"]
+
 # Contains map cells as: (String equivalent, symbol, probability)
 map_elements = [
-    ("Nothing", ".", 17 / 20),
-    ("Treasure", "!", 1 / 20),
-    ("Trap", "x", 1 / 10)
+    ("Nothing", map_cells_repr[0], 17 / 20),
+    ("Treasure", map_cells_repr[1], 1 / 20),
+    ("Trap", map_cells_repr[2], 1 / 10)
 ]
+
+
+def shuffle_map(game_map):
+    """
+    Because ranom.shuffle with list worked somewhat strangely - 
+    need to shuffle every sub-list independently.
+
+    Args:
+        game_map (list[str]): game map
+    """
+    for i in game_map:
+        random.shuffle(i)
 
 
 def format_map(game_map, x):
@@ -43,7 +60,9 @@ def generate_prob_map(x):
     cells = [i[1] for i in map_elements]
     game_map = random.choices(cells, weights=probabilities, k=x * x)
 
-    return format_map(game_map, x)
+    game_map = format_map(game_map, x)
+    shuffle_map(game_map)
+    return game_map
 
 
 def generate_map(x):
@@ -70,13 +89,14 @@ def generate_map(x):
         for j in range(0, entry):
             game_map.append(map_elements[i][1])
 
-    random.shuffle(game_map)
-    return format_map(game_map, x)
+    game_map = format_map(game_map, x)
+    shuffle_map(game_map)
+    return game_map
 
 
 def generate_random_map(probabilistic=False):
     """
-    Returns map of random size between 5 and 10.
+    Returns map of random size between 10 and 20.
 
     Args:
         probabilistic (bool): whether to generate map filled
@@ -84,7 +104,7 @@ def generate_random_map(probabilistic=False):
     Returns:
         [[str...]...] - game map.
     """
-    size = random.uniform(5, 10)
+    size = int(random.uniform(10, 20))
     if probabilistic:
         return generate_prob_map(size)
     return generate_map(size)
