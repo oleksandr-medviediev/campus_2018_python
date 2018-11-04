@@ -1,5 +1,13 @@
 
 def split_input(string):
+    """function that parses string to list of numbers
+
+    Arguments:
+        string {str} -- unformatted matrix input
+
+    Returns:
+        list -- list of numbers
+    """
 
     formatted_list = []
     no_endl_string = string.split('\n')
@@ -12,6 +20,14 @@ def split_input(string):
 
 
 def read_matrix_rows(string):
+    """function goes thru input and returns rows of matrix
+
+    Arguments:
+        string {str} -- unformatted matrix input
+
+    Returns:
+        str -- rows
+    """
 
     formatted_list = split_input(string)
 
@@ -26,6 +42,14 @@ def read_matrix_rows(string):
 
 
 def read_matrix_columns(string):
+    """unction goes thru input and returns columns of matrix
+
+    Arguments:
+        string {str} -- unformatted matrix input
+
+    Returns:
+        str -- columns
+    """
 
     formatted_list = split_input(string)
     transposed_list = list(map(list, zip(*formatted_list)))
