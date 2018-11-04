@@ -30,7 +30,7 @@ def decode_string(encoded_string):
 
     for index in range(1, shorten_rows_number):
 
-        encoded_string.insert(-square_side*index,' ')
+        encoded_string.insert(-square_side * index,' ')
 
     string_tokens = [''.join(encoded_string[index: square_side ** 2: square_side]) for index in range(0, square_side)]
     decoded_string  = ''.join(string_tokens)
