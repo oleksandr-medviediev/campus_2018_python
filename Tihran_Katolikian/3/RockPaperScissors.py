@@ -125,4 +125,4 @@ while game_should_continue:
     else:
         print(f'Winner: {players[0]}')
     should_continue = input('Play again? \'y\' means yes, any other key means no:')
-    game_should_continue = should_continue is 'y';
+    game_should_continue = should_continue is 'y'
