@@ -1,5 +1,4 @@
 import random
-from math import sqrt
 
 
 GROUND_SYMBOL = 'O'
@@ -7,8 +6,8 @@ TRAP_SYMBOL = 'X'
 PLAYER_SYMBOL = 'T'
 TREASURE_SYMBOL = '='
 
-TRAP_COUNT = 5
-TREASURE_COUNT = 2
+TRAP_MODIFIER = 10
+TREASURE_MODIFIER = 20
 
 
 def create_map(map_size):
@@ -20,12 +19,15 @@ def create_map(map_size):
     :returns: created map with traps and treasures.
     :rtype: list of strings.
     """
-
-    ground_count = (map_size * map_size) - TRAP_COUNT - TREASURE_COUNT
+    
+    trap_count = (map_size * map_size) // TRAP_MODIFIER
+    treasure_count = (map_size * map_size) // TREASURE_MODIFIER
+    ground_count = (map_size * map_size) - trap_count - treasure_count - 1
 
     str_map = GROUND_SYMBOL * ground_count
-    str_map += TRAP_SYMBOL * TRAP_COUNT
-    str_map += TREASURE_SYMBOL * TREASURE_COUNT
+    str_map += TRAP_SYMBOL * trap_count
+    str_map += TREASURE_SYMBOL * treasure_count
+    str_map += PLAYER_SYMBOL
 
     str_map = list(str_map)
     random.shuffle(str_map)
@@ -37,6 +39,6 @@ def create_map(map_size):
 
 
 if __name__ == "__main__":
-    my_map = create_map(5)
+    my_map = create_map(10)
     for i in range(len(my_map)):
-        print("".join(my_map[i]))
+        print((my_map[i]))

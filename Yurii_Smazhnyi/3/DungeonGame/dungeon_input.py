@@ -1,17 +1,18 @@
-COMMANDS_TYPES = ("left", "right", "up", "down")
+COMMANDS_TYPES = ("left", "right", "down", "up", "save", "load")
+
 
 def get_direction():
+    """
+    Get direction from player.
+
+    :returns: one of valid direction from COMMANDS_TYPES.
+    :rtype: str.
+    """
 
     while True:
 
-        direction = input("input direction:")
+        direction = input("input command:")
 
         if direction in COMMANDS_TYPES:
             
             return direction
-
-
-if __name__ == "__main__":
-    my_map = create_map(5)
-    for i in range(len(my_map)):
-        print("".join(my_map[i]))
