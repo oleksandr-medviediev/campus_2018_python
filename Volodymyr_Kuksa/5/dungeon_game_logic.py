@@ -1,5 +1,6 @@
 from random import randint
 from dungeon_game_maps import GAME_CHARACTERS
+from dungeon_game_serialization import SAVE_COMMAND, serialize
 
 AVAILABLE_MOVES = {'up': (0, -1),
                    'down': (0, 1),
@@ -11,16 +12,16 @@ VECTORS_TO_ADJACENT_TILES = tuple(AVAILABLE_MOVES.values())
 MOVE_NAMES = tuple(AVAILABLE_MOVES.keys())
 
 
-def query_player_move():
+def query_player_input():
     """
-    Query player for next move and return the name of entered move.
+    Query player for next command and return the name of entered command.
 
     :return: name of requested move.
     :rtype: str.
     """
-    move = input(f'\nWhere to go next? {MOVE_NAMES}: ').lower()
+    move = input(f'\nWhere to go next? {MOVE_NAMES}, {SAVE_COMMAND}: ').lower()
 
-    while not MOVE_NAMES.count(move):
+    while not MOVE_NAMES.count(move) and move != SAVE_COMMAND:
         move = input('Wrong! Try again: ').lower()
 
     return move
@@ -209,8 +210,12 @@ def run_game(game_map):
 
         update_game_state(game_map, player_x, player_y)
 
-        move = query_player_move()
-        player_x, player_y = execute_player_move(map_size, player_x, player_y, move)
+        player_input = query_player_input()
+
+        if player_input == SAVE_COMMAND:
+            serialize(game_map, player_x, player_y)
+        else:
+            player_x, player_y = execute_player_move(map_size, player_x, player_y, player_input)
 
         is_game_running = check_end_game_condition(game_map, player_x, player_y)
 
