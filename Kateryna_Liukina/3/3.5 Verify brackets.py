@@ -16,6 +16,8 @@ def verify_brackets(string):
         if ch in brackets_opening:
             bracket_stack.append(ch)
         elif ch in brackets_closing:
+            if len(bracket_stack) == 0:
+                return False
             if ch == brackets_dict[bracket_stack[-1]]:
                 bracket_stack.pop(-1)
             else:
