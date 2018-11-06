@@ -1,9 +1,15 @@
 import level
 import dungeon_game
+import dungeon_game_logger
 import os
 
 
 def choose_option():
+    """
+    choose option from stdin
+    :return: selected option
+    :rtype: int
+    """
 
     while True:
 
@@ -11,7 +17,7 @@ def choose_option():
         if option.isnumeric() and (int(option) == 1 or int(option) == 2):
             break
 
-        print('Wrong input! It should be `1` or `2`')
+        dungeon_game_logger.logger.warning('Wrong input! It should be `1` or `2`')
 
     return int(option)
 
@@ -28,7 +34,7 @@ if option == 1:
             size = int(size_str)
             break
 
-        print('Wrong input! It should be integer >= 5 number')
+        dungeon_game_logger.logger.warning('Wrong input! It should be integer >= 5 number')
 
     lvl = level.generate_level(size)
     lvl_is_valid = level.validate(lvl)

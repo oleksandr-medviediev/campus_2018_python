@@ -82,6 +82,12 @@ def print_level(lvl, player_x, player_y):
 
 
 def save(lvl, player_x, player_y):
+    """
+    saves level in file
+        :param str lvl: string level representation
+        :param int player_x: current x-position of player
+        :param int player_y: current y-position of player
+    """
 
     dump_lvl = list(lvl)
     dump_lvl[player_x + player_y * size(lvl)] = 'p'
@@ -92,6 +98,11 @@ def save(lvl, player_x, player_y):
 
 
 def load():
+    """
+    loads level from file
+    :return: loaded level
+    :rtype: tuple
+    """
 
     with open('save.pickable', 'rb') as handle:
         lvl = pickle.load(handle)

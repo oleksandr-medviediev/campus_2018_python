@@ -1,6 +1,7 @@
 import math
 import random
 import level
+import dungeon_game_logger
 
 MOVES = {
     'left': (-1, 0),
@@ -20,6 +21,7 @@ def offer_moves(lvl, player_x, player_y):
         :rtype: tuple
     """
 
+    dungeon_game_logger.logger.debug('offering moves to player')
     lvl_size = level.size(lvl)
 
     up_cell = level.get_cell(lvl, player_x, player_y - 1)
@@ -30,15 +32,15 @@ def offer_moves(lvl, player_x, player_y):
     message = f'# - wall (dead end)\n$ - treasure\n! - trap\n_ - empty space\np - player\n'
     env_message = '{:^3}\n{}p{}\n{:^3}\n'.format(up_cell, left_cell, right_cell, down_cell)
 
-    print(message)
+    dungeon_game_logger.logger.info(message)
 
     if up_cell == '!' or down_cell == '!' or left_cell == '!' or right_cell == '!':
-        print('Trap somewhere!')
+        dungeon_game_logger.logger.info('Trap somewhere!')
 
     if up_cell == '$' or down_cell == '$' or left_cell == '$' or right_cell == '$':
-        print('Treasure somewhere!')
+        dungeon_game_logger.logger.info('Treasure somewhere!')
 
-    print(env_message)
+    dungeon_game_logger.logger.info(env_message)
 
     while True:
 
@@ -46,9 +48,9 @@ def offer_moves(lvl, player_x, player_y):
 
         if move == 'save':
             level.save(lvl, player_x, player_y)
-            print('Game saved')
+            dungeon_game_logger.logger.info('Game saved')
         elif move not in MOVES:
-            print('Wrong input! It should be one of this: `left`, `right`, `up`, `down`')
+            dungeon_game_logger.logger.info('Wrong input! It should be one of this: `left`, `right`, `up`, `down`')
         else:
             break
 
@@ -72,7 +74,7 @@ def loop(lvl, player_x, player_y):
 
         if destination_cell == '#':
 
-            print('Can\'t move in this way\n')
+            dungeon_game_logger.logger.info('Can\'t move in this way\n')
             continue
 
         player_x += dx
@@ -80,11 +82,11 @@ def loop(lvl, player_x, player_y):
 
         if destination_cell == '!':
 
-            print('You fell into trap, GAME OVER =<')
+            dungeon_game_logger.logger.info('You fell into trap, GAME OVER =<')
             break
         elif destination_cell == '$':
 
-            print('You found a treasure, VICTORY!')
+            dungeon_game_logger.logger.info('You found a treasure, VICTORY!')
             break
 
     return player_x, player_y
