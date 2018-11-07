@@ -1,3 +1,4 @@
+import logging
 from random import randint
 from random import shuffle
 
@@ -62,36 +63,43 @@ def generate_map(size):
     :rtype: list.
     """
     characters = generate_flat_map(size * size)
+    logging.debug(f'Generated flat map: {characters}')
     game_map = split_rows(size, characters)
+    logging.debug(f'Generated map:\n{game_map_to_string(game_map)}')
 
     return game_map
 
 
-def print_map(game_map):
+def game_map_to_string(game_map):
     """
-    Print game_map with borders and legend.
+    Return visual representation of game map with border and legend.
 
     :param game_map: map to print.
     :type game_map: 2d list of one-character strings.
 
-    :return: None
+    :return: visual representation of game map with border and legend.
+    :rtype: str.
     """
     horizontal_border = ''.join(['+', '-' * len(game_map[0]), '+'])
 
-    print(horizontal_border)
+    result = [horizontal_border]
 
     for row in game_map:
-        print(''.join(['|', ''.join(row), '|']))
+        result.append(''.join(['|', ''.join(row), '|']))
 
-    print(horizontal_border)
+    result.append(horizontal_border)
 
-    print(f"{GAME_CHARACTERS['Treasure']} - treasures.")
-    print(f"{GAME_CHARACTERS['Trap']} - traps.")
-    print(f"{GAME_CHARACTERS['Spawn']} - spawn point.")
-    print(f"{GAME_CHARACTERS['Visited']} - visited tiles.")
+    result.append(f"{GAME_CHARACTERS['Treasure']} - treasures.")
+    result.append(f"{GAME_CHARACTERS['Trap']} - traps.")
+    result.append(f"{GAME_CHARACTERS['Spawn']} - spawn point.")
+    result.append(f"{GAME_CHARACTERS['Visited']} - visited tiles.")
+
+    result = '\n'.join(result)
+
+    return result
 
 
 if __name__ == '__main__':
 
     new_map = generate_map(randint(5, 10))
-    print_map(new_map)
+    print(game_map_to_string(new_map))

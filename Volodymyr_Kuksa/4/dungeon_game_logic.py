@@ -1,5 +1,6 @@
-from random import randint
-from dungeon_game_maps import GAME_CHARACTERS
+import logging
+from dungeon_game_maps import GAME_CHARACTERS, game_map_to_string
+from dungeon_game_serialization import SAVE_COMMAND, serialize
 
 AVAILABLE_MOVES = {'up': (0, -1),
                    'down': (0, 1),
@@ -11,17 +12,19 @@ VECTORS_TO_ADJACENT_TILES = tuple(AVAILABLE_MOVES.values())
 MOVE_NAMES = tuple(AVAILABLE_MOVES.keys())
 
 
-def query_player_move():
+def query_player_input():
     """
-    Query player for next move and return the name of entered move.
+    Query player for next command and return the name of entered command.
 
     :return: name of requested move.
     :rtype: str.
     """
-    move = input(f'\nWhere to go next? {MOVE_NAMES}: ').lower()
+    move = input(f'\nWhere to go next? {MOVE_NAMES}, {SAVE_COMMAND}: ').lower()
 
-    while not MOVE_NAMES.count(move):
+    while not MOVE_NAMES.count(move) and move != SAVE_COMMAND:
         move = input('Wrong! Try again: ').lower()
+
+    logging.debug(f'Player input for iteration: {move}')
 
     return move
 
@@ -51,7 +54,7 @@ def execute_player_move(map_size, player_x, player_y, move_name):
     if 0 <= new_x < map_size and 0 <= new_y < map_size:
         player_x, player_y = new_x, new_y
     else:
-        print('That path is blocked!')
+        logging.info('That path is blocked!')
 
     return player_x, player_y
 
@@ -76,11 +79,13 @@ def check_end_game_condition(game_map, player_x, player_y):
     player_tile = game_map[player_y][player_x]
 
     if player_tile == GAME_CHARACTERS['Treasure']:
-        print('You Won!')
+        logging.info('You Won!')
     elif player_tile == GAME_CHARACTERS['Trap']:
-        print('You Lost(')
+        logging.info('You Lost(')
     else:
         is_game_running = True
+
+    logging.debug(f'is_game_running = {is_game_running}')
 
     return is_game_running
 
@@ -98,17 +103,17 @@ def output_game_state(treasures, traps):
     :return: None.
     """
     if treasures == 1:
-        print('There is a treasure nearby!')
+        logging.info('There is a treasure nearby!')
     elif treasures:
-        print('There are multiple treasures nearby!')
+        logging.info('There are multiple treasures nearby!')
 
     if traps == 1:
-        print('There is a trap nearby!')
+        logging.info('There is a trap nearby!')
     elif traps:
-        print('There are multiple traps nearby!')
+        logging.info('There are multiple traps nearby!')
 
     if not treasures and not traps:
-        print('There is nothing nearby.')
+        logging.info('There is nothing nearby.')
 
 
 def update_game_state(game_map, player_x, player_y):
@@ -145,27 +150,10 @@ def update_game_state(game_map, player_x, player_y):
         elif adjacent_tile == GAME_CHARACTERS['Trap']:
             traps += 1
 
+    logging.debug(f'Number of treasures on adjacent tiles: {treasures}')
+    logging.debug(f'Number of traps on adjacent tiles: {traps}')
+
     output_game_state(treasures, traps)
-
-
-def spawn_player(game_map):
-    """
-    Return coordinates of a random empty tile on game_map.
-
-    :param game_map: generated game map.
-    :type game_map: square 2d list of single-character strings.
-
-    :return: x, y.
-    :rtype: int, int.
-    """
-    map_size = len(game_map)
-
-    x, y = randint(0, map_size - 1), randint(0, map_size - 1)
-
-    while game_map[y][x] != GAME_CHARACTERS['Empty']:
-        x, y = randint(0, map_size - 1), randint(0, map_size - 1)
-
-    return x, y
 
 
 def mark_as_visited(game_map, x, y):
@@ -190,17 +178,22 @@ def mark_as_visited(game_map, x, y):
     return game_map
 
 
-def run_game(game_map):
+def run_game(game_map, player_x, player_y):
     """
     Execute game logic.
 
     :param game_map: generated game map.
     :type game_map: square 2d list of single-character strings.
 
+    :param player_x: x coordinate of the player.
+    :type player_x: int.
+
+    :param player_y: y coordinate of the player.
+    :type player_y: int.
+
     :return: None.
     """
     map_size = len(game_map)
-    player_x, player_y = spawn_player(game_map)
     is_game_running = True
 
     game_map[player_y][player_x] = GAME_CHARACTERS['Spawn']
@@ -209,9 +202,15 @@ def run_game(game_map):
 
         update_game_state(game_map, player_x, player_y)
 
-        move = query_player_move()
-        player_x, player_y = execute_player_move(map_size, player_x, player_y, move)
+        player_input = query_player_input()
+
+        if player_input == SAVE_COMMAND:
+            serialize(game_map, player_x, player_y)
+        else:
+            player_x, player_y = execute_player_move(map_size, player_x, player_y, player_input)
 
         is_game_running = check_end_game_condition(game_map, player_x, player_y)
 
         game_map = mark_as_visited(game_map, player_x, player_y)
+
+        logging.debug(f'Current map state:\n{game_map_to_string(game_map)}\nPlayer pos: ({player_x};{player_y})')
