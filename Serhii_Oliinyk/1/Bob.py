@@ -1,25 +1,19 @@
-#-------------------------------------------------------------------------------
-# Name:        module1
-# Purpose:
-#
-# Author:      soliinyk
-#
-# Created:     23/10/2018
-# Copyright:   (c) soliinyk 2018
-# Licence:     <your licence>
-#-------------------------------------------------------------------------------
-
 def main(string):
-    if(string == ""):
-        return "Fine. Be that way!"
-    elif(string.isupper() and (string[len(string) - 1] == "?")):
-        return "Calm down, I know what I'm doing!"
-    elif(string.isupper()):
-        return "Whoa, chill out!"
-    elif(string[len(string) - 1] == "?"):
-        return "Sure."
+    result = ""
+
+    if string == "":
+        result = "Fine. Be that way!"
+    elif string.isupper() and (string[len(string) - 1] == "?"):
+        result = "Calm down, I know what I'm doing!"
+    elif string.isupper():
+        result = "Whoa, chill out!"
+    elif string[len(string) - 1] == "?":
+        result = "Sure."
     else:
-        return "Whatever."
+        result = "Whatever."
+
+    return result
+
 
 if __name__ == '__main__':
     result = main("How are you")

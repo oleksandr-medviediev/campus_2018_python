@@ -1,19 +1,13 @@
-#-------------------------------------------------------------------------------
-# Name:        module1
-# Purpose:
-#
-# Author:      soliinyk
-#
-# Created:     23/10/2018
-# Copyright:   (c) soliinyk 2018
-# Licence:     <your licence>
-#-------------------------------------------------------------------------------
-
 def main(string):
-    if((len(string) != 4) and (len(string) != 6)):
-        return False
+    result = True
 
-    return string.isdigit()
+    if (len(string) != 4) and (len(string) != 6):
+        result = False
+
+    result = string.isdigit()
+
+    return result
+
 
 if __name__ == '__main__':
     result = main("1234")

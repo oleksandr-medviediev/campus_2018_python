@@ -1,14 +1,3 @@
-#-------------------------------------------------------------------------------
-# Name:        module1
-# Purpose:
-#
-# Author:      soliinyk
-#
-# Created:     23/10/2018
-# Copyright:   (c) soliinyk 2018
-# Licence:     <your licence>
-#-------------------------------------------------------------------------------
-
 def main(key, string):
     alphabet = "abcdefghijklmnopqrstuvwxyz"
     list = []
@@ -26,6 +15,7 @@ def main(key, string):
     string = "".join(list)
 
     return string
+
 
 if __name__ == '__main__':
     result = main(1, "abc")
