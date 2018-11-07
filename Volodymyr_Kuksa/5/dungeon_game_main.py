@@ -1,7 +1,7 @@
 import logging
 import logging.config
 from random import randint
-from dungeon_game_maps import GAME_CHARACTERS, generate_map, print_map
+from dungeon_game_maps import GAME_CHARACTERS, generate_map, game_map_to_string
 from dungeon_game_serialization import deserialize
 from dungeon_game_logic import run_game
 
@@ -23,6 +23,8 @@ def query_map_size():
     while not size.isdigit() or not 5 <= int(size) <= 20:
         size = input('Wrong! Try again: ')
 
+    logging.debug(f'Map size requested: {size}')
+
     return int(size)
 
 
@@ -37,6 +39,8 @@ def query_game_load():
 
     while not START_OPTIONS.count(player_input):
         player_input = input('Wrong! Try again: ')
+
+    logging.debug(f'Game start option selected: {player_input}')
 
     return player_input
 
@@ -69,28 +73,30 @@ def main():
     """
     logging.info('Welcome to the Dungeon Game!')
     if query_game_load() == '2':
+
+        logging.debug('Enter deserialize()')
         dungeon_game_map, player_x, player_y = deserialize()
+        logging.debug('Quit deserialize()')
 
     else:
 
         size_of_map = query_map_size()
+        logging.debug(f'Calling generate_map({size_of_map})')
         dungeon_game_map = generate_map(size_of_map)
-        logging.debug(f'game_map generated with size of {size_of_map}')
         player_x, player_y = spawn_player(dungeon_game_map)
         logging.debug(f'Player spawned on ({player_x};{player_y})')
 
     run_game(dungeon_game_map, player_x, player_y)
-    print_map(dungeon_game_map)
+    logging.info(game_map_to_string(dungeon_game_map))
 
 
 if __name__ == '__main__':
 
-    logging.debug('Entry point')
     try:
 
-        logging.debug('Before main')
+        logging.debug(f'Enter main()')
         main()
-        logging.debug('After main')
+        logging.debug(f'Quit main()')
 
     except OSError as e:
 
@@ -98,5 +104,3 @@ if __name__ == '__main__':
             logging.info('Save file not found')
         else:
             logging.error(e.strerror)
-
-    logging.debug('Exit')

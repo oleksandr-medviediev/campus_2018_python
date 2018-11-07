@@ -22,4 +22,4 @@ if __name__ == '__main__':
     map_size = query_map_size()
     game_map = dungeon_game_maps.generate_map(map_size)
     dungeon_game_logic.run_game(game_map)
-    dungeon_game_maps.print_map(game_map)
+    dungeon_game_maps.game_map_to_string(game_map)

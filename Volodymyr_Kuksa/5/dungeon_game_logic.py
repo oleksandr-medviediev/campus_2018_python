@@ -1,5 +1,5 @@
 import logging
-from dungeon_game_maps import GAME_CHARACTERS
+from dungeon_game_maps import GAME_CHARACTERS, game_map_to_string
 from dungeon_game_serialization import SAVE_COMMAND, serialize
 
 AVAILABLE_MOVES = {'up': (0, -1),
@@ -23,6 +23,8 @@ def query_player_input():
 
     while not MOVE_NAMES.count(move) and move != SAVE_COMMAND:
         move = input('Wrong! Try again: ').lower()
+
+    logging.debug(f'Player input for iteration: {move}')
 
     return move
 
@@ -52,7 +54,7 @@ def execute_player_move(map_size, player_x, player_y, move_name):
     if 0 <= new_x < map_size and 0 <= new_y < map_size:
         player_x, player_y = new_x, new_y
     else:
-        print('That path is blocked!')
+        logging.info('That path is blocked!')
 
     return player_x, player_y
 
@@ -77,11 +79,13 @@ def check_end_game_condition(game_map, player_x, player_y):
     player_tile = game_map[player_y][player_x]
 
     if player_tile == GAME_CHARACTERS['Treasure']:
-        print('You Won!')
+        logging.info('You Won!')
     elif player_tile == GAME_CHARACTERS['Trap']:
-        print('You Lost(')
+        logging.info('You Lost(')
     else:
         is_game_running = True
+
+    logging.debug(f'is_game_running = {is_game_running}')
 
     return is_game_running
 
@@ -99,17 +103,17 @@ def output_game_state(treasures, traps):
     :return: None.
     """
     if treasures == 1:
-        print('There is a treasure nearby!')
+        logging.info('There is a treasure nearby!')
     elif treasures:
-        print('There are multiple treasures nearby!')
+        logging.info('There are multiple treasures nearby!')
 
     if traps == 1:
-        print('There is a trap nearby!')
+        logging.info('There is a trap nearby!')
     elif traps:
-        print('There are multiple traps nearby!')
+        logging.info('There are multiple traps nearby!')
 
     if not treasures and not traps:
-        print('There is nothing nearby.')
+        logging.info('There is nothing nearby.')
 
 
 def update_game_state(game_map, player_x, player_y):
@@ -145,6 +149,9 @@ def update_game_state(game_map, player_x, player_y):
             treasures += 1
         elif adjacent_tile == GAME_CHARACTERS['Trap']:
             traps += 1
+
+    logging.debug(f'Number of treasures on adjacent tiles: {treasures}')
+    logging.debug(f'Number of traps on adjacent tiles: {traps}')
 
     output_game_state(treasures, traps)
 
@@ -205,3 +212,5 @@ def run_game(game_map, player_x, player_y):
         is_game_running = check_end_game_condition(game_map, player_x, player_y)
 
         game_map = mark_as_visited(game_map, player_x, player_y)
+
+        logging.debug(f'Current map state:\n{game_map_to_string(game_map)}\nPlayer pos: ({player_x};{player_y})')
