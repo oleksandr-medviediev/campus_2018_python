@@ -1,4 +1,4 @@
-import json
+import pickle
 
 
 def save(game_map, position, filename="savegame.json"):
@@ -11,8 +11,9 @@ def save(game_map, position, filename="savegame.json"):
         filename (str): optional filename
     """
     game_map.append(position)
-    with open(filename, "w") as fout:
-        json.dump(game_map, fout)
+    with open(filename, "wb") as fout:
+        pickle.dump(game_map, fout, pickle.HIGHEST_PROTOCOL)
+    game_map.pop()
 
 
 def load(filename="savegame.json"):
@@ -24,8 +25,8 @@ def load(filename="savegame.json"):
     Returns:
         [[str...]...] - game_map, [int, int] - position
     """
-    with open(filename, "r") as fin:
-        game_map = json.load(fin)
+    with open(filename, "rb") as fin:
+        game_map = pickle.load(fin)
         position = game_map.pop()
         return game_map, position
 

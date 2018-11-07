@@ -159,7 +159,6 @@ def on_action(action, game_map):
     if action == actions_list[4]:
         savegame_utility.save(game_map, position)
         logger.info("game saved")
-        print("game saved")
     else:
         position = move_player(action, position, game_map)
 
@@ -242,6 +241,7 @@ def game_update_position(position, game_map):
     if cell == map_cells_repr[1]:
         return 1
     elif cell == map_cells_repr[2]:
+        print(map_cells_repr[2])
         return -1
     return 0
 
