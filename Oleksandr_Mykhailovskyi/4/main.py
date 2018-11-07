@@ -3,7 +3,7 @@ import string
 import map_generator
 import game_utilities
 import savegame_utility
-from logging_utility import *
+from logging_utility import logger
 from game_utilities import game_step
 
 

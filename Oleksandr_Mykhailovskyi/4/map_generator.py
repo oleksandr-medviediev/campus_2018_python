@@ -1,5 +1,5 @@
 import random
-from logging_utility import *
+from logging_utility import logger
 
 player_repr = "P"
 fog_repr = "-"

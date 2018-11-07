@@ -1,8 +1,12 @@
 import random
-from logging_utility import *
+from logging_utility import logger
 
 import map_generator
-from map_generator import *
+from map_generator import player_repr
+from map_generator import fog_repr
+from map_generator import unknown_repr
+from map_generator import map_cells_repr
+from map_generator import map_elements
 import savegame_utility
 
 # Game info
