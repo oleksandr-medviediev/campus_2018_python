@@ -110,11 +110,12 @@ def check_position(position, game_map):
         False otherwise.
     """
     size = len(game_map)
+    returnFlag = True
     if position[0] >= size or position[1] >= size:
-        return False
+        returnFlag = False
     elif position[0] < 0 or position[1] < 0:
-        return False
-    return True
+        returnFlag = False
+    return returnFlag
 
 
 def move_player(action, position, game_map):
