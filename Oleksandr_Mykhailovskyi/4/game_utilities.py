@@ -59,10 +59,12 @@ def format_output(game_map):
     print(position)
 
     printed = str()
+    printed_arr = []
     for index_i, i in enumerate(game_map):
         for index_j, j in enumerate(i):
-            printed += format_cell(j, [index_i, index_j])
-        printed += "\n"
+            printed_arr.append(format_cell(j, [index_i, index_j]))
+        printed_arr.append("\n")
+    printed = ''.join(printed_arr)
     print(printed)
 
 

@@ -9,6 +9,7 @@ from game_utilities import game_step
 
 def main():
     print("Wilkommen im Dungeon Game!\n")
+    print("To save game just enter save during your turn")
 
     while True:
         logger.info("game started")
