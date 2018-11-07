@@ -1,3 +1,5 @@
+import logging
+import logging.config
 from random import randint
 from dungeon_game_maps import GAME_CHARACTERS, generate_map, print_map
 from dungeon_game_serialization import deserialize
@@ -5,6 +7,8 @@ from dungeon_game_logic import run_game
 
 
 START_OPTIONS = ('1', '2')
+
+logging.config.fileConfig('dungeon_game_logger.config')
 
 
 def query_map_size():
@@ -63,6 +67,7 @@ def main():
 
     :return: None.
     """
+    logging.info('Welcome to the Dungeon Game!')
     if query_game_load() == '2':
         dungeon_game_map, player_x, player_y = deserialize()
 
@@ -70,7 +75,9 @@ def main():
 
         size_of_map = query_map_size()
         dungeon_game_map = generate_map(size_of_map)
+        logging.debug(f'game_map generated with size of {size_of_map}')
         player_x, player_y = spawn_player(dungeon_game_map)
+        logging.debug(f'Player spawned on ({player_x};{player_y})')
 
     run_game(dungeon_game_map, player_x, player_y)
     print_map(dungeon_game_map)
@@ -78,12 +85,18 @@ def main():
 
 if __name__ == '__main__':
 
+    logging.debug('Entry point')
     try:
+
+        logging.debug('Before main')
         main()
+        logging.debug('After main')
 
     except OSError as e:
 
         if isinstance(e, FileNotFoundError):
-            print('Save file not found')
+            logging.info('Save file not found')
         else:
-            print(e.strerror)
+            logging.error(e.strerror)
+
+    logging.debug('Exit')

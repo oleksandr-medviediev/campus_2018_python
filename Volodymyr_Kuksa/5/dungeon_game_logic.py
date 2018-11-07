@@ -1,3 +1,4 @@
+import logging
 from dungeon_game_maps import GAME_CHARACTERS
 from dungeon_game_serialization import SAVE_COMMAND, serialize
 
