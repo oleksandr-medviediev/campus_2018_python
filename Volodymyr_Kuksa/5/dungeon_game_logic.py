@@ -1,4 +1,3 @@
-from random import randint
 from dungeon_game_maps import GAME_CHARACTERS
 from dungeon_game_serialization import SAVE_COMMAND, serialize
 
@@ -149,26 +148,6 @@ def update_game_state(game_map, player_x, player_y):
     output_game_state(treasures, traps)
 
 
-def spawn_player(game_map):
-    """
-    Return coordinates of a random empty tile on game_map.
-
-    :param game_map: generated game map.
-    :type game_map: square 2d list of single-character strings.
-
-    :return: x, y.
-    :rtype: int, int.
-    """
-    map_size = len(game_map)
-
-    x, y = randint(0, map_size - 1), randint(0, map_size - 1)
-
-    while game_map[y][x] != GAME_CHARACTERS['Empty']:
-        x, y = randint(0, map_size - 1), randint(0, map_size - 1)
-
-    return x, y
-
-
 def mark_as_visited(game_map, x, y):
     """
     Mark tile of game_map with the coordinates(x, y) as visited if it is empty, do nothing otherwise.
@@ -191,17 +170,22 @@ def mark_as_visited(game_map, x, y):
     return game_map
 
 
-def run_game(game_map):
+def run_game(game_map, player_x, player_y):
     """
     Execute game logic.
 
     :param game_map: generated game map.
     :type game_map: square 2d list of single-character strings.
 
+    :param player_x: x coordinate of the player.
+    :type player_x: int.
+
+    :param player_y: y coordinate of the player.
+    :type player_y: int.
+
     :return: None.
     """
     map_size = len(game_map)
-    player_x, player_y = spawn_player(game_map)
     is_game_running = True
 
     game_map[player_y][player_x] = GAME_CHARACTERS['Spawn']
