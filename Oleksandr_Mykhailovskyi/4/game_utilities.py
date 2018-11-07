@@ -147,7 +147,7 @@ def move_player(action, position, game_map):
     return position
 
 
-def on_action(action, position, game_map):
+def on_action(action, game_map):
     """
     Args:
         action (str): actions from the actions list
@@ -155,6 +155,7 @@ def on_action(action, position, game_map):
         game_map ([[str...]...]): game map
     """
 
+    global position
     if action == actions_list[4]:
         savegame_utility.save(game_map, position)
         logger.info("game saved")
@@ -267,7 +268,7 @@ def game_step(game_map):
         return True
     logger.debug("action received & checked")
 
-    on_action(action, position, game_map)
+    on_action(action, game_map)
     logger.debug("on action script performed")
 
     step_result = game_update_position(position, game_map)
