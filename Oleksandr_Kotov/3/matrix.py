@@ -38,8 +38,8 @@ def read_matrix_rows(matrix):
         output = output[:-2]
         output += '\n'
 
-
     return output
+
 
 def read_matrix_columns(matrix):
     """read matrix column by column"""
@@ -60,7 +60,7 @@ def read_matrix_columns(matrix):
             row.append(number)
             rows.append(row)
 
-            number = ""            
+            number = ""
             row = []
 
         else:
@@ -68,6 +68,7 @@ def read_matrix_columns(matrix):
             row.append(number)
             number = ""
     else:
+
         row.append(number)
         rows.append(row)
 

@@ -3,6 +3,7 @@ from random import choice
 
 WEAPONS = ["scissors", "rock", "paper"]
 
+
 def is_confusion(choices):
     """define if more than 2 types of
     weapon is chosen and confuse happened"""
@@ -23,7 +24,7 @@ while answer == 'y':
 
     leaderboard = []
 
-    while  len(participants) > 1:
+    while len(participants) > 1:
 
         choices = []
 
@@ -33,6 +34,7 @@ while answer == 'y':
         choices += [choice(WEAPONS) for i in range(1, len(participants))]
 
         if "You" in participants:
+
             for partcipant, weapon in zip(participants, choices):
                 print(partcipant + " : " + weapon)
 
@@ -44,7 +46,7 @@ while answer == 'y':
             continue
 
         else:
-        
+
             new_participants = []
 
             dominant = ""
@@ -57,6 +59,7 @@ while answer == 'y':
                 dominant = "rock"
 
             for idx, weapon in enumerate(choices):
+
                 if weapon == dominant:
                     new_participants.append(participants[idx])
                 else:
@@ -70,6 +73,7 @@ while answer == 'y':
         print("You lose!")
 
     print("Leaders:\n")
+
     for position, participant in enumerate(leaderboard):
         print(F"{position + 1}. {participant}")
 
