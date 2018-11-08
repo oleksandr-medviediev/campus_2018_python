@@ -74,8 +74,13 @@ def check_around(player_x, player_y, map_size, dungeon_map, player_map):
     is_treasure = False
     is_trap = False
 
-    row_range = range(player_y - 1 if player_y - 1 > 0 else 0, player_y + 2 if player_y + 1 < map_size[1] else map_size[1])
-    column_range = range(player_x - 1 if player_x - 1 > 0 else 0, player_x + 2 if player_x + 1 < map_size[0] else map_size[0])
+    min_row_index = player_y - 1 if player_y - 1 > 0 else 0
+    max_row_index = player_y + 2 if player_y + 1 < map_size[1] else map_size[1]
+    row_range = range(min_row_index, max_row_index)
+
+    min_column_index = player_x - 1 if player_x - 1 > 0 else 0
+    max_column_index = player_x + 2 if player_x + 1 < map_size[0] else map_size[0]
+    column_range = range(min_column_index, max_column_index)
 
     for y in row_range:
 
