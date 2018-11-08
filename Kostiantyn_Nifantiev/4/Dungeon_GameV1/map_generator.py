@@ -17,16 +17,26 @@ def dungeon_map_generator(width = 20, height = 10):
 
         width = 2
 
+    elif width > 119:
+
+        width = 119
+
     if height < 2:
 
         height = 2
+
+    elif height > 30:
+
+        height = 30
 
     cells_count = width * height
     treasures_count = ceil((cells_count) / 20)
     trap_count = ceil((cells_count) / 10)
 
-    dungeon_map = ['T' for x in range(0, treasures_count)] + ['X' for x in range(0, trap_count)] + ['-' for x in range(0, cells_count - treasures_count - trap_count)]
-    
+    dungeon_map = ['T' for x in range(0, treasures_count)]
+    dungeon_map.extend(['X' for x in range(0, trap_count)])
+    dungeon_map.extend(['-' for x in range(0, cells_count - treasures_count - trap_count)])
+
     shuffle(dungeon_map)
 
     dungeon_map = [dungeon_map[x * width : x * width + width] for x in range(0, height)]
