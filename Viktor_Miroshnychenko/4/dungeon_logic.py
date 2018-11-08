@@ -139,7 +139,6 @@ def make_move(dun_map, position, size, command):
     :rtype: element of GAME_STATE
     """
 
-    print(position)
     dun_map[position[0]][position[1]] = '0'
     move_ret_val = make_move_if_possible(position, size, command)
     if move_ret_val == False:
