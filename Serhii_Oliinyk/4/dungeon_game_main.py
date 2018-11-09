@@ -1,4 +1,4 @@
-import dungeon_game_map as map
+import dungeon_game_map as mp
 import dungeon_game_logic as logic
 import dungeon_game_logger as log
 
@@ -18,8 +18,8 @@ def spawn_player(my_map):
     player_position = []
 
     while True:
-        column = map.randrange(size)
-        row = map.randrange(size)
+        column = mp.randrange(size)
+        row = mp.randrange(size)
 
         if my_map[row][column] == '_':
             my_map[row][column] = "p"
@@ -36,7 +36,7 @@ if __name__ == '__main__':
     position = [0, 0]
 
     if option == 1:
-        my_map = map.createMap()
+        my_map = mp.createMap()
         position = spawn_player(my_map)
     elif option == 2:
         position = logic.io.load_file(my_map)

@@ -37,7 +37,7 @@ def load_file(my_map):
     player_position = []
 
     for i in range(len(data)):
-        line = list(data[i].split(' '))
+        line = data[i].split(' ')
         line.pop()
 
         if "p" in line:

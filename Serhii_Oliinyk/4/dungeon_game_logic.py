@@ -89,73 +89,33 @@ def check_player_position(my_map, player_position):
     surround_points = []
     move_direction = []
 
-    if (x == 0) and (y == 0):
-        surround_points.append([x, y + 1])
-        surround_points.append([x + 1, y])
+    surround_points.append([x, y + 1])
+    surround_points.append([x + 1, y])
+    surround_points.append([x, y - 1])
+    surround_points.append([x - 1, y])
 
-        move_direction.append("right")
-        move_direction.append("down")
-    elif (x == 0) and (y == (size - 1)):
-        surround_points.append([x, y - 1])
-        surround_points.append([x + 1, y])
+    move_direction.append("right")
+    move_direction.append("down")
+    move_direction.append("left")
+    move_direction.append("up")
 
-        move_direction.append("left")
-        move_direction.append("down")
-    elif (x == (size - 1)) and (y == 0):
-        surround_points.append([x - 1, y])
-        surround_points.append([x, y + 1])
+    point_value = [-1, -1]
+    str_value = ""
 
-        move_direction.append("right")
-        move_direction.append("up")
-    elif (x == (size - 1)) and (y == (size - 1)):
-        surround_points.append([x, y - 1])
-        surround_points.append([x - 1, y])
+    for i in range(len(surround_points)):
+        if ((surround_points[i][0] < 0) or
+            (surround_points[i][0] > (size - 1)) or
+            (surround_points[i][1] < 0) or
+            (surround_points[i][1] > (size - 1))):
+            surround_points[i] = point_value
+            move_direction[i] = str_value
 
-        move_direction.append("left")
-        move_direction.append("up")
-    elif (x == 0) and (y > 0) and (y < (size - 1)):
-        surround_points.append([x, y - 1])
-        surround_points.append([x, y + 1])
-        surround_points.append([x + 1 , y])
+    while point_value in surround_points:
+        surround_points.remove(point_value)
 
-        move_direction.append("right")
-        move_direction.append("left")
-        move_direction.append("down")
-    elif (x == (size - 1)) and (y > 0) and (y < (size - 1)):
-        surround_points.append([x, y - 1])
-        surround_points.append([x, y + 1])
-        surround_points.append([x - 1, y])
+    while str_value in move_direction:
+        move_direction.remove(str_value)
 
-        move_direction.append("right")
-        move_direction.append("left")
-        move_direction.append("up")
-    elif (y == 0) and (x > 0) and (x < (size - 1)):
-        surround_points.append([x - 1, y])
-        surround_points.append([x + 1, y])
-        surround_points.append([x, y + 1])
-
-        move_direction.append("right")
-        move_direction.append("up")
-        move_direction.append("down")
-    elif (y == (size - 1)) and (x > 0) and (x < (size - 1)):
-        surround_points.append([x - 1, y])
-        surround_points.append([x + 1, y])
-        surround_points.append([x, y - 1])
-
-        move_direction.append("up")
-        move_direction.append("left")
-        move_direction.append("down")
-    else:
-        surround_points.append([x - 1, y])
-        surround_points.append([x + 1, y])
-        surround_points.append([x, y - 1])
-        surround_points.append([x, y + 1])
-
-        move_direction.append("up")
-        move_direction.append("left")
-        move_direction.append("down")
-        move_direction.append("right")
-    
     for i in surround_points:
         row = i[0]
         col = i[1]
