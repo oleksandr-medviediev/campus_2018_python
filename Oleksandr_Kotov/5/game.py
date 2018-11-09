@@ -1,23 +1,11 @@
 """main game logic
 """
 
-import logging
+import pickle
+from contextlib import contextmanager
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+from game_logger import logger
 
-message_handler = logging.StreamHandler()
-message_handler.setLevel(logging.INFO)
-
-logger.addHandler(message_handler)
-
-file_handler = logging.FileHandler("log.txt")
-file_handler.setLevel(logging.INFO)
-
-file_log_format = logging.Formatter('moving {direction} - new position: {row} row, {col} col')
-file_handler.setFormatter(file_log_format)
-
-logger.addHandler(file_handler)
 
 def _structure_is_near(structure, curr_row, curr_col, squares_map):
     """find if given structure is within one square
@@ -54,6 +42,16 @@ def _structure_is_near(structure, curr_row, curr_col, squares_map):
     return is_near
 
 
+def _write_move_fail_to_log(dir):
+    """write fail while moving in specified directoin to log
+
+    Arguments:
+        dir str -- move direction
+    """
+
+    logger.debug(F"failed to move {dir}")
+
+
 def run(start_row, start_col, squares_map):
     """run the game
 
@@ -65,6 +63,9 @@ def run(start_row, start_col, squares_map):
         squares_map [str] -- game map
     """
 
+    logger.info("Type \"up/down/left/right\" to move")
+    logger.info("Type \"save\" to save current game")
+
     border = len(squares_map) - 1
 
     curr_row = start_row
@@ -74,67 +75,101 @@ def run(start_row, start_col, squares_map):
 
         if squares_map[curr_row][curr_col] == 't':
 
-            print("You have entered a trap!")
+            logger.debug("player has found a treasure")
+            logger.debug("game ends")
+            logger.info("You have entered a trap!")
             break
 
         if squares_map[curr_row][curr_col] == '*':
 
-            print("You have found a treasure!")
+            logger.debug("player has entered a trap")
+            logger.debug("game ends")
+            logger.info("You have found a treasure!")
             break
 
         if _structure_is_near('t', curr_row, curr_col, squares_map):
-            print('There is a trap within one square!')
+
+            logger.debug("trap is within one square")
+            logger.info('There is a trap within one square!')
 
         if _structure_is_near('*', curr_row, curr_col, squares_map):
-            print('There is a treasure within one square!')
 
-        while True:
+            logger.debug("treasure is within one square")
+            logger.info('There is a treasure within one square!')
 
-            direction = input("Where to go?: ")
+        moved = False
 
-            if direction == 'up':
+        while not moved:
+
+            command = input("What to do?: ")
+
+            if command == 'up':
 
                 if curr_row == 0:
-                    print("You are already on top of the map!")
+
+                    logger.info("You are already on top of the map!")
+                    _write_move_fail_to_log(command)
 
                 else:
 
-                    print("Moving up")
+                    moved = True
                     curr_row -= 1
-                    break
+                    logger.info("Moving up")
 
-            elif direction == 'down':
+            elif command == 'down':
 
                 if curr_row == border:
-                    print("You are already on bottom of the map!")
+
+                    logger.info("You are already on bottom of the map!")
+                    _write_move_fail_to_log(command)
 
                 else:
 
-                    print("Moving down")
+                    moved = True
                     curr_row += 1
-                    break
+                    logger.info("Moving down")
 
-            elif direction == 'right':
+            elif command == 'right':
 
                 if curr_col == border:
-                    print("You are already on the right border of the map!")
+
+                    msg = "You are already on the right border of the map!"
+                    logger.info(msg)
+                    _write_move_fail_to_log(command)
 
                 else:
 
-                    print("Moving right")
+                    moved = True
                     curr_col += 1
-                    break
+                    logger.info("Moving right")
 
-            elif direction == 'left':
+            elif command == 'left':
 
                 if curr_col == 0:
-                    print("You are already on the left border of the map!")
+
+                    msg = "You are already on the left border of the map!"
+                    logger.info(msg)
+                    _write_move_fail_to_log(command)
 
                 else:
 
-                    print("Moving left")
+                    moved = True
                     curr_col -= 1
-                    break
+                    logger.info("Moving left")
+
+            elif command == "save":
+
+                with open("sav.txt", "wb") as savefile:
+
+                    data_to_save = [curr_row, curr_col, squares_map]
+                    pickle.dump(data_to_save, savefile, protocol=0)
+                    logger.info("Saved succesfully")
 
             else:
-                print("Unknown command")
+                logger.info(F"Unknown command: {command}")
+
+            if moved:
+
+                logger.debug(F"moved {command}")
+                cur_pos_msg = F"current position: ({curr_row}, {curr_col})"
+                logger.debug(cur_pos_msg)

@@ -12,6 +12,8 @@ from random import choices
 from random import choice
 from math import floor
 
+from game_logger import logger
+
 
 def generate(scale):
     """Generate a map and a starting position
