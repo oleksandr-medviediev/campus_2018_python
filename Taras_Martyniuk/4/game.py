@@ -4,6 +4,8 @@ START_POSITION = (0, 0)
 
 def play_game(size):
     # create map
+    dmap = dm.create_map(size)
+    
     # d_map = dm.create_map(size)
     # place player at center
     center = (size / 2, size / 2)
@@ -11,8 +13,6 @@ def play_game(size):
 
 
 
-d_map = [[0, 0], [0, 0]]
-ind = (0, 0)
-adj = dm.get_adjacent(d_map, ind) 
+
 
 

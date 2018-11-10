@@ -21,7 +21,7 @@
         }
     },
      "loggers" : { 
-         "MY LOG" : { 
+         "Dungeon Log" : { 
              "handlers" : [ "console",  "file"],
              "level" :  "DEBUG",
              "propagate" : "True"
