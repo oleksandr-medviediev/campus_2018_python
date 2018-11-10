@@ -32,7 +32,7 @@ def create_map(size):
     treasures = [Treasure] * treasure_count
     traps = [Trap] * trap_count
     empties = [Empty] * empty_count
-    
+
     dlog.debug(f'Created {treasure_count} treasures, {trap_count} traps, {empty_count} empties')
 
     combined = treasures
@@ -116,6 +116,6 @@ def map_to_str(dmap):
         Trap : '💣'
     }
 
-    row_to_str = lambda row : " ".join(map(tile_symbols, row))
+    row_to_str = lambda row : " ".join(map(lambda t: tile_symbols[t], row))
     return "\n".join(map(row_to_str, dmap))
 
