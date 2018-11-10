@@ -10,7 +10,12 @@ with open('log_config.json') as f:
     logging.config.dictConfig(config_dict)
 
 
-LOGGER_NAME = 'Dungeon Log'
-dungeon_logger = logging.getLogger(LOGGER_NAME)
+DEBUG_NAME = 'Debug Log'
+OUTPUT_NAME = 'Output Log'
 
-dungeon_logger.debug('Inited dungeon logger')
+# for tracing debug info, writes to console and file, more heavy on message metadata 
+debug_logger = logging.getLogger(DEBUG_NAME)
+# for writing output to user - outputs message to console and file, with no metadata
+output_logger = logging.getLogger(OUTPUT_NAME)
+
+debug_logger.debug('Inited loggers')

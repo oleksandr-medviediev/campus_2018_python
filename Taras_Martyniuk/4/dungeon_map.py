@@ -1,6 +1,6 @@
 from random import randint
 from itertools import product
-from logging_defs import dungeon_logger as dlog
+from logging_defs import debug_logger as dlog
 from random import shuffle
 from math import floor
 
@@ -54,16 +54,19 @@ def chunks(l, n):
         yield l[i:i + n]
 
 
-def get_random_empty_tile(map):
+def get_random_empty_tile(dmap):
     '''
         :param map: dungeon map object
         :returns: 2D tuple of indices of random empty tile
     '''
-    rand_index = lambda: randint(0, len(map))
+    dlog.debug('get_random_empty_tile')
+    rand_index = lambda: randint(0, len(dmap))
 
     while True:
         maybe_empty = (rand_index(), rand_index())
-        if maybe_empty == Empty:
+        dlog.debug(f'randomed tile: {maybe_empty}')
+
+        if at(dmap, maybe_empty) == Empty:
             return maybe_empty
 
 

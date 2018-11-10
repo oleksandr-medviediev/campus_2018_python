@@ -1,6 +1,9 @@
 import dungeon_map as dm
+from logging_defs import debug_logger as dlog
 
-START_POSITION = (0, 0)
+player_moves = {
+    ''
+}
 
 def play_game(size):
     # create map
@@ -9,7 +12,8 @@ def play_game(size):
 
     # d_map = dm.create_map(size)
     # place player at center
-    center = (size / 2, size / 2)
+    start = dm.get_random_empty_tile(dmap)
+    dlog.debug(f'Starting at {start}')
     # loop
 
 

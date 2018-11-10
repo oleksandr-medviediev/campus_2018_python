@@ -1,9 +1,15 @@
 { 
-     "version" : 1,
-     "disable_existing_loggers" : "False",
-     "formatters" : { 
-         "standard" : { 
+    "version" : 1,
+    "disable_existing_loggers" : "False",
+    "formatters" : { 
+        "standard" : { 
+            "format" :  "[%(levelname)s]: %(message)s"
+        },
+        "precise" : {
              "format" :  "%(asctime)s [%(levelname)s] %(name)s : %(message)s"
+        },
+        "lean" : {
+            "format" : "%(message)s"
         }
     },
      "handlers" : { 
@@ -18,13 +24,30 @@
              "formatter" :  "standard",
              "class" :  "logging.handlers.RotatingFileHandler",
              "filename"  :  "dungeon_logs.log"
+        },
+        "console_lean" : { 
+            "level" :  "INFO",
+            "formatter" :  "lean",
+            "class" :  "logging.StreamHandler",
+            "stream"  :  "ext://sys.stdout"
+       },
+       "file_lean" : { 
+        "level" :  "DEBUG",
+        "formatter" :  "lean",
+        "class" :  "logging.handlers.RotatingFileHandler",
+        "filename"  :  "dungeon_logs.log"
         }
     },
      "loggers" : { 
-         "Dungeon Log" : { 
+         "Debug Log" : { 
              "handlers" : [ "console",  "file"],
              "level" :  "DEBUG",
              "propagate" : "True"
+        },
+        "Output Log" : {
+            "handlers" : [ "console_lean",  "file_lean"],
+            "level" :  "INFO",
+            "propagate" : "True"
         }
     } 
 }
