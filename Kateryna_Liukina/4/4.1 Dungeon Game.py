@@ -4,6 +4,11 @@ import math
 
 
 def dungeon_game():
+    """
+    Function launch the dungeon game
+    Returns:
+        none
+    """
     size_of_map = int(input("Enter size of map"))
     game_map = Map_generator.generate_map([size_of_map] * 2, 0.1, 0.05)
 
