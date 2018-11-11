@@ -12,6 +12,17 @@ class PlayerCommand(Enum):
     SAVE = 4
 
 
+class StartMenu(Enum):
+    NEW_GAME = 0
+    LOAD_GAME = 1
+
+
+text_to_menu = {
+    'new game' : StartMenu.NEW_GAME,
+    'load' : StartMenu.LOAD_GAME
+}
+
+
 text_to_command = {
     'w' : PlayerCommand.UP,
     'a' : PlayerCommand.LEFT,
@@ -54,6 +65,18 @@ output_everything_map = {
 sum_vectors = lambda a, b: (a[0] + b[0], a[1] + b[1])
 
 
+def process_game_start():
+    '''
+    Function is used to process game start. It is an equivalent of menu in normal games.
+    :return: a function that player have chosen in menu;
+    :rtype: StartMenu.
+    '''
+    while True:
+        input_command = input('Type \'new game\' to start a new game or \'load\' to old game from save: ')
+        if input_command in text_to_menu.keys():
+            return text_to_menu[input_command]
+
+
 def output_map(dungeon_map, dungeon_cell_to_output_symbol):
     '''
     Function is used to output a map for Dungeon Game.
@@ -87,7 +110,7 @@ def get_player_command(position, map_size):
     :rtype: str
     '''
     while True:
-        input_command = input('Please, input the direction of your move. Use w, a, s, d, save commands: ')
+        input_command = input('Please, input your command. Use "w", "a", "s", "d" and "save" commands: ')
         if input_command in text_to_command.keys():
             command = text_to_command[input_command]
 
@@ -143,13 +166,20 @@ def get_cells_near(position, dungeon_map):
     return cells
 
 
-def run_game(map_size):
+def run_game(game_start_mode, map_size):
     '''
     Function runs the Dungeon Game;
-    :param map_size: a size of map that will be used for game. Size should be >= 5;
-    :type map_size: int
+    :param game_start_mode: the way game should start;
+    :param map_size: a size of map that will be used for game. Size should be >= 5. If game_start_mode is LOAD, the\
+    value of map_size is idnored and will be overwritten after load;
+    :type map_size: int if game_start_mode is NEW_GAME, any other type otherwise;
+    :type game_start_mode: StartMenu.
     '''
-    player_position, dungeon_map = generate_map(map_size)
+    if game_start_mode is StartMenu.LOAD_GAME:
+        player_position, dungeon_map = DungeonGameSaveLoad.load_game()
+        map_size = len(dungeon_map)
+    else:
+        player_position, dungeon_map = generate_map(map_size)
 
     should_run = True
     while should_run:
