@@ -2,6 +2,8 @@ from DungeonGameMapGenerator import generate_map, DungeonCell
 from enum import Enum
 from sys import stdout
 import DungeonGameSaveLoad
+import logging
+import logging.config
 
 
 class PlayerCommand(Enum):
@@ -71,8 +73,10 @@ def process_game_start():
     :return: a function that player have chosen in menu;
     :rtype: StartMenu.
     '''
+    logging.debug('Method called')
     while True:
-        input_command = input('Type \'new game\' to start a new game or \'load\' to old game from save: ')
+        logging.info('Type \'new game\' to start a new game or \'load\' to old game from save: ')
+        input_command = input()
         if input_command in text_to_menu.keys():
             return text_to_menu[input_command]
 
@@ -85,18 +89,17 @@ def output_map(dungeon_map, dungeon_cell_to_output_symbol):
     :type dungeon_map: a list of lists of DungeonCells; 
     :type dungeon_cell_to_output_symbol: a dict with key type: DungeonCell, value type: str.
     '''
-
+    logging.debug('Method called')
     # i guess there must be more efficient way to format such string
     lock_string = ''.join('-' * len(dungeon_map))
 
-    print(lock_string)
+    logging.info(lock_string)
 
-    for row in dungeon_map:
-        for element in row:
-            stdout.write(dungeon_cell_to_output_symbol[element])
-        stdout.write('\n')
+    row_to_string = lambda row: ''.join(dungeon_cell_to_output_symbol[x] for x in row)
+    map_string = '\n'.join(row_to_string(row) for row in dungeon_map)
+    logging.info(map_string)
 
-    print(lock_string)
+    logging.info(lock_string)
 
 
 def get_player_command(position, map_size):
@@ -109,8 +112,11 @@ def get_player_command(position, map_size):
     :type position: a tuple of 2 ints;
     :rtype: str
     '''
+    logging.debug('Method called')
     while True:
-        input_command = input('Please, input your command. Use "w", "a", "s", "d" and "save" commands: ')
+        logging.info('Please, input your command. Use "w", "a", "s", "d" and "save" commands: ')
+        input_command = input()
+        logging.debug(f'User command is:{input_command}')
         if input_command in text_to_command.keys():
             command = text_to_command[input_command]
 
@@ -127,12 +133,13 @@ def get_player_command(position, map_size):
                     can_go_there = False
 
                 if not can_go_there:
-                    print('Unfortunately you can\'t go there. Try again.')
+                    logging.debug('User can\'t go in direction')
+                    logging.info('Unfortunately you can\'t go there. Try again.')
                     continue
 
             return command
         else:
-            print('Wrong input. Try again.')
+            logging.info('Wrong input. Try again.')
 
 
 def get_cells_near(position, dungeon_map):
@@ -145,6 +152,7 @@ def get_cells_near(position, dungeon_map):
     :type dungeon_map: a list of lists of DungeonCells;
     :rtype: a list of DungeonCells.
     '''
+    logging.debug('Method called')
     map_size = len(dungeon_map)
     x, y = position
 
@@ -175,25 +183,32 @@ def run_game(game_start_mode, map_size):
     :type map_size: int if game_start_mode is NEW_GAME, any other type otherwise;
     :type game_start_mode: StartMenu.
     '''
+    logging.debug('Method called')
     if game_start_mode is StartMenu.LOAD_GAME:
+        logging.debug('Game starts with LOAD GAME mode. Loading from file...')
         player_position, dungeon_map = DungeonGameSaveLoad.load_game()
         map_size = len(dungeon_map)
     else:
+        logging.debug('Game starts with NEW GAME mode. Generating map...')
         player_position, dungeon_map = generate_map(map_size)
+    logging.debug(f'Map:{dungeon_map}\nPlayer position:{player_position}')
 
     should_run = True
+    logging.debug('Game loop starts')
+    game_loop_counter = 0
     while should_run:
+        logging.debug(f'Game loop iteration {game_loop_counter}')
         output_map(dungeon_map, hide_everything_except_player_map)
 
         cells_near_player = get_cells_near(player_position, dungeon_map)
 
         traps_nearby = [cell for cell in cells_near_player if cell is DungeonCell.TRAP]
         if traps_nearby:
-            print(f'Warning! There is {len(traps_nearby)} traps nearby!')
+            logging.info(f'Warning! There is {len(traps_nearby)} traps nearby!')
         
         treasures_nearby = [cell for cell in cells_near_player if cell is DungeonCell.TREASURE]
         if treasures_nearby:
-            print(f'Wow! There is {len(treasures_nearby)} treasures just near you! Good luck!')
+            logging.info(f'Wow! There is {len(treasures_nearby)} treasures just near you! Good luck!')
 
         player_command = get_player_command(player_position, map_size)
         if player_command in move_commands:
@@ -202,17 +217,19 @@ def run_game(game_start_mode, map_size):
             new_x, new_y = player_position
             
             if dungeon_map[new_x][new_y] is DungeonCell.TREASURE:
-                print('You won! Gratz! :)')
+                logging.info('You won! Gratz! :)')
                 should_run = False
             elif dungeon_map[new_x][new_y] is DungeonCell.TRAP:
-                print('You lost:( GL next time!')
+                logging.info('You lost:( GL next time!')
                 should_run = False
             else:
-                print('You found nothing. Keep exploring the map!:)')
+                logging.info('You found nothing. Keep exploring the map!:)')
                 dungeon_map[old_x][old_y] = DungeonCell.EMPTY
                 dungeon_map[new_x][new_y] = DungeonCell.PLAYER
         else:
             DungeonGameSaveLoad.save_game(player_position, dungeon_map)
-            print('Game is saved.')
+            logging.debug('Game if saved.')
+            logging.info('Game is saved.')
 
+    logging.debug('Game loop ended')
     output_map(dungeon_map, output_everything_map)
