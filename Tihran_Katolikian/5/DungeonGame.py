@@ -1,27 +1,37 @@
 from DungeonGameMapGenerator import generate_map, DungeonCell
 from enum import Enum
 from sys import stdout
+import DungeonGameSaveLoad
 
 
-class Direction(Enum):
+class PlayerCommand(Enum):
     UP = 0
     LEFT = 1
     DOWN = 2
     RIGHT = 3
+    SAVE = 4
 
 
-WASD_to_direction = {
-    'w' : Direction.UP,
-    'a' : Direction.LEFT,
-    's' : Direction.DOWN,
-    'd' : Direction.RIGHT
+text_to_command = {
+    'w' : PlayerCommand.UP,
+    'a' : PlayerCommand.LEFT,
+    's' : PlayerCommand.DOWN,
+    'd' : PlayerCommand.RIGHT,
+    'save' : PlayerCommand.SAVE
 }
 
+move_commands = (
+    PlayerCommand.UP,
+    PlayerCommand.LEFT,
+    PlayerCommand.DOWN,
+    PlayerCommand.RIGHT
+)
+
 direction_to_vector = {
-    Direction.UP : (-1, 0),
-    Direction.LEFT : (0, -1),
-    Direction.DOWN: (1, 0),
-    Direction.RIGHT: (0, 1)
+    PlayerCommand.UP : (-1, 0),
+    PlayerCommand.LEFT : (0, -1),
+    PlayerCommand.DOWN: (1, 0),
+    PlayerCommand.RIGHT: (0, 1)
 }
 
 
@@ -66,36 +76,38 @@ def output_map(dungeon_map, dungeon_cell_to_output_symbol):
     print(lock_string)
 
 
-def get_player_direction(position, map_size):
+def get_player_command(position, map_size):
     '''
-    Function is used to request a direction input to user until he will input the correct one;
+    Function is used get the user's input;
     :param position: a position on map;
     :param map_size: a size of map;
-    :return: a direction chosed by user;
+    :return: a user's command;
     :type map_size: int;
     :type position: a tuple of 2 ints;
-    :rtype: a Direction
+    :rtype: str
     '''
     while True:
-        input_direction = input('Please, input the direction of your move. Use w, a, s, d keys for it: ')
-        if input_direction in WASD_to_direction.keys():
-            direction = WASD_to_direction[input_direction]
+        input_command = input('Please, input the direction of your move. Use w, a, s, d, save commands: ')
+        if input_command in text_to_command.keys():
+            command = text_to_command[input_command]
 
-            can_go_there = True
-            x, y = position
-            if direction is Direction.UP and x is 0:
-                can_go_there = False
-            elif direction is Direction.DOWN and x is map_size - 1:
-                can_go_there = False
-            elif direction is Direction.LEFT and y is 0:
-                can_go_there = False
-            elif direction is Direction.RIGHT and y is map_size - 1:
-                can_go_there = False
+            if command in move_commands:
+                can_go_there = True
+                x, y = position
+                if command is PlayerCommand.UP and x is 0:
+                    can_go_there = False
+                elif command is PlayerCommand.DOWN and x is map_size - 1:
+                    can_go_there = False
+                elif command is PlayerCommand.LEFT and y is 0:
+                    can_go_there = False
+                elif command is PlayerCommand.RIGHT and y is map_size - 1:
+                    can_go_there = False
 
-            if can_go_there:
-                return direction
-            else:
-                print('Unfortunately you can\'t go there. Try again.')
+                if not can_go_there:
+                    print('Unfortunately you can\'t go there. Try again.')
+                    continue
+
+            return command
         else:
             print('Wrong input. Try again.')
 
@@ -153,20 +165,24 @@ def run_game(map_size):
         if treasures_nearby:
             print(f'Wow! There is {len(treasures_nearby)} treasures just near you! Good luck!')
 
-        direction = get_player_direction(player_position, map_size)
-        old_x, old_y = player_position
-        player_position = sum_vectors(player_position, direction_to_vector[direction])
-        new_x, new_y = player_position
-        
-        if dungeon_map[new_x][new_y] is DungeonCell.TREASURE:
-            print('You won! Gratz! :)')
-            should_run = False
-        elif dungeon_map[new_x][new_y] is DungeonCell.TRAP:
-            print('You lost:( GL next time!')
-            should_run = False
+        player_command = get_player_command(player_position, map_size)
+        if player_command in move_commands:
+            old_x, old_y = player_position
+            player_position = sum_vectors(player_position, direction_to_vector[player_command])
+            new_x, new_y = player_position
+            
+            if dungeon_map[new_x][new_y] is DungeonCell.TREASURE:
+                print('You won! Gratz! :)')
+                should_run = False
+            elif dungeon_map[new_x][new_y] is DungeonCell.TRAP:
+                print('You lost:( GL next time!')
+                should_run = False
+            else:
+                print('You found nothing. Keep exploring the map!:)')
+                dungeon_map[old_x][old_y] = DungeonCell.EMPTY
+                dungeon_map[new_x][new_y] = DungeonCell.PLAYER
         else:
-            print('You found nothing. Keep exploring the map!:)')
-            dungeon_map[old_x][old_y] = DungeonCell.EMPTY
-            dungeon_map[new_x][new_y] = DungeonCell.PLAYER
-    
+            DungeonGameSaveLoad.save_game(player_position, dungeon_map)
+            print('Game is saved.')
+
     output_map(dungeon_map, output_everything_map)
