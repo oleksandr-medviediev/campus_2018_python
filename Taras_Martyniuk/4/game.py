@@ -40,9 +40,13 @@ def play_game(size):
             continue
 
         elif input_result == Load:
-            dmap, player_pos = load()
-            dlog.debug('changed state to loaded:')
-            olog.info('Loaded your game!\n')
+            try:
+                dmap, player_pos = load()
+                dlog.debug('changed state to loaded:')
+                olog.info('Loaded your game!\n')
+            except FileNotFoundError:
+                dlog.debug('Tried to load when savefile does not exist')
+                olog.info('You haven\'t saved it yet!')
             continue
 
         player_pos = input_result
