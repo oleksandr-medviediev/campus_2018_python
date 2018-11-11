@@ -29,17 +29,15 @@ def play_game(size):
             olog.info("There's a treasure right next to you! Eyes on the prize!")
 
         player_pos = move_player_in_bounds(player_pos, dmap)
-        dlog.info(f'moved to {player_pos}')
+        dlog.debug(f'moved to {player_pos}')
 
         tile_type = dm.at(dmap, player_pos)
         if tile_type == dm.Treasure:
-            win()
+            win(dmap, player_pos)
             break
 
         if tile_type == dm.Trap:
-            dlog.info("You've got dismembered by some razory and hammery thingy!")
-            dlog.info("Happens to the best of us adventurers!")
-            dlog.info(BLOODY_SWORD_ASCI)
+            lose(dmap, player_pos)
             break
 
 
@@ -54,12 +52,12 @@ def move_player_in_bounds(curr_pos, dmap):
     '''
     while True:
         moved_to_check = move_player(curr_pos)
-        dlog.info(f'trying to move to {moved_to_check}')
+        dlog.debug(f'trying to move to {moved_to_check}')
 
         if dm.in_bounds(dmap, moved_to_check):
             return moved_to_check
         else:
-            dlog.info("Can't move there - a wall blocks the path")
+            olog.info("Can't move there - a wall blocks the path")
             
 
 def move_player(curr_pos):
@@ -71,24 +69,42 @@ def move_player(curr_pos):
         :returns: Tile where the player is after simulating a move (can be out of bounds)
     '''
     while True:
-        move = input('Where to go?')
+        move = input('Where to go? ')
         if move not in player_moves:
             olog.info(f'Sorry, you can go only: {", ".join(player_moves.keys())}')
             continue
 
         delta = player_moves[move]
-        dlog.info(f'trying to move by delta of {delta}')
+        dlog.debug(f'trying to move by delta of {delta}')
         return (curr_pos[0] + delta[0], curr_pos[1] + delta[1])
 
 
-def win():
+def win(dmap, end_pos):
     '''
         prints win message
+        :param dmap: dungeon map
+        :param end_pos: Tile player stands at the time of game end
     '''
-
-    dlog.info('''Suddenly you trip over a treasure chest! 
+    olog.info('''Suddenly you trip over a treasure chest!
         The ideas on where to spend the goodies inside race thorugh your mind even as you fall!''')
-    dlog.info(TREASURE_ASCI)
+    olog.info(TREASURE_ASCI)
+    olog.info('---------------------------------------------------------')
+    olog.info("Now look at all the traps you've evaded!")
+    olog.info(dm.map_to_str(dmap, end_pos))
+
+
+def lose(dmap, end_pos):
+    '''
+        prints lose message
+        :param dmap: dungeon map
+        :param end_pos: Tile player stands at the time of game end
+    '''
+    olog.info("You've got dismembered by some razory and hammery thingy!")
+    olog.info("Happens to the best of us adventurers!")
+    olog.info(BLOODY_SWORD_ASCI)
+    olog.info('---------------------------------------------------------')
+    olog.info("Now look at all the treasures you could've had for yourself!")
+    olog.info(dm.map_to_str(dmap, end_pos))
 
 TREASURE_ASCI = '''
 *******************************************************************************
