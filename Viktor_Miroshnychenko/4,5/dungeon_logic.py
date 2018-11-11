@@ -1,3 +1,6 @@
+import dungeon_logger
+
+
 CAGE_STATE = ['bomb', 'treasue', 'empty']
 GAME_STATE = ['lost', 'won', 'ingame']
 COMMANDS = ['r', 'l', 'u', 'd']
@@ -71,6 +74,8 @@ def check_closest_pos(dun_map, position, size):
         if value != 'empty':
             ret_val.add(value)
 
+    dungeon_logger.logger.debug("Nearest positions")
+
     return ret_val
 
 
@@ -118,6 +123,8 @@ def make_move_if_possible(position, size, command):
         else:
             position[0] += 1
 
+    dungeon_logger.logger.debug("Move is possible", ret_val)
+
     return  ret_val
     
 
@@ -139,6 +146,8 @@ def make_move(dun_map, position, size, command):
     :rtype: element of GAME_STATE
     """
 
+    dungeon_logger.logger.debug("Move with command", command)
+    
     dun_map[position[0]][position[1]] = '0'
     move_ret_val = make_move_if_possible(position, size, command)
     if move_ret_val == False:

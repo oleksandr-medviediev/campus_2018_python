@@ -1,5 +1,6 @@
 import dungeon_map_generate
 import dungeon_logic
+import dungeon_serializer
 
 
 def run_frame(dun_map, position):
@@ -19,6 +20,14 @@ def run_frame(dun_map, position):
     while command not in dungeon_logic.COMMANDS:
         command = input("Type valid input \n")
 
+        if command == 'save':
+            dungeon_serializer.serialize_dungeon_game(dun_map, position)
+
+        elif command == 'load':
+            data = dungeon_serializer.deserialize_dungeon_game()
+            dun_map = data[0]
+            position = data[1]
+
     game_state = dungeon_logic.make_move(dun_map, position, len(dun_map), command)
 
     return game_state
@@ -37,6 +46,7 @@ def game():
     position = dungeon_map_generate.set_player_randomly(dun_map)
 
     print("Use following commands to navigate your position", dungeon_logic.COMMANDS)
+    print("Use 'save' or 'load' commands to save/load game")
 
     game_state = 'ingame'
     while game_state == 'ingame':
