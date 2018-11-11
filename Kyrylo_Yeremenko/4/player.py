@@ -4,10 +4,13 @@ This module handles player movement and state for task 4.1 from Coding Campus 20
 """
 
 import random
+import logging
 import dungeon_map
 import utils
+import log
 
 position = None
+logger = logging.getLogger(log.LOGGER_NAME)
 
 
 def move(direction):
@@ -18,6 +21,8 @@ def move(direction):
     """
 
     global position
+
+    logger.debug(f"Attempting to move player at {position} to {direction}...")
 
     direction = direction.upper()
 
@@ -41,6 +46,10 @@ def move(direction):
             dungeon_map.game_map[position[0]][position[1]] = dungeon_map.SYMBOL_PLAYER
 
         is_position_changed = True
+        logger.debug("Player moved successfully")
+
+    else:
+        logger.debug(f"Invalid position, couldn't move player to {direction}")
 
     return is_position_changed
 
@@ -63,6 +72,7 @@ def init_position():
         if dungeon_map.game_map[row][column] == dungeon_map.SYMBOL_TILE:
 
             position = [row, column]
+            logger.debug(f"Initialized player position at {position}")
             break
 
 
@@ -73,3 +83,4 @@ def mark_last_pos():
     """
 
     dungeon_map.game_map[position[0]][position[1]] = dungeon_map.SYMBOL_LASTPOS
+    logger.debug(f"Marking last player position at {position}")

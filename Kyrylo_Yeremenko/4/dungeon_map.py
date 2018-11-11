@@ -3,8 +3,10 @@ This module generates map for task 4.1 from Coding Campus 2018 Python course
 (Dungeon Game)
 """
 
+import logging
 import random
 import utils
+import log
 
 SYMBOL_TILE = '*'
 SYMBOL_TRAP = '#'
@@ -16,6 +18,7 @@ RATIO_TRAPS = 10.0
 RATIO_TREASURE = 20.0
 
 game_map = None
+logger = logging.getLogger(log.LOGGER_NAME)
 
 
 def generate(size):
@@ -59,6 +62,8 @@ def generate(size):
                 game_map[row][column] = SYMBOL_TREASURE
                 break
 
+    logger.debug(f"Generated map; {size} x {size} tiles, {trap_count} traps and {treasure_count} treasures")
+
 
 def is_index_valid(index):
     """
@@ -86,6 +91,8 @@ def check_nearby_tiles(position):
     :return: Tuple containing two bool values, if there is a trap nearby, and if there is treasure nearby
     """
 
+    logger.info("Checking nearby tiles...")
+
     offset_left = (0, -1)
     offset_right = (0, +1)
     offset_up = (-1, 0)
@@ -100,9 +107,15 @@ def check_nearby_tiles(position):
     for offset in offsets:
 
         if game_map[offset[0]][offset[1]] == SYMBOL_TRAP:
+
             is_trap_nearby = True
+            logger.debug(f"Nearby tile at {offset} contains trap")
+
         if game_map[offset[0]][offset[1]] == SYMBOL_TREASURE:
+
             is_treasure_nearby = True
+            logger.debug(f"Nearby tile at {offset} contains treasure")
+
         if is_treasure_nearby and is_trap_nearby:
             break
 
@@ -116,13 +129,23 @@ def check_current_tile(position):
     :return: Tuple containing two bool values, if position contains trap, and if position contains treasure
     """
 
+    logger.info(f"Checking current tile at {position}...")
+
     is_trap = False
     is_treasure = False
 
     if game_map[position[0]][position[1]] is SYMBOL_TRAP:
+
         is_trap = True
+        logger.debug("Current tile contains trap")
+
     elif game_map[position[0]][position[1]] is SYMBOL_TREASURE:
+
         is_treasure = True
+        logger.debug("Current tile contains treasure")
+
+    else:
+        logger.debug("Current tile is normal tile")
 
     return is_trap, is_treasure
 
