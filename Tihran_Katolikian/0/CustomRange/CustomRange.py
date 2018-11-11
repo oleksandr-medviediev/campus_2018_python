@@ -4,7 +4,7 @@ def gen_range(start, stop, step=1):
     :param start: a start value of range;
     :param stop: a stop value of range;
     :param step: a step of range;
-    :return: a generator that generated the range values;
+    :return: a generator that generates the range values;
     :type start: any arithmetic type;
     :type stop: any arithmetic type;
     :type step: any arithmetic type;
