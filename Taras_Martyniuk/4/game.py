@@ -1,6 +1,7 @@
 import dungeon_map as dm
 from logging_defs import debug_logger as dlog, output_logger as olog
-# from logging_defs import output_logger as olog
+from serialization import save, load
+
 
 player_moves = {
     'up' : (0, 1),
@@ -9,11 +10,14 @@ player_moves = {
     'left' : (-1, 0)
 }
 
+
 def play_game(size):
     dmap = dm.create_map(size)
 
     start = dm.get_random_empty_tile(dmap)
     dlog.debug(f'Starting at {start}')
+
+    olog.info('Note: you can input \'save\' any time to save the game, or \'load\' to load last saved one')
 
     player_pos = start
     while True:
@@ -28,8 +32,20 @@ def play_game(size):
         if dm.is_treasure_nearby(dmap, player_pos):
             olog.info("There's a treasure right next to you! Eyes on the prize!")
 
-        player_pos = move_player_in_bounds(player_pos, dmap)
-        dlog.debug(f'moved to {player_pos}')
+        input_result = handle_user_input(dmap, player_pos)
+
+        if input_result == Save:
+            save(dmap, player_pos)
+            olog.info('Saved your game!\n')
+            continue
+
+        elif input_result == Load:
+            dmap, player_pos = load()
+            dlog.debug('changed state to loaded:')
+            olog.info('Loaded your game!\n')
+            continue
+
+        player_pos = input_result
 
         tile_type = dm.at(dmap, player_pos)
         if tile_type == dm.Treasure:
@@ -40,43 +56,65 @@ def play_game(size):
             lose(dmap, player_pos)
             break
 
+        olog.info('\n')
 
-def move_player_in_bounds(curr_pos, dmap):
+
+def handle_user_input(dmap, curr_pos):
     '''
-        prompts player to input move command
-        until the resulting position will be in bounds
+        continuesly gets the command from user
+        for move, also simulates the position change
+        move command can be rejected (player re-prompted) if it would move player out of the map
 
-        :param curr_pos: Tile player is at currently
         :param dmap: dungeon map
-        :returns: Tile where player is after simulating move - guaranteed to be in bounds
+        :param curr_pos: tile player stands at
+
+        :returns 
+            Save if save command was issued
+            Load is load command was issued
+            Simulated position after moving if move command was issued 
     '''
     while True:
-        moved_to_check = move_player(curr_pos)
-        dlog.debug(f'trying to move to {moved_to_check}')
+        command = parse_user_input()
 
-        if dm.in_bounds(dmap, moved_to_check):
-            return moved_to_check
+        if command == Save or command == Load:
+            return command
+
+        delta = command
+        dlog.debug(f'trying to move by delta of {delta}')
+        simulated_pos = (curr_pos[0] + delta[0], curr_pos[1] + delta[1])
+        dlog.debug(f'trying to move to {simulated_pos}')
+
+        if dm.in_bounds(dmap, simulated_pos):
+            dlog.debug(f'moved to {simulated_pos}')
+            return simulated_pos
         else:
             olog.info("Can't move there - a wall blocks the path")
-            
 
-def move_player(curr_pos):
+        
+Save, Load = range(2)
+
+
+def parse_user_input():
     '''
-        prompts player to enter move direction,
-        validates it, and returns moved position
+        prompts player to issue a command,
+        performs validation,
+        the command might be : move, save and load
 
-        :param curr_pos: tile where player is now
-        :returns: Tile where the player is after simulating a move (can be out of bounds)
+        :returns: player command, if it is Save/Load
+            or move delta if command is to move
     '''
     while True:
-        move = input('Where to go? ')
-        if move not in player_moves:
-            olog.info(f'Sorry, you can go only: {", ".join(player_moves.keys())}')
-            continue
+        command = input('Where to go? ')
+        if command.lower() == 'save':
+            return Save
 
-        delta = player_moves[move]
-        dlog.debug(f'trying to move by delta of {delta}')
-        return (curr_pos[0] + delta[0], curr_pos[1] + delta[1])
+        if command.lower() == 'load':
+            return Load
+
+        if command in player_moves:
+            return player_moves[command]
+        else:
+            olog.info(f'You can go only: {", ".join(player_moves.keys())}')
 
 
 def win(dmap, end_pos):
@@ -105,6 +143,7 @@ def lose(dmap, end_pos):
     olog.info('---------------------------------------------------------')
     olog.info("Now look at all the treasures you could've had for yourself!")
     olog.info(dm.map_to_str(dmap, end_pos))
+
 
 TREASURE_ASCI = '''
 *******************************************************************************
