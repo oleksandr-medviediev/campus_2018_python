@@ -1,4 +1,12 @@
 def encode(word):
+    """ Function performs run length encoding
+
+        Args:
+            word(str): string to encode
+
+        Returns:
+            str: encoded string.
+    """
     encoded = []
     current_run_letter = word[0]
     occurrence_counter = 1
@@ -17,6 +25,13 @@ def encode(word):
 
 
 def decode(encoded_word):
+    """ Function performs run length decoding
+
+        Args:
+            encoded_word(str): encoded string
+        Returns:
+            str: decoded string
+    """
     decoded = []
     for i, letter in enumerate(encoded_word):
         if letter.isdigit():
