@@ -8,7 +8,7 @@ def gen_range(start, stop, step=1):
     :type start: any arithmetic type;
     :type stop: any arithmetic type;
     :type step: any arithmetic type;
-    :rtype: any arithmetic type.
+    :rtype: a generator.
     '''
     current_value = start
     while current_value < stop:
