@@ -6,9 +6,10 @@ from math import floor
 
 
 '''
-    type aliases for module: 
+    type aliases for module:
     Tile type enum - all possible objects for a dungeon tile
     dungeon map object is a 2D array holding Tile type enums
+    Tile - 2D tuple of ints indicating indices in dungeon map 
 '''
 # tile type enum
 Empty, Treasure, Trap = range(3)
@@ -57,10 +58,10 @@ def chunks(l, n):
 def get_random_empty_tile(dmap):
     '''
         :param map: dungeon map object
-        :returns: 2D tuple of indices of random empty tile
+        :returns: random Tile with empty type
     '''
     dlog.debug('get_random_empty_tile')
-    rand_index = lambda: randint(0, len(dmap))
+    rand_index = lambda: randint(0, len(dmap) - 1)
 
     while True:
         maybe_empty = (rand_index(), rand_index())
@@ -71,20 +72,23 @@ def get_random_empty_tile(dmap):
 
 
 # it's a pity i can't just write array_2D[(0, 0)]
-def at(map, tile):
+def at(dmap, tile):
     '''
-        gets the tile type by tuple of indices
-        :param tile: 2d tuple
+        gets type of the Tile
+        :param tile: Tile
     '''
-    return map[tile[0]][tile[1]]
+    assert in_bounds(dmap, tile)
+    return dmap[tile[0]][tile[1]]
 
 
-def is_trap_nearby(map, tile):
-    pass
+def is_trap_nearby(dmap, tile):
+    adj = get_adjacent(dmap, tile)
+    return any(map(lambda t: t == Trap, adj))
 
 
-def is_mine_nearby(map, tile):
-    pass
+def is_treasure_nearby(dmap, tile):
+    adj = get_adjacent(dmap, tile)
+    return any(map(lambda t: t == Treasure, adj))
 
 
 def get_adjacent(dmap, tile):
@@ -92,33 +96,54 @@ def get_adjacent(dmap, tile):
         returns a list of all adjacent tiles types for param tile
         if it is a corner tile, returns only those that are in bounds
     '''
-    deltas = product([-1, 1], repeat=2)
+    assert in_bounds(dmap, tile)
 
-    dlog.debug(f'ds : {list(deltas)}')
+    deltas = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
     adjacent = map(lambda d: (d[0] + tile[0], d[1] + tile[1]), deltas)
 
-    dlog.debug(f'adj : {list(adjacent)}')
-
     adj_in_bounds =  filter(lambda a: in_bounds(dmap, a), adjacent)
-    adj_types = [dmap.at(t) for t in adj_in_bounds]
+    adj_types = [at(dmap, t) for t in adj_in_bounds]
     return adj_types
 
 
 def in_bounds(dmap, tile):
-    pass
+    '''
+        checks if the Tile is inside dungeon map
+    '''
+    assert isinstance(tile, tuple)
+    horiz_ok = tile[0] >= 0 and tile[0] < len(dmap)
+    vert_ok = tile[1] >= 0 and tile[1] < len(dmap)
+
+    return horiz_ok and vert_ok
 
 
-def map_to_str(dmap):
+def set_tile(dmap, tile, tile_type):
+    '''
+        changes the type of tile
+        also, looks hideous because of all the brackets
+    '''
+    dmap[tile[0]][tile[1]] = tile_type
+
+
+def map_to_str(dmap, curr_pos=None):
     '''
         :param dmap: dungeon map
         :returns: string where each line is map's row, displaying types of all tiles
     '''
+
+    curr_pos_mark = 42
     tile_symbols = {
-        Empty : '-',
+        Empty : '.',
         Treasure : '⛃',
-        Trap : '💣'
+        Trap : '💣',
+        curr_pos_mark : 'Y'
     }
+    changed = at(dmap, curr_pos)
+    set_tile(dmap, curr_pos, curr_pos_mark)
 
     row_to_str = lambda row : " ".join(map(lambda t: tile_symbols[t], row))
-    return "\n".join(map(row_to_str, dmap))
+    printed = "\n".join(map(row_to_str, dmap))
+    set_tile(dmap, curr_pos, changed)
+    return printed
 
