@@ -28,9 +28,12 @@ def load():
     global world_size
 
     logger.debug('Try to load game')
-    player_pos, world = saver.load(SAVE_DIR)
-    world_size = len(world)
+    try:
+        player_pos, world = saver.load(SAVE_DIR)
+    except FileNotFoundError:
+        raise RuntimeError('No saved games.')
 
+    world_size = len(world)
     logger.debug('Game loaded successfully')
     return player_pos
 

@@ -1,3 +1,4 @@
+from dungeon_logging import logger
 import random
 
 

@@ -10,15 +10,23 @@ directions = {
 
 
 def game_loop():
-    user_input = input('New game(1)\nLoad game (2)\n')
+    game_started = False
 
-    if user_input == '1':
-        world.create_world(10)
-        player_pos = world.spawn_player()
-        logger.warning('New game started')
-    elif user_input == '2':
-        player_pos = world.load()
-        logger.warning('Game loaded')
+    while not game_started:
+        user_input = input('New game(1)\nLoad game (2)\n')
+
+        if user_input == '1':
+            world.create_world(10)
+            player_pos = world.spawn_player()
+            game_started = True
+            logger.warning('New game started')
+        elif user_input == '2':
+            try:
+                player_pos = world.load()
+                game_started = True
+                logger.warning('Game loaded')
+            except RuntimeError as error:
+                logger.warning(error)
 
     won = False
     lose = False
