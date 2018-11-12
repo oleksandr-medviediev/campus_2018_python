@@ -184,3 +184,8 @@ def poker(hands):
     hands = [[(VALUES.index(card[0]) + 2,  card[1]) for card in hand] for hand in hands]
     best_hands =  [[(VALUES[card[0] - 2] + str(card[1])) for card in hand] for hand in multimax(hands, key=score_hand)]
     return best_hands
+
+	
+onePair = '2S 8H 6S 8D JH'.split()
+doublePair = '4S 5H 4S 8D 5H'.split()
+print(poker([onePair, doublePair]))
