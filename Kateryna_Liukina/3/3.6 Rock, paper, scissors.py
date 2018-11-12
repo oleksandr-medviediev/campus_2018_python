@@ -2,10 +2,11 @@ from random import choice
 from random import shuffle
 
 
-def beat(weapon1, weapon2):
+def beat(weapons_names, weapon1, weapon2):
     """
     Function decide which weapon win
     Args:
+        weapons_names(dict(str, int)): return index of weapon
         weapon1(str): string with name of weapon
         weapon2(str): string with name of weapon
     Returns:
@@ -14,18 +15,17 @@ def beat(weapon1, weapon2):
     return weapons_names[weapon1] - weapons_names[weapon2] % 3 == 2
 
 
-def print_weapons(index_of_lose):
+def print_weapons(player_lose, bots, number_of_not_empty_weapons, player_weapon, index_of_lose):
     """
     Function prints weapons for current round of game
     Args:
+        number_of_not_empty_weapons(list(list)): name of weapon and number of bots with this weapon
+        player_weapon(str): player weapon
+        player_lose(bool): true if player lost
         index_of_lose(int): index of weapon that lose
     Returns:
         none
     """
-    global bots
-    global number_of_not_empty_weapons
-    global player_weapon
-
     if not player_lose:
         print("You: " + player_weapon)
 
@@ -92,15 +92,13 @@ def play_game():
                 player_weapon = input("Your weapon:")
                 number_of_weapons[player_weapon] += 1
 
-            input()
-
             number_of_not_empty_weapons = [[name, number] for name, number in number_of_weapons.items() if number]
 
             if len(number_of_not_empty_weapons) != 2:
                 print("Tie!")
                 continue
 
-            index_of_lose = int(beat(number_of_not_empty_weapons[1][0], number_of_not_empty_weapons[0][0]))
+            index_of_lose = int(beat(weapons_names, number_of_not_empty_weapons[1][0], number_of_not_empty_weapons[0][0]))
 
             number_of_players -= number_of_not_empty_weapons[index_of_lose][1]
 
@@ -110,7 +108,7 @@ def play_game():
             if player_weapon == number_of_not_empty_weapons[1][0]:
                 number_of_not_empty_weapons[1][1] -= 1
 
-            print_weapons(index_of_lose)
+            print_weapons(player_lose, bots, number_of_not_empty_weapons, player_weapon, index_of_lose)
 
             if player_weapon == number_of_not_empty_weapons[index_of_lose][0]:
                 player_lose = True
@@ -127,3 +125,6 @@ def play_game():
             leader_board.insert(0, "you")
         print_leader_board(leader_board)
         continue_game = input('Continue? (y/n)')
+
+		
+play_game()		
