@@ -1,9 +1,32 @@
 import random
 import map_generator
+import saver
 
 
 world_size = 0
 world = None
+SAVE_DIR = 'savegame.dat'
+
+cell_repr = {
+    'Trap': '#',
+    'Treasure': '$',
+    'Player': 'P',
+    None: '.',
+}
+
+
+def save(player_pos):
+    saver.save([player_pos, world], SAVE_DIR)
+
+
+def load():
+    global world
+    global world_size
+
+    player_pos, world = saver.load(SAVE_DIR)
+    world_size = len(world)
+
+    return player_pos
 
 
 def print_world(player_pos):
@@ -11,9 +34,8 @@ def print_world(player_pos):
     for y, row in enumerate(world):
         for x, cell in enumerate(row):
             if player_pos[0] == x and player_pos[1] == y:
-                print('Player ', end='')
-            else:
-                print('{} '.format(cell), end='')
+                cell = 'Player'
+            print('{} '.format(cell_repr[cell]), end='')
         print()
 
 
@@ -53,7 +75,6 @@ def is_inside_world(pos):
 
 
 def move_player(player_pos, direction):
-    # new_pos = [c0 + c1 for c0, c1 in zip(player_pos, direction)]
     new_pos = [
         player_pos[0] + direction[0],
         player_pos[1] + direction[1]
