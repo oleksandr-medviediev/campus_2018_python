@@ -13,6 +13,8 @@ VECTORS_TO_ADJACENT_TILES = tuple(AVAILABLE_MOVES.values())
 MOVE_NAMES = tuple(AVAILABLE_MOVES.keys())
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def query_player_input():
     """
     Query player for next command and return the name of entered command.
@@ -28,6 +30,8 @@ def query_player_input():
     return move
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def execute_player_move(map_size, player_x, player_y, move_name):
     """
     Apply move_name to player position and return the new position.
@@ -58,6 +62,8 @@ def execute_player_move(map_size, player_x, player_y, move_name):
     return player_x, player_y
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def check_end_game_condition(game_map, player_x, player_y):
     """
     Return False if game has finished, True otherwise.
@@ -87,6 +93,8 @@ def check_end_game_condition(game_map, player_x, player_y):
     return is_game_running
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def output_game_state(treasures, traps):
     """
     Output information about nearby treasures and traps.
@@ -113,6 +121,8 @@ def output_game_state(treasures, traps):
         logging.info('There is nothing nearby.')
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def update_game_state(game_map, player_x, player_y):
     """
     Update game state, and output it to the console.
@@ -150,6 +160,8 @@ def update_game_state(game_map, player_x, player_y):
     output_game_state(treasures, traps)
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def mark_as_visited(game_map, x, y):
     """
     Mark tile of game_map with the coordinates(x, y) as visited if it is empty, do nothing otherwise.

@@ -7,7 +7,14 @@ mode_debug = True
 
 
 def log_decor(func):
+    """
+    Decorate func by outputting useful logs before and after call to func if mode_log is True.
 
+    :param func: function to decorate.
+    :type func: function.
+
+    :return: redirects return from func.
+    """
     @functools.wraps(func)
     def log_wrapper(*args, **kwargs):
 
@@ -28,7 +35,14 @@ def log_decor(func):
 
 
 def debug_decor(func):
-    
+    """
+    Decorate func by outputting debug logs before and after call to func if mode_debug is True.
+
+    :param func: function to decorate.
+    :type func: function.
+
+    :return: redirects return from func.
+    """
     @functools.wraps(func)
     def debug_wrapper(*args, **kwargs):
 

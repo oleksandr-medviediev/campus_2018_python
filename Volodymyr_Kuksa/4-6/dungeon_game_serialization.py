@@ -1,4 +1,5 @@
 import pickle
+import dungeon_game_decorators
 
 FILE_NAME = 'save_file.dg'
 
@@ -6,6 +7,8 @@ LOAD_COMMAND = 'load'
 SAVE_COMMAND = 'save'
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def deserialize():
     """
     Unpickle game map and player coordinates from save file with FILE_NAME.
@@ -19,6 +22,8 @@ def deserialize():
     return tuple(data)
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def serialize(game_map, player_x, player_y):
     """
     Pickle game_map, player_x, player_y into a save file with FILE_NAME.
