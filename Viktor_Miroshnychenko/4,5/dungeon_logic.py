@@ -1,3 +1,6 @@
+import dungeon_logger
+
+
 CAGE_STATE = ['bomb', 'treasue', 'empty']
 GAME_STATE = ['lost', 'won', 'ingame']
 COMMANDS = ['r', 'l', 'u', 'd']
@@ -17,6 +20,7 @@ def check_pos(dun_map, position):
     :rtype: str
     """
 
+    dungeon_logger.logger.debug(f'position: {position}, pos type: {type(position)}')
     ret_val = ""
     pos_value = dun_map[position[0]][position[1]]
     if pos_value == '!':
@@ -71,6 +75,8 @@ def check_closest_pos(dun_map, position, size):
         if value != 'empty':
             ret_val.add(value)
 
+    dungeon_logger.logger.debug("Nearest positions")
+
     return ret_val
 
 
@@ -118,6 +124,8 @@ def make_move_if_possible(position, size, command):
         else:
             position[0] += 1
 
+    dungeon_logger.logger.debug("Move is possible")
+
     return  ret_val
     
 
@@ -139,11 +147,13 @@ def make_move(dun_map, position, size, command):
     :rtype: element of GAME_STATE
     """
 
+    dungeon_logger.logger.debug(f"Move with command: {command}")
+    
     dun_map[position[0]][position[1]] = '0'
     move_ret_val = make_move_if_possible(position, size, command)
     if move_ret_val == False:
 
-        print('Move is not possible')
+        dungeon_logger.logger.info('Move is not possible')
         return 'ingame'
 
     cage_state = check_pos(dun_map, position)
@@ -153,16 +163,16 @@ def make_move(dun_map, position, size, command):
         
         cages = check_closest_pos(dun_map, position, size)
         for cage in cages:
-            print(WARNINGS[cage])
+            dungeon_logger.logger.info(WARNINGS[cage])
 
     elif cage_state == 'bomb':
         
-        print("You LOST!!!")
+        dungeon_logger.logger.info("You LOST!!!")
         game_state = 'lost'
         
     else:
         
-        print("You WON!!!")
+        dungeon_logger.logger.info("You WON!!!")
         game_state = 'won'
 
     return game_state
