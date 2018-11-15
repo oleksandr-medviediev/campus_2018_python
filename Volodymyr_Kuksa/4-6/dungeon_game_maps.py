@@ -1,4 +1,3 @@
-import logging
 from random import randint
 from random import shuffle
 
@@ -63,9 +62,7 @@ def generate_map(size):
     :rtype: list.
     """
     characters = generate_flat_map(size * size)
-    logging.debug(f'Generated flat map: {characters}')
     game_map = split_rows(size, characters)
-    logging.debug(f'Generated map:\n{game_map_to_string(game_map)}')
 
     return game_map
 

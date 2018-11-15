@@ -1,6 +1,4 @@
-import logging
 import pickle
-from dungeon_game_maps import game_map_to_string
 
 FILE_NAME = 'save_file.dg'
 
@@ -16,10 +14,7 @@ def deserialize():
     :rtype: list, int, int.
     """
     with open(FILE_NAME, 'rb') as save_file:
-
-        logging.debug(f'Calling pickle.load("{FILE_NAME}")')
         data = pickle.load(save_file)
-        logging.debug(f'Deserialized map:\n{game_map_to_string(data[0])}\nPlayer pos: ({data[1]};{data[2]})')
 
     return tuple(data)
 
@@ -42,6 +37,4 @@ def serialize(game_map, player_x, player_y):
     data = [game_map, player_x, player_y]
 
     with open(FILE_NAME, 'wb') as save_file:
-
-        logging.debug(f'Calling pickle.dump(data, "{FILE_NAME}", protocol=3)')
         pickle.dump(data, save_file, protocol=3)

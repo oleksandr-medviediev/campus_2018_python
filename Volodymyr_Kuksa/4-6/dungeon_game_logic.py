@@ -1,6 +1,7 @@
 import logging
-from dungeon_game_maps import GAME_CHARACTERS, game_map_to_string
+from dungeon_game_maps import GAME_CHARACTERS
 from dungeon_game_serialization import SAVE_COMMAND, serialize
+import dungeon_game_decorators
 
 AVAILABLE_MOVES = {'up': (0, -1),
                    'down': (0, 1),
@@ -23,8 +24,6 @@ def query_player_input():
 
     while not MOVE_NAMES.count(move) and move != SAVE_COMMAND:
         move = input('Wrong! Try again: ').lower()
-
-    logging.debug(f'Player input for iteration: {move}')
 
     return move
 
@@ -84,8 +83,6 @@ def check_end_game_condition(game_map, player_x, player_y):
         logging.info('You Lost(')
     else:
         is_game_running = True
-
-    logging.debug(f'is_game_running = {is_game_running}')
 
     return is_game_running
 
@@ -150,9 +147,6 @@ def update_game_state(game_map, player_x, player_y):
         elif adjacent_tile == GAME_CHARACTERS['Trap']:
             traps += 1
 
-    logging.debug(f'Number of treasures on adjacent tiles: {treasures}')
-    logging.debug(f'Number of traps on adjacent tiles: {traps}')
-
     output_game_state(treasures, traps)
 
 
@@ -178,6 +172,8 @@ def mark_as_visited(game_map, x, y):
     return game_map
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def run_game(game_map, player_x, player_y):
     """
     Execute game logic.
@@ -212,5 +208,3 @@ def run_game(game_map, player_x, player_y):
         is_game_running = check_end_game_condition(game_map, player_x, player_y)
 
         game_map = mark_as_visited(game_map, player_x, player_y)
-
-        logging.debug(f'Current map state:\n{game_map_to_string(game_map)}\nPlayer pos: ({player_x};{player_y})')

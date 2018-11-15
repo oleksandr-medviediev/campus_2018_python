@@ -23,8 +23,6 @@ def query_map_size():
     while not size.isdigit() or not 5 <= int(size) <= 20:
         size = input('Wrong! Try again: ')
 
-    logging.debug(f'Map size requested: {size}')
-
     return int(size)
 
 
@@ -39,8 +37,6 @@ def query_game_load():
 
     while not START_OPTIONS.count(player_input):
         player_input = input('Wrong! Try again: ')
-
-    logging.debug(f'Game start option selected: {player_input}')
 
     return player_input
 
@@ -72,19 +68,15 @@ def main():
     :return: None.
     """
     logging.info('Welcome to the Dungeon Game!')
-    if query_game_load() == '2':
 
-        logging.debug('Enter deserialize()')
+    if query_game_load() == '2':
         dungeon_game_map, player_x, player_y = deserialize()
-        logging.debug('Quit deserialize()')
 
     else:
 
         size_of_map = query_map_size()
-        logging.debug(f'Calling generate_map({size_of_map})')
         dungeon_game_map = generate_map(size_of_map)
         player_x, player_y = spawn_player(dungeon_game_map)
-        logging.debug(f'Player spawned on ({player_x};{player_y})')
 
     run_game(dungeon_game_map, player_x, player_y)
     logging.info(game_map_to_string(dungeon_game_map))
@@ -93,10 +85,7 @@ def main():
 if __name__ == '__main__':
 
     try:
-
-        logging.debug(f'Enter main()')
         main()
-        logging.debug(f'Quit main()')
 
     except OSError as e:
 
