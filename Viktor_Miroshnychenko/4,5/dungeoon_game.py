@@ -45,15 +45,15 @@ def game():
     dun_map = dungeon_map_generate.generate_map(size)
     position = dungeon_map_generate.set_player_randomly(dun_map)
 
-    print("Use following commands to navigate your position", dungeon_logic.COMMANDS)
-    print("Use 'save' or 'load' commands to save/load game")
+    dungeon_logic.dungeon_logger.logger.info(f"Use following commands to navigate your position {dungeon_logic.COMMANDS}")
+    dungeon_logic.dungeon_logger.logger.info("Use 'save' or 'load' commands to save/load game")
 
     game_state = 'ingame'
     while game_state == 'ingame':
         game_state = run_frame(dun_map, position)
 
     for row in dun_map:
-        print(row)
+        dungeon_logic.dungeon_logger.logger.info(row)
 
 
 game()
