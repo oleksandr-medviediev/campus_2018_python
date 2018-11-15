@@ -86,7 +86,7 @@ def query_logging_mode():
     if mode == 1 or mode == 3:
         dungeon_game_decorators.mode_debug = True
     if mode == 2 or mode == 3:
-        dungeon_game_decorators.mode_debug = True
+        dungeon_game_decorators.mode_log = True
 
 
 @dungeon_game_decorators.log_decor

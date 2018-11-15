@@ -5,6 +5,8 @@ import inspect
 mode_log = False
 mode_debug = False
 
+debug_logger = logging.getLogger('DebugLogger')
+
 
 def log_decor(func):
     """
@@ -20,11 +22,12 @@ def log_decor(func):
 
         if mode_log:
 
-            logging.debug(f'Some "useful" debug log before call to {func.__name__}')
+            # Sorry, I wasn't able to come up with something better(
+            debug_logger.debug(f'Some "useful" debug log before call to {func.__name__}')
 
             result = func(*args, **kwargs)
 
-            logging.debug(f'Some other "useful" debug log after call to {func.__name__}')
+            debug_logger.debug(f'Some other "useful" debug log after call to {func.__name__}')
 
         else:
             result = func(*args, **kwargs)
@@ -57,11 +60,11 @@ def debug_decor(func):
                 debug_string.append(f'{key}::{value}')
 
             debug_string = ' '.join(debug_string)
-            logging.debug(debug_string)
+            debug_logger.debug(debug_string)
 
             result = func(*args, **kwargs)
 
-            logging.debug(f'{func.__name__} returned {result}')
+            debug_logger.debug(f'{func.__name__} returned {result}')
 
         else:
             result = func(*args, **kwargs)
