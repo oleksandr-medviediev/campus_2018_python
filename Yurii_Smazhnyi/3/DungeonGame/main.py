@@ -3,7 +3,6 @@ import dungeon_input
 import custom_log
 import serializer
 
-
 is_trap_near_player = False
 is_treasure_near_player = False
 game_map = []
@@ -125,30 +124,25 @@ def start():
 
     while True:
 
-        debug_status = "Off" if custom_log.is_debug else "On"
-        string = input(f"Start Game(1)/Load Game(2)/Exit Game(3)/Turn { debug_status } Debug(4):")
+        string = input("Start Game(1)/Load Game(2)/Exit Game(3) :")
 
         if string == '1':
 
             game_map = map_generator.create_map(10)
-            custom_log.info("Game Started!")
+            custom_log.logger.info("Game Started!")
             play()
 
         elif string == '2':
             game_map = serializer.load_map()
 
             if game_map == "":
-                custom_log.error("Failed to Load Game")
+                custom_log.logger.error("Failed to Load Game")
                 continue
 
-            custom_log.info("Game Started!")
+            custom_log.logger.info("Game Started!")
             play()
-
         elif string == '3':
             break
-
-        elif string == '4':
-            custom_log.toggle_debug()
 
 
 def print_map():
@@ -162,7 +156,7 @@ def print_map():
     global game_map
 
     for i in range(len(game_map)):
-        custom_log.info((game_map[i]))
+        print((game_map[i]))
 
 
 def check_status():
@@ -250,7 +244,7 @@ def play():
     global is_trap_near_player
     global game_map
 
-    custom_log.info("---------------------------------------------------")
+    custom_log.logger.info("---------------------------------------------------")
 
     while True:
 
@@ -258,13 +252,13 @@ def play():
 
         valid_direction = get_valid_directions()
 
-        custom_log.info("Input 'save'/'load' to save/load the game.")
-        custom_log.info(f"Valid directions - {valid_direction}")
+        custom_log.logger.info("Input 'save'/'load' to save/load the game.")
+        custom_log.logger.info(f"Valid directions - {valid_direction}")
 
         check_status()
 
-        custom_log.info(f"Traps Near You - {is_trap_near_player}")
-        custom_log.info(f"Treasure Near You - {is_treasure_near_player}")
+        custom_log.logger.info(f"Traps Near You - {is_trap_near_player}")
+        custom_log.logger.info(f"Treasure Near You - {is_treasure_near_player}")
 
         direction = dungeon_input.get_direction()
 
@@ -276,7 +270,7 @@ def play():
             new_game_map = serializer.load_map()
 
             if new_game_map == "":
-                custom_log.error("Failed to Load Game")
+                custom_log.logger.error("Failed to Load Game")
                 continue
 
             game_map = new_game_map
@@ -284,12 +278,12 @@ def play():
 
 
         if direction not in valid_direction:
-            custom_log.warning("Can't move there!")
+            custom_log.logger.warning("Can't move there!")
             continue
 
         item_stepped_on = move_player(direction)
 
-        custom_log.info("---------------------------------------------------")
+        custom_log.logger.info("---------------------------------------------------")
 
         if item_stepped_on == map_generator.TRAP_SYMBOL:
             end_game()
@@ -306,7 +300,7 @@ def end_game():
     :returns: None.
     :rtype: None.
     """
-    custom_log.info("You Lost!")
+    custom_log.logger.info("You Lost!")
     print_map()
 
 
@@ -317,7 +311,7 @@ def win_game():
     :returns: None.
     :rtype: None.
     """
-    custom_log.info("You Won!")
+    custom_log.logger.info("You Won!")
     print_map()
 
 
