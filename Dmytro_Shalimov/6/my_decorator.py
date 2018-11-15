@@ -27,13 +27,28 @@ debug_logger.addHandler(debug_file_handler)
 
 
 
-def my_wrapper(func):
+def log_wrapper(func):
   
     @wraps(func)
     def wrapper(*args, **kwargs):
 
         if my_config_variables.is_logging_active:
-            log_logger.debug(f'Entered {func.__name__}')
+            log_logger.debug(f'Entered {func.__name__}')     
+
+        to_return = func(*args, **kwargs)
+
+        if my_config_variables.is_logging_active:
+            log_logger.debug(f'Exited {func.__name__}')
+
+        return to_return
+
+    return wrapper
+
+
+def debug_wrapper(func):
+  
+    @wraps(func)
+    def wrapper(*args, **kwargs):
 
         if my_config_variables.is_debug_active:
 
@@ -53,9 +68,6 @@ def my_wrapper(func):
                     
 
         to_return = func(*args, **kwargs)
-
-        if my_config_variables.is_logging_active:
-            log_logger.debug(f'Exited {func.__name__}')
 
         if my_config_variables.is_debug_active:
             debug_logger.debug(f'Exited {func.__name__}')

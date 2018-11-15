@@ -1,5 +1,5 @@
 import logging
-from my_decorator import my_wrapper
+from my_decorator import log_wrapper, debug_wrapper
 from random import shuffle
 from random import randrange
 
@@ -12,7 +12,8 @@ TRAPPED_PLAYER = 'X'
 CELL_TYPES_INFO_MESSAGES = {TREASURE: 'There is a treasure nearby', TRAP: 'Careful! A trap is near'}
 
 
-@my_wrapper
+@log_wrapper
+@debug_wrapper
 def map_size_input():
     """
     Prompts user to enter map size until it meets set requirements
@@ -42,7 +43,8 @@ def map_size_input():
     return map_size
 
 
-@my_wrapper
+@log_wrapper
+@debug_wrapper
 def generate_player_position(generated_map):
     """
     Generates random position for player
@@ -67,7 +69,8 @@ def generate_player_position(generated_map):
     return generated_map_with_player
 
 
-@my_wrapper
+@log_wrapper
+@debug_wrapper
 def get_player_position(generated_map):
     """
     Returns player position
@@ -92,7 +95,8 @@ def get_player_position(generated_map):
     return player_position
 
 
-@my_wrapper
+@log_wrapper
+@debug_wrapper
 def generate_map():
     """
     Generates map of given size with player, traps and treasures

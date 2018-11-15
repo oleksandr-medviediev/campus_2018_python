@@ -1,5 +1,5 @@
 import logging
-from my_decorator import my_wrapper
+from my_decorator import log_wrapper, debug_wrapper
 import my_map_generator
 import my_save_load_handler
 
@@ -8,7 +8,8 @@ PLAYER_MOVE_DIRECTIONS_NAMES = ['up', 'down', 'left', 'right']
 PLAYER_MOVE_DIRECTIONS_BY_NAMES = {'up': (-1, 0), 'down': (1, 0), 'left': (0, -1), 'right': (0, 1)}
 
 
-@my_wrapper
+@log_wrapper
+@debug_wrapper
 def scan_notification(cell_type):
     """
     Checks cell type and prints notification if check is passed
@@ -20,7 +21,8 @@ def scan_notification(cell_type):
         print(my_map_generator.CELL_TYPES_INFO_MESSAGES[cell_type])
 
 
-@my_wrapper
+@log_wrapper
+@debug_wrapper
 def scan_area_around_player(player_position, game_map):
     """
     Checks cells around player for treasures and traps and prints corresponding notifications
@@ -63,7 +65,8 @@ def scan_area_around_player(player_position, game_map):
     scan_notification(cell_type)
 
 
-@my_wrapper
+@log_wrapper
+@debug_wrapper
 def calculate_player_new_position(direction, player_position, game_map):
     """
     Calculates new player position according to given direction
@@ -94,7 +97,8 @@ def calculate_player_new_position(direction, player_position, game_map):
     return (new_player_position_row, new_player_position_column)
 
 
-@my_wrapper
+@log_wrapper
+@debug_wrapper
 def process_move_player(user_input, current_data):
     """
     Updates given data according to new player position defined by user input
@@ -131,7 +135,8 @@ def process_move_player(user_input, current_data):
     return (updated_game_map, treasures_left, (new_player_position_row, new_player_position_column), is_trapped)
 
 
-@my_wrapper
+@log_wrapper
+@debug_wrapper
 def update_player(current_data):
     """
     Updates current data according to user input
@@ -163,7 +168,8 @@ def update_player(current_data):
     return updated_data
 
 
-@my_wrapper
+@log_wrapper
+@debug_wrapper
 def print_map(game_map):
     """
     Prints current map
@@ -173,7 +179,8 @@ def print_map(game_map):
         print(game_map[i])
 
 
-@my_wrapper
+@log_wrapper
+@debug_wrapper
 def process_select_game():
     """
     Prompts user to select whether he wants to start a new game or load saved one if it exists
@@ -202,7 +209,8 @@ def process_select_game():
     return is_new_game
 
 
-@my_wrapper
+@log_wrapper
+@debug_wrapper
 def init_game_data():
     """
     Initializes game data according to game type selected by user(new or load)
@@ -234,7 +242,8 @@ def init_game_data():
     return current_data 
 
 
-@my_wrapper
+@log_wrapper
+@debug_wrapper
 def run_game_cycle():
     """
     Runs game cycle

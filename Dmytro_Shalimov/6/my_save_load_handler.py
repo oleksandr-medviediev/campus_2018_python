@@ -1,10 +1,11 @@
 import logging
-from my_decorator import my_wrapper
+from my_decorator import log_wrapper, debug_wrapper
 import os.path
 import pickle
 
 
-@my_wrapper
+@log_wrapper
+@debug_wrapper
 def process_save_game(current_data):
     """
     Prompts user to enter file name to serialize his current game state using pickle
@@ -21,7 +22,8 @@ def process_save_game(current_data):
     print(f'Game saved in {user_input}.pickle')  
 
 
-@my_wrapper
+@log_wrapper
+@debug_wrapper
 def process_load_game():
     """
     Prompts user to enter file name to load game from
