@@ -1,4 +1,5 @@
 import pickle
+from os.path import exists
 
 def save_to_file(obj):
 
@@ -34,3 +35,20 @@ def load_from_file():
     file.close()
 
     return obj
+
+
+def check_loading_file():
+
+    """ Function checks if existing loading file.
+
+        Args:
+            (none)
+
+        Returns:
+            bool: return True if file exists, otherwise - return False
+
+    """
+    
+    is_file_existing = exists('saved_game.txt')
+
+    return is_file_existing

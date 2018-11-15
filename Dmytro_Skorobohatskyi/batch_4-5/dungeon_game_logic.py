@@ -39,6 +39,28 @@ def show_game_rules():
             If you find a treasure - you won.''')
 
 
+def get_side_of_field():
+
+    """ Function recognize player's input to specify side of field.
+
+        Args:
+            (none)
+
+        Returns:
+            int: specified side
+
+    """
+    
+    number_string = input('Enter the side of field(more than 5): ')
+
+    while not number_string.isdigit() or int(number_string) < 5:
+        number_string = input('Wrong input. Side: ')
+
+    side = int(number_string)
+
+    return side
+
+    
 def get_random_start_point(level_map):
 
     """ Function return random start point for player.
@@ -101,9 +123,12 @@ def recognize_input():
             int: index of direction or save command
     """
     
-    player_choice = input('Enter the direction(r, l, u, d): ')
+    player_choice = input('Enter the direction(r, l, u, d) or save: ')
     while player_choice == '':
         player_choice = input()
+
+    while player_choice not in ['r', 'l', 'u', 'd', 'save']:
+        player_choice = input('Wrong input. Direction: ')
     
     if player_choice == 'save':
         return SAVE_COMMAND_INDEX
@@ -280,6 +305,7 @@ def load_game():
 def check_start_new_game():
 
     """ Function checks start new game or load existing saving.
+        If file does not exist, start new game
 
         Args:
             (none)
@@ -290,69 +316,14 @@ def check_start_new_game():
 
     """
     
-    logger.info('\n1. Start new game.\n2. Load game.')
+    logger.info('\nPress "load" for loading game.\nAnything to start new game.\n')
 
     choice = input('Enter your choice: ')
 
-    is_start_new_game = choice == '1'
+    is_start_new_game = choice != 'load'
+
+    if not is_start_new_game and not game_saver.check_loading_file():
+        is_start_new_game = True
+        logger.info('Loading does not exist. Starting new game...')
 
     return is_start_new_game
-
-    
-def run_game():
-
-    """ Function implements main logic of game.   """
-    show_game_rules()
-    logger.debug('The game is started.')
-
-    game_map = []
-    x = y = 0
-    
-    if check_start_new_game():
-        side = int(input('Enter the side of field: '))
-        logger.debug('The field side is {}.'.format(side))
-        game_map = level_builder.generate_map(side)
-        logger.debug('The map was generated.')
-        
-        x, y = get_random_start_point(game_map)
-        logger.debug('The start point is ({0}, {1})'.format(x, y))
-    else:
-        game_map, x, y = load_game()
-        logger.debug('The game was loaded successfully.')
-        logger.debug('The start point is ({0}, {1})'.format(x, y))
-
-    is_game_continuos = True
-
-    while is_game_continuos:
-
-        logger.debug('The turn was started.')
-
-        warn_situation_in_cell(game_map, x, y)
-        logger.debug('The situation was warned successfully.')
-        
-        choice = recognize_input()
-        if choice == SAVE_COMMAND_INDEX:
-            save_game(game_map, x, y)
-            while choice == SAVE_COMMAND_INDEX:
-               choice = recognize_input()
-            
-        logger.debug('The direction index is {}.'.format(choice))
-
-        if not is_direction_blocked(game_map, choice, x, y):   
-            x, y = get_new_coordinates(choice, x, y)
-            logger.debug('The player moved to ({0}, {1})'.format(x, y))
-
-            if is_game_over(game_map, x, y):
-                is_winning = check_game_win(game_map[x][y])
-                show_game_result(is_winning)
-                is_game_continuos = False
-                logger.debug('The game over')
-                
-        else:
-            logger.warning("You can't move there")
-               
-        logger.debug('The turn was finished successfully.')
-    
-    level_builder.show_level_map(game_map)
-
-    logger.debug('The game is finished successfully.')
