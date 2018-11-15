@@ -2,8 +2,8 @@ import functools
 import logging
 import inspect
 
-mode_log = True
-mode_debug = True
+mode_log = False
+mode_debug = False
 
 
 def log_decor(func):
