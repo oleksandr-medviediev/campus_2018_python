@@ -1,3 +1,4 @@
+import dungeon_decorators
 import dungeon_logger
 
 
@@ -8,6 +9,8 @@ WARNINGS = {'bomb':'Bomb is near you!',
             'treasue':'Tresure is near you'}
 
 
+@dungeon_decorators.debug_time_decor
+@dungeon_decorators.debug_decor
 def check_pos(dun_map, position):
     """
     :param dun_map: dungeon map
@@ -35,6 +38,8 @@ def check_pos(dun_map, position):
     return ret_val
 
 
+@dungeon_decorators.debug_time_decor
+@dungeon_decorators.debug_decor
 def check_closest_pos(dun_map, position, size):
     """
     :param dun_map: dungeon map
@@ -80,6 +85,8 @@ def check_closest_pos(dun_map, position, size):
     return ret_val
 
 
+@dungeon_decorators.debug_time_decor
+@dungeon_decorators.debug_decor
 def make_move_if_possible(position, size, command):
     """
     :param position: position on the dun_map
@@ -129,6 +136,8 @@ def make_move_if_possible(position, size, command):
     return  ret_val
     
 
+@dungeon_decorators.debug_time_decor
+@dungeon_decorators.debug_decor
 def make_move(dun_map, position, size, command):
     """
     :param dun_map: dungeon map
