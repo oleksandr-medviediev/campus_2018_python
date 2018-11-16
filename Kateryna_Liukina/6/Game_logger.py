@@ -20,3 +20,4 @@ logger.addHandler(file_handler)
 
 
 log_decorator = Custom_decorator.log_decorator_factory(logger)
+debug_decorator = Custom_decorator.debug_decorator_factory(logger)

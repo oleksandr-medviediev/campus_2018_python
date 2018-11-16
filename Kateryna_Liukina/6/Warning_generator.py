@@ -1,6 +1,10 @@
-import Game_logger
+from Game_logger import logger
+from Game_logger import log_decorator
+from Game_logger import debug_decorator
 
-@Game_logger.log_decorator
+
+@log_decorator
+@debug_decorator
 def generate_warning(game_map, player_position, game_item):
     """
     Function generate warning for dungeon game
@@ -18,7 +22,7 @@ def generate_warning(game_map, player_position, game_item):
         position [1] =  max(0, player_position[1] - 1)
         while position[1] <= player_position[1] + 1 and position[1] < len(game_map[0]):
             if game_map[position[0]][position[1]] == game_item:
-                Game_logger.logger.warning(list_of_warnings[game_item])
+                logger.warning(list_of_warnings[game_item])
                 return
             position[1] += 1
         position[0] += 1

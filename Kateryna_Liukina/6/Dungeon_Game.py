@@ -1,5 +1,6 @@
 from Game_logger import logger
 from Game_logger import log_decorator
+from Game_logger import debug_decorator
 import Map_generator
 import Warning_generator
 import math
@@ -9,6 +10,7 @@ from functools import partial
 
 
 @log_decorator
+@debug_decorator
 def dungeon_game():
     """
     Function launch the dungeon game
@@ -61,7 +63,9 @@ def dungeon_game():
         print("You lost.")
     print(game_map)
 
+	
 @log_decorator
+@debug_decorator
 def save(game_map, player_position):
     """
     saves level in file
@@ -73,7 +77,9 @@ def save(game_map, player_position):
     with open('save.pickable', 'wb') as handle:
         pickle.dump([game_map, player_position], handle)
 
+		
 @log_decorator
+@debug_decorator
 def load():
     """
     loads level from file
