@@ -1,4 +1,5 @@
 from time import time
+import functools
 import dungeon_logger
 
 
@@ -8,7 +9,8 @@ console_debug_enabled = False
 
 
 def debug_decor(func):
-    
+
+    @functools.wraps(func)
     def debug_wrapper(*args, **kwargs):
 
         result = 1
@@ -39,6 +41,7 @@ def debug_decor(func):
 
 def debug_time_decor(func):
 
+    @functools.wraps(func)
     def time_wrapper(*args, **kwargs):
 
         if file_time_debug_enabled == False and console_debug_enabled == False:
