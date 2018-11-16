@@ -8,6 +8,8 @@ is_trap_near_player = False
 is_treasure_near_player = False
 game_map = []
 
+
+@decorators.info_decorator
 @decorators.debug_decorator
 def get_player_pos():
     """
@@ -33,6 +35,7 @@ def get_player_pos():
     return (x_index, y_index)
 
 
+@decorators.info_decorator
 @decorators.debug_decorator
 def get_valid_directions():
     """
@@ -66,6 +69,7 @@ def get_valid_directions():
     return valid_directions
 
 
+@decorators.info_decorator
 @decorators.debug_decorator
 def is_item_near_player(item):
     """
@@ -115,6 +119,7 @@ def is_item_near_player(item):
     return result
 
 
+@decorators.info_decorator
 @decorators.debug_decorator
 def start():
     """
@@ -129,7 +134,8 @@ def start():
     while True:
 
         debug_status = "Off" if decorators.is_debug else "On"
-        string = input(f"Start Game(1)/Load Game(2)/Exit Game(3)/Turn { debug_status } Debug(4):")
+        info_status = "Off" if decorators.is_info else "On"
+        string = input(f"Start Game(1)/Load Game(2)/Exit Game(3)/Turn { debug_status } Debug(4)/Turn { info_status } Info(5):")
 
         if string == '1':
 
@@ -151,9 +157,13 @@ def start():
             break
 
         elif string == '4':
-            decorators.toggle_debug()
+            decorators.is_debug = not decorators.is_debug
+
+        elif string == '5':
+            decorators.is_info = not decorators.is_info
 
 
+@decorators.info_decorator
 @decorators.debug_decorator
 def print_map():
     """
@@ -169,6 +179,7 @@ def print_map():
         custom_log.logger.info((game_map[i]))
 
 
+@decorators.info_decorator
 @decorators.debug_decorator
 def check_status():
     """
@@ -186,6 +197,7 @@ def check_status():
     is_trap_near_player = is_item_near_player(map_generator.TRAP_SYMBOL)
 
 
+@decorators.info_decorator
 @decorators.debug_decorator
 def replace_str_index(text,index=0,replacement=''):
     """
@@ -204,6 +216,7 @@ def replace_str_index(text,index=0,replacement=''):
     return '%s%s%s'%(text[:index],replacement,text[index+1:])
 
 
+@decorators.info_decorator
 @decorators.debug_decorator
 def move_player(direction):
     """
@@ -246,6 +259,7 @@ def move_player(direction):
     return item_stepped_on
 
 
+@decorators.info_decorator
 @decorators.debug_decorator
 def play():
     """
@@ -307,6 +321,7 @@ def play():
             break
 
 
+@decorators.info_decorator
 @decorators.debug_decorator
 def end_game():
     """
@@ -319,6 +334,7 @@ def end_game():
     print_map()
 
 
+@decorators.info_decorator
 @decorators.debug_decorator
 def win_game():
     """

@@ -6,6 +6,7 @@ import decorators
 FILE_NAME = "game_map.sav"
 
 
+@decorators.info_decorator
 @decorators.debug_decorator
 def save_map(game_map):
     """
@@ -25,6 +26,7 @@ def save_map(game_map):
     custom_log.logger.info("---------------------------------------------------")
 
 
+@decorators.info_decorator
 @decorators.debug_decorator
 def load_map():
     """

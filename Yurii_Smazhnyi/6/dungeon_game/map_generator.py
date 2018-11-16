@@ -11,6 +11,7 @@ TRAP_MODIFIER = 10
 TREASURE_MODIFIER = 20
 
 
+@decorators.info_decorator
 @decorators.debug_decorator
 def create_map(map_size):
     """

@@ -1,10 +1,13 @@
 import custom_log
 
+
 is_debug = False
+is_info = False
+
 
 def debug_decorator(func):
     """
-    Decorator for printing info about function.
+    Decorator for printing debug info about function.
 
     :param func: function that need decorating.
     :func type: function.
@@ -32,13 +35,31 @@ def debug_decorator(func):
     return func_wrapper
 
 
-def toggle_debug():
+def info_decorator(func):
     """
-    Toggles debug setting.
+    Decorator for printing info about function.
 
-    :returns: None.
-    :rtype: None.
-    """
-    global is_debug
+    :param func: function that need decorating.
+    :func type: function.
+    :returns: decorated function.
+    :rtype: function.
+    """   
+    
+    def func_wrapper(*args, **kwargs):
+        
+        global is_info
 
-    is_debug = not is_debug
+        if is_info:
+
+            custom_log.logger.info(f'Some Info here')
+
+            result = func(*args, **kwargs) 
+
+        else:
+
+            result = func(*args, **kwargs)
+
+        return result
+
+    return func_wrapper
+
