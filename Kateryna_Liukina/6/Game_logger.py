@@ -1,4 +1,6 @@
 import logging
+import Custom_decorator
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -15,3 +17,6 @@ file_handler.setFormatter(file_formatter)
 
 logger.addHandler(stdout_handler)
 logger.addHandler(file_handler)
+
+
+log_decorator = Custom_decorator.log_decorator_factory(logger)

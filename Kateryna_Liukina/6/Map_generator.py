@@ -1,7 +1,8 @@
 from random import choice
 from math import floor
+from Game_logger import log_decorator
 
-
+@log_decorator
 def generate_map(map_size, percent_of_traps, percent_of_treasures):
     """
     Function generate map for dungeon game
@@ -22,7 +23,7 @@ def generate_map(map_size, percent_of_traps, percent_of_treasures):
 
     return game_map
 
-
+@log_decorator
 def generate_specific_item(game_map, number_of_item, game_item):
     """
     Function generate number_of_item game_item on game_map
@@ -39,7 +40,7 @@ def generate_specific_item(game_map, number_of_item, game_item):
 
         game_map[coor[0]][coor[1]] = game_item
 
-
+@log_decorator
 def generate_coordinates(game_map):
     """
     Function generate coordinates without traps and treasure on game_map
