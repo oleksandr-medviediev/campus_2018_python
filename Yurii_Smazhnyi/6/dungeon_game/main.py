@@ -2,13 +2,13 @@ import map_generator
 import dungeon_input
 import custom_log
 import serializer
-
+import decorators
 
 is_trap_near_player = False
 is_treasure_near_player = False
 game_map = []
 
-
+@decorators.debug_decorator
 def get_player_pos():
     """
     Returns player's position from game map.
@@ -33,6 +33,7 @@ def get_player_pos():
     return (x_index, y_index)
 
 
+@decorators.debug_decorator
 def get_valid_directions():
     """
     Returns possible player's moves.
@@ -65,6 +66,7 @@ def get_valid_directions():
     return valid_directions
 
 
+@decorators.debug_decorator
 def is_item_near_player(item):
     """
     Returns result of check is some item near player.
@@ -113,6 +115,7 @@ def is_item_near_player(item):
     return result
 
 
+@decorators.debug_decorator
 def start():
     """
     Start Game.
@@ -125,32 +128,33 @@ def start():
 
     while True:
 
-        debug_status = "Off" if custom_log.is_debug else "On"
+        debug_status = "Off" if decorators.is_debug else "On"
         string = input(f"Start Game(1)/Load Game(2)/Exit Game(3)/Turn { debug_status } Debug(4):")
 
         if string == '1':
 
             game_map = map_generator.create_map(10)
-            custom_log.info("Game Started!")
+            custom_log.logger.info("Game Started!")
             play()
 
         elif string == '2':
             game_map = serializer.load_map()
 
             if game_map == "":
-                custom_log.error("Failed to Load Game")
+                custom_log.logger.error("Failed to Load Game")
                 continue
 
-            custom_log.info("Game Started!")
+            custom_log.logger.info("Game Started!")
             play()
 
         elif string == '3':
             break
 
         elif string == '4':
-            custom_log.toggle_debug()
+            decorators.toggle_debug()
 
 
+@decorators.debug_decorator
 def print_map():
     """
     Formatted shortcut for printing game_map.
@@ -162,9 +166,10 @@ def print_map():
     global game_map
 
     for i in range(len(game_map)):
-        custom_log.info((game_map[i]))
+        custom_log.logger.info((game_map[i]))
 
 
+@decorators.debug_decorator
 def check_status():
     """
     Checks is traps or treasures are near player
@@ -181,6 +186,7 @@ def check_status():
     is_trap_near_player = is_item_near_player(map_generator.TRAP_SYMBOL)
 
 
+@decorators.debug_decorator
 def replace_str_index(text,index=0,replacement=''):
     """
     Replace character at string.
@@ -198,6 +204,7 @@ def replace_str_index(text,index=0,replacement=''):
     return '%s%s%s'%(text[:index],replacement,text[index+1:])
 
 
+@decorators.debug_decorator
 def move_player(direction):
     """
     Move player on Game Map.
@@ -239,6 +246,7 @@ def move_player(direction):
     return item_stepped_on
 
 
+@decorators.debug_decorator
 def play():
     """
     Function where whole game is happening.
@@ -250,7 +258,7 @@ def play():
     global is_trap_near_player
     global game_map
 
-    custom_log.info("---------------------------------------------------")
+    custom_log.logger.info("---------------------------------------------------")
 
     while True:
 
@@ -258,13 +266,13 @@ def play():
 
         valid_direction = get_valid_directions()
 
-        custom_log.info("Input 'save'/'load' to save/load the game.")
-        custom_log.info(f"Valid directions - {valid_direction}")
+        custom_log.logger.info("Input 'save'/'load' to save/load the game.")
+        custom_log.logger.info(f"Valid directions - {valid_direction}")
 
         check_status()
 
-        custom_log.info(f"Traps Near You - {is_trap_near_player}")
-        custom_log.info(f"Treasure Near You - {is_treasure_near_player}")
+        custom_log.logger.info(f"Traps Near You - {is_trap_near_player}")
+        custom_log.logger.info(f"Treasure Near You - {is_treasure_near_player}")
 
         direction = dungeon_input.get_direction()
 
@@ -276,7 +284,7 @@ def play():
             new_game_map = serializer.load_map()
 
             if new_game_map == "":
-                custom_log.error("Failed to Load Game")
+                custom_log.logger.error("Failed to Load Game")
                 continue
 
             game_map = new_game_map
@@ -284,12 +292,12 @@ def play():
 
 
         if direction not in valid_direction:
-            custom_log.warning("Can't move there!")
+            custom_log.logger.warning("Can't move there!")
             continue
 
         item_stepped_on = move_player(direction)
 
-        custom_log.info("---------------------------------------------------")
+        custom_log.logger.info("---------------------------------------------------")
 
         if item_stepped_on == map_generator.TRAP_SYMBOL:
             end_game()
@@ -299,6 +307,7 @@ def play():
             break
 
 
+@decorators.debug_decorator
 def end_game():
     """
     Ends game prints map.
@@ -306,10 +315,11 @@ def end_game():
     :returns: None.
     :rtype: None.
     """
-    custom_log.info("You Lost!")
+    custom_log.logger.info("You Lost!")
     print_map()
 
 
+@decorators.debug_decorator
 def win_game():
     """
     Wins game prints map.
@@ -317,7 +327,7 @@ def win_game():
     :returns: None.
     :rtype: None.
     """
-    custom_log.info("You Won!")
+    custom_log.logger.info("You Won!")
     print_map()
 
 

@@ -1,9 +1,12 @@
 import pickle
 import custom_log
+import decorators
+
 
 FILE_NAME = "game_map.sav"
 
 
+@decorators.debug_decorator
 def save_map(game_map):
     """
     Save Game map.
@@ -22,7 +25,7 @@ def save_map(game_map):
     custom_log.logger.info("---------------------------------------------------")
 
 
-
+@decorators.debug_decorator
 def load_map():
     """
     Load Game map.

@@ -1,6 +1,9 @@
+import decorators
+
+
 COMMANDS_TYPES = ("left", "right", "down", "up", "save", "load")
 
-
+@decorators.debug_decorator
 def get_direction():
     """
     Get direction from player.

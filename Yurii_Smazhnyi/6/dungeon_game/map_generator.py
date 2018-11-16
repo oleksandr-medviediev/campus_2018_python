@@ -1,4 +1,5 @@
 import random
+import decorators
 
 
 GROUND_SYMBOL = 'O'
@@ -10,6 +11,7 @@ TRAP_MODIFIER = 10
 TREASURE_MODIFIER = 20
 
 
+@decorators.debug_decorator
 def create_map(map_size):
     """
     Create Map for Dungeon Game.
