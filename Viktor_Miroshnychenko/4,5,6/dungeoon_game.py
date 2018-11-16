@@ -3,6 +3,8 @@ import dungeon_logic
 import dungeon_serializer
 
 
+@dungeon_logic.dungeon_decorators.debug_time_decor
+@dungeon_logic.dungeon_decorators.debug_decor
 def run_frame(dun_map, position):
     """
     :param dun_map: map for game
@@ -33,6 +35,51 @@ def run_frame(dun_map, position):
     return game_state
 
 
+def set_debug_settings():
+    """
+    :descr: Sets global debug settings according to user input
+    
+    :return: None
+    :rtype: None
+    """
+
+    VALID_ANSWERS = ['y', 'n']
+    answer = str
+
+    while answer not in VALID_ANSWERS:
+
+        answer = input("Enable file debug (level 1) ? [y/n] \n")
+
+    if answer == 'y':
+        dungeon_logic.dungeon_decorators.file_debug_enabled = True
+    else:
+        dungeon_logic.dungeon_decorators.file_debug_enabled = False
+
+    answer = ""
+    while answer not in VALID_ANSWERS:
+
+        answer = input("Enable file debug level 2 ? [y/n] \n")
+
+    if answer == 'y':
+        dungeon_logic.dungeon_decorators.file_time_debug_enabled = True
+    else:
+        dungeon_logic.dungeon_decorators.file_time_debug_enabled = False
+
+    answer = ""
+    while answer not in VALID_ANSWERS:
+
+        warning = '(Will be almost inmposible to play)';
+        answer = input(f'Enable console debug level 2 ? [y/n] {warning} \n')
+
+    if answer == 'y':
+        dungeon_logic.dungeon_decorators.console_debug_enabled = True
+    else:
+        dungeon_logic.dungeon_decorators.console_debug_enabled = False
+
+    
+
+@dungeon_logic.dungeon_decorators.debug_time_decor
+@dungeon_logic.dungeon_decorators.debug_decor
 def game():
     """
     :description: run dungeon game
@@ -40,6 +87,8 @@ def game():
     :return:
     :rtype:
     """
+
+    set_debug_settings()
 
     size = int(input('Type map size \n'))
     dun_map = dungeon_map_generate.generate_map(size)

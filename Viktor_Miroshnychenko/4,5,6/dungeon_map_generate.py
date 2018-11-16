@@ -1,10 +1,16 @@
 from random import randint
 
 
+import dungeon_decorators
+
+
 MAX_RAND_COEF = 27
 CLEAR_COEF = 18
 BOMB_COEF = 24
 
+
+@dungeon_decorators.debug_time_decor
+@dungeon_decorators.debug_decor
 def generate_map(size):
     """
     :param size: size of the map size
@@ -33,6 +39,8 @@ def generate_map(size):
     return ret_map
 
 
+@dungeon_decorators.debug_time_decor
+@dungeon_decorators.debug_decor
 def set_player_randomly(dung_map):
     """
     :param dung_map: map that player must be placed on
