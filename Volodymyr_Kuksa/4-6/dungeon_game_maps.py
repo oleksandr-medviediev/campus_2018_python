@@ -1,10 +1,12 @@
-import logging
 from random import randint
 from random import shuffle
+import dungeon_game_decorators
 
 GAME_CHARACTERS = {'Empty': ' ', 'Trap': 'X', 'Treasure': 'O', 'Spawn': '@', 'Visited': '.'}
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def generate_flat_map(size_total):
     """
     Return an array of randomly generated characters that represent a sequence of all rows in game map.
@@ -30,6 +32,8 @@ def generate_flat_map(size_total):
     return characters
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def split_rows(size, characters):
     """
     Return an array of batches of characters of size length each.
@@ -52,6 +56,8 @@ def split_rows(size, characters):
     return game_map
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def generate_map(size):
     """
     Return square game map of dimensions size x size filled with randomly placed objects.
@@ -63,13 +69,13 @@ def generate_map(size):
     :rtype: list.
     """
     characters = generate_flat_map(size * size)
-    logging.debug(f'Generated flat map: {characters}')
     game_map = split_rows(size, characters)
-    logging.debug(f'Generated map:\n{game_map_to_string(game_map)}')
 
     return game_map
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def game_map_to_string(game_map):
     """
     Return visual representation of game map with border and legend.

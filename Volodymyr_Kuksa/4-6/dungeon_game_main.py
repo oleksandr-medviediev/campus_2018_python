@@ -4,6 +4,7 @@ from random import randint
 from dungeon_game_maps import GAME_CHARACTERS, generate_map, game_map_to_string
 from dungeon_game_serialization import deserialize
 from dungeon_game_logic import run_game
+import dungeon_game_decorators
 
 
 START_OPTIONS = ('1', '2')
@@ -11,6 +12,8 @@ START_OPTIONS = ('1', '2')
 logging.config.fileConfig('dungeon_game_logger.config')
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def query_map_size():
     """
     Query player for the size of the game map and return integer representing player's input.
@@ -23,11 +26,11 @@ def query_map_size():
     while not size.isdigit() or not 5 <= int(size) <= 20:
         size = input('Wrong! Try again: ')
 
-    logging.debug(f'Map size requested: {size}')
-
     return int(size)
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def query_game_load():
     """
     Query game start mode and return player input.
@@ -40,11 +43,11 @@ def query_game_load():
     while not START_OPTIONS.count(player_input):
         player_input = input('Wrong! Try again: ')
 
-    logging.debug(f'Game start option selected: {player_input}')
-
     return player_input
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def spawn_player(game_map):
     """
     Return coordinates of a random empty tile on game_map.
@@ -65,26 +68,47 @@ def spawn_player(game_map):
     return x, y
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
+def query_logging_mode():
+    """
+    Query logging mode and set corresponding global variable.
+
+    :return: None.
+    """
+    mode = input('Select logging mode:\n1. Debug\n2. Useful\n3. Both\n(press 1-3 or any key to skip)\n')
+
+    if not mode.isdigit():
+        return
+
+    mode = int(mode)
+
+    if mode == 1 or mode == 3:
+        dungeon_game_decorators.mode_debug = True
+    if mode == 2 or mode == 3:
+        dungeon_game_decorators.mode_log = True
+
+
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def main():
     """
     Entry point. Starts up and runs Dungeon Game.
 
     :return: None.
     """
-    logging.info('Welcome to the Dungeon Game!')
-    if query_game_load() == '2':
+    query_logging_mode()
 
-        logging.debug('Enter deserialize()')
+    logging.info('Welcome to the Dungeon Game!')
+
+    if query_game_load() == '2':
         dungeon_game_map, player_x, player_y = deserialize()
-        logging.debug('Quit deserialize()')
 
     else:
 
         size_of_map = query_map_size()
-        logging.debug(f'Calling generate_map({size_of_map})')
         dungeon_game_map = generate_map(size_of_map)
         player_x, player_y = spawn_player(dungeon_game_map)
-        logging.debug(f'Player spawned on ({player_x};{player_y})')
 
     run_game(dungeon_game_map, player_x, player_y)
     logging.info(game_map_to_string(dungeon_game_map))
@@ -93,10 +117,7 @@ def main():
 if __name__ == '__main__':
 
     try:
-
-        logging.debug(f'Enter main()')
         main()
-        logging.debug(f'Quit main()')
 
     except OSError as e:
 

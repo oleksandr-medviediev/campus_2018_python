@@ -1,6 +1,5 @@
-import logging
 import pickle
-from dungeon_game_maps import game_map_to_string
+import dungeon_game_decorators
 
 FILE_NAME = 'save_file.dg'
 
@@ -8,6 +7,8 @@ LOAD_COMMAND = 'load'
 SAVE_COMMAND = 'save'
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def deserialize():
     """
     Unpickle game map and player coordinates from save file with FILE_NAME.
@@ -16,14 +17,13 @@ def deserialize():
     :rtype: list, int, int.
     """
     with open(FILE_NAME, 'rb') as save_file:
-
-        logging.debug(f'Calling pickle.load("{FILE_NAME}")')
         data = pickle.load(save_file)
-        logging.debug(f'Deserialized map:\n{game_map_to_string(data[0])}\nPlayer pos: ({data[1]};{data[2]})')
 
     return tuple(data)
 
 
+@dungeon_game_decorators.log_decor
+@dungeon_game_decorators.debug_decor
 def serialize(game_map, player_x, player_y):
     """
     Pickle game_map, player_x, player_y into a save file with FILE_NAME.
@@ -42,6 +42,4 @@ def serialize(game_map, player_x, player_y):
     data = [game_map, player_x, player_y]
 
     with open(FILE_NAME, 'wb') as save_file:
-
-        logging.debug(f'Calling pickle.dump(data, "{FILE_NAME}", protocol=3)')
         pickle.dump(data, save_file, protocol=3)
