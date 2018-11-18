@@ -8,7 +8,7 @@ from dungeon_map import DungeonMap
 from player import Player
 import utils
 import log
-from decorators import log_decorator
+from decorators import log_decorator, debug_log_decorator
 import config
 
 SAVE_PATH = "save.dat"
@@ -98,6 +98,7 @@ def predicate_command(string):
 
 
 @log_decorator
+@debug_log_decorator
 def play_game():
     """
     Plays single game of Dungeon Game
@@ -105,8 +106,6 @@ def play_game():
     """
 
     while True:
-
-        active_map.print_map()
 
         is_trap_nearby, is_treasure_nearby = active_map.check_nearby_tiles(active_player.position)
 
@@ -185,6 +184,7 @@ def play_game():
 
 
 @log_decorator
+@debug_log_decorator
 def init_game():
     """
     Initializes game map and player position
@@ -200,6 +200,7 @@ def init_game():
 
 
 @log_decorator
+@debug_log_decorator
 def start_game():
     """
     Start game dialog

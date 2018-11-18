@@ -7,7 +7,7 @@ import logging
 import random
 import utils
 import log
-from decorators import log_decorator
+from decorators import log_decorator, debug_log_decorator
 
 RATIO_TRAPS = 10.0
 RATIO_TREASURE = 20.0
@@ -28,6 +28,7 @@ class DungeonMap:
         self.game_map = self.generate(size)
 
     @log_decorator
+    @debug_log_decorator
     def generate(self, size):
         """
         Generates map for Dungeon Game
@@ -68,6 +69,7 @@ class DungeonMap:
         return return_map
 
     @log_decorator
+    @debug_log_decorator
     def is_index_valid(self, index):
         """
         Checks if index is valid
@@ -87,6 +89,7 @@ class DungeonMap:
         return is_x_valid and is_y_valid
 
     @log_decorator
+    @debug_log_decorator
     def check_nearby_tiles(self, position):
         """
         Checks if any traps or treasures exist in one tile radius from player (ignoring diagonal tile)
@@ -125,6 +128,7 @@ class DungeonMap:
         return is_trap_nearby, is_treasure_nearby
 
     @log_decorator
+    @debug_log_decorator
     def check_current_tile(self, position):
         """
         Check if player position contains trap or treasure
@@ -153,6 +157,7 @@ class DungeonMap:
         return is_trap, is_treasure
 
     @log_decorator
+    @debug_log_decorator
     def print_map(self):
         """
         Outputs dungeon map

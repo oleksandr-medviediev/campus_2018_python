@@ -9,7 +9,7 @@ from dungeon_map import DungeonMap
 import utils
 import log
 import config
-from decorators import log_decorator
+from decorators import log_decorator, debug_log_decorator
 
 logger = logging.getLogger(log.LOGGER_NAME)
 
@@ -23,6 +23,7 @@ class Player:
         self.hitpoints = config.PLAYER_HEALTH
 
     @log_decorator
+    @debug_log_decorator
     def move(self, direction, active_map):
         """
         Attempts to move player in specified direction
@@ -64,6 +65,7 @@ class Player:
         return is_position_changed
 
     @log_decorator
+    @debug_log_decorator
     def init_position(self, active_map):
         """
         Randomly chooses player position on map; should be called after dungeon map was initialized
@@ -93,6 +95,7 @@ class Player:
         return position
 
     @log_decorator
+    @debug_log_decorator
     def mark_last_pos(self, active_map):
         """
         Marks last player position before Game Over on map

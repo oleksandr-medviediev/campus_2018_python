@@ -2,12 +2,13 @@ import pickle
 import logging
 
 import log
-from decorators import log_decorator
+from decorators import log_decorator, debug_log_decorator
 
 
 logger = logging.getLogger(log.LOGGER_NAME)
 
-
+@log_decorator
+@debug_log_decorator
 def get_input(predicate, input_message):
     """
     Gets input from user satisfying given predicate
@@ -43,6 +44,7 @@ def vector_sum(lhs, rhs):
 
 
 @log_decorator
+@debug_log_decorator
 def save_game(save_path, active_map, active_player):
     """
     Attempts to save game to file in save_path
@@ -77,6 +79,7 @@ def save_game(save_path, active_map, active_player):
 
 
 @log_decorator
+@debug_log_decorator
 def load_game(load_path, active_map, active_player):
     """
     Attempts to load game from load_path
