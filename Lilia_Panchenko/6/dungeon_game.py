@@ -66,7 +66,7 @@ new_or_load = input()
 new_or_load = new_or_load.casefold()
 
 while new_or_load not in ['n', 'l']:
-    print(new_or_load)
+    
     new_or_load = input("Try again\nEnter your choice [N / L]: ")
     new_or_load = new_or_load.casefold()
 
