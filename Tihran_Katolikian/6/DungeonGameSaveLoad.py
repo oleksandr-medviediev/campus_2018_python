@@ -1,11 +1,13 @@
 from contextlib import contextmanager
 import pickle
 import logging
+from LoggerDecorator import logger_decorator
 
 
 SAVE_DATA_FILENAME = 'save.data'
 
 
+@logger_decorator
 def save_game(player_position, dungeon_map):
     '''
     Function saves the game;
@@ -19,6 +21,7 @@ def save_game(player_position, dungeon_map):
         position_and_map = player_position, dungeon_map
         pickle.dump(position_and_map, save_file)
 
+@logger_decorator
 def load_game():
     '''
     Function loads the game from a file. If there is not save data, throws 'FileNotFoundError'.

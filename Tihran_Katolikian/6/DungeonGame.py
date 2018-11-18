@@ -4,6 +4,7 @@ from sys import stdout
 import DungeonGameSaveLoad
 import logging
 import logging.config
+from LoggerDecorator import logger_decorator
 
 
 class PlayerCommand(Enum):
@@ -67,13 +68,13 @@ output_everything_map = {
 sum_vectors = lambda a, b: (a[0] + b[0], a[1] + b[1])
 
 
+@logger_decorator
 def process_game_start():
     '''
     Function is used to process game start. It is an equivalent of menu in normal games.
     :return: a function that player have chosen in menu;
     :rtype: StartMenu.
     '''
-    logging.debug('Method called')
     while True:
         logging.info('Type \'new game\' to start a new game or \'load\' to old game from save: ')
         input_command = input()
@@ -81,6 +82,7 @@ def process_game_start():
             return text_to_menu[input_command]
 
 
+@logger_decorator
 def output_map(dungeon_map, dungeon_cell_to_output_symbol):
     '''
     Function is used to output a map for Dungeon Game.
@@ -89,7 +91,6 @@ def output_map(dungeon_map, dungeon_cell_to_output_symbol):
     :type dungeon_map: a list of lists of DungeonCells; 
     :type dungeon_cell_to_output_symbol: a dict with key type: DungeonCell, value type: str.
     '''
-    logging.debug('Method called')
     # i guess there must be more efficient way to format such string
     lock_string = ''.join('-' * len(dungeon_map))
 
@@ -102,6 +103,7 @@ def output_map(dungeon_map, dungeon_cell_to_output_symbol):
     logging.info(lock_string)
 
 
+logger_decorator
 def get_player_command(position, map_size):
     '''
     Function is used get the user's input;
@@ -112,7 +114,6 @@ def get_player_command(position, map_size):
     :type position: a tuple of 2 ints;
     :rtype: str
     '''
-    logging.debug('Method called')
     while True:
         logging.info('Please, input your command. Use "w", "a", "s", "d" and "save" commands: ')
         input_command = input()
@@ -142,6 +143,7 @@ def get_player_command(position, map_size):
             logging.info('Wrong input. Try again.')
 
 
+@logger_decorator
 def get_cells_near(position, dungeon_map):
     '''
     Function used to get all cells that are near the position on map;
@@ -152,7 +154,6 @@ def get_cells_near(position, dungeon_map):
     :type dungeon_map: a list of lists of DungeonCells;
     :rtype: a list of DungeonCells.
     '''
-    logging.debug('Method called')
     map_size = len(dungeon_map)
     x, y = position
 
@@ -174,6 +175,7 @@ def get_cells_near(position, dungeon_map):
     return cells
 
 
+@logger_decorator
 def run_game(game_start_mode, map_size):
     '''
     Function runs the Dungeon Game;
@@ -183,7 +185,6 @@ def run_game(game_start_mode, map_size):
     :type map_size: int if game_start_mode is NEW_GAME, any other type otherwise;
     :type game_start_mode: StartMenu.
     '''
-    logging.debug('Method called')
     if game_start_mode is StartMenu.LOAD_GAME:
         logging.debug('Game starts with LOAD GAME mode. Loading from file...')
         player_position, dungeon_map = DungeonGameSaveLoad.load_game()

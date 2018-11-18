@@ -1,5 +1,6 @@
 import random
 from enum import Enum
+from LoggerDecorator import logger_decorator
 
 
 class DungeonCell(Enum):
@@ -9,6 +10,7 @@ class DungeonCell(Enum):
     TRAP = 3
 
 
+@logger_decorator
 def choose_random_index_and_remove(array2D):
     '''
     Function chooses a random row and column in 2D array, returns it and removed it's cell from the array2D;
@@ -23,6 +25,7 @@ def choose_random_index_and_remove(array2D):
     return chosen_row, chosen_column
 
 
+@logger_decorator
 def generate_map(map_size):
     '''
     Function generates a map for Dungeon Game. map_size should be >= 5;
