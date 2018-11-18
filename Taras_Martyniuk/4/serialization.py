@@ -1,10 +1,11 @@
 import pickle
-from logging_defs import debug_logger as dlog
+from logging_decors import log_decor
 
 
 SAVE_FILE = 'save.pkl'
 
 
+@log_decor
 def save(player, curr_pos):
     '''
         saves current state to file
@@ -12,20 +13,17 @@ def save(player, curr_pos):
         :param curr_pos: current tile of player
     '''
     state = (player, curr_pos)
-    dlog.debug('Trying to save...')
     with open(SAVE_FILE, 'wb') as sf:
         pickle.dump(state, sf)
-        dlog.debug('Save successfull')
 
 
+@log_decor
 def load():
     '''
         loads game state from file
         :returns: tuple (DungeonMap, Player)
     '''
-    dlog.debug('Trying to load save...')
     with open(SAVE_FILE, 'rb') as sf:
         state = pickle.load(sf)
-        dlog.debug('Successfully loaded save')
         return state
 

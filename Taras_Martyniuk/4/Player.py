@@ -1,11 +1,12 @@
 from DungeonMap import DungeonMap
-from logging_defs import debug_logger as dlog
+from logging_decors import log_decor, debug_file_console_logger as dlog
 
 
 class Player:
     '''
         in-game living entity
     '''
+    @log_decor
     def __init__(self, health, dmap):
         """
             :param health: starting hp 
@@ -31,6 +32,7 @@ class Player:
         return self.__treasures
 
 
+    @log_decor
     def loseHealth(self):
         '''
             takes away 1 health
@@ -41,6 +43,7 @@ class Player:
         self.__health -= 1
 
     
+    @log_decor
     def add_treasure(self):
         '''
             adds a treasure to the bag
@@ -48,6 +51,7 @@ class Player:
         self.__treasures += 1
 
     
+    @log_decor
     def try_move(self, move_dt):
         """
             tries to move 1 tile in the specified direction
@@ -64,7 +68,6 @@ class Player:
 
         assert self.dungeon_map.in_bounds(self.position)
 
-        dlog.debug(f'trying to move by delta of {move_dt}')
         moved_pos = (self.position[0] + move_dt[0], self.position[1] + move_dt[1])
         dlog.debug(f'trying to move to {moved_pos}')
 
@@ -73,24 +76,3 @@ class Player:
             self.position = moved_pos
 
         return move_valid 
-
-
-
-
-
-
-def decor_another(func):
-    def wrapper(*args):
-        print('before func')
-        func(*args)
-        print('after func')
-    
-    return wrapper
-
-@decor
-@decor_another
-def test_decor(text):
-    print(text)
-
-test_decor('func    ')
-

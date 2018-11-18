@@ -1,9 +1,8 @@
 from random import randint
 from itertools import product
-from logging_defs import debug_logger as dlog
+from logging_decors import log_decor, debug_file_console_logger as dlog
 from random import shuffle
 from math import floor
-
 '''
     type aliases for module:
     Tile type enum - all possible objects for a dungeon tile
@@ -24,6 +23,7 @@ class DungeonMap:
 
         P.S - i really need to write that 'self' every time? Why would they do this to us? 
     '''
+    @log_decor
     def __init__(self, size):
         '''
         creates a size * size dungeon map
@@ -51,6 +51,7 @@ class DungeonMap:
         dlog.debug(f'Created a map of {len(combined)} elements (with size {size})')
 
 
+    @log_decor
     def get_random_empty_tile(self):
         '''
             :param map: dungeon map object
@@ -77,16 +78,19 @@ class DungeonMap:
         return self.tiles[tile[0]][tile[1]]
 
 
+    @log_decor
     def is_trap_nearby(self, tile):
         adj = self.get_adjacent(tile)
         return any(map(lambda t: t == Trap, adj))
 
 
+    @log_decor
     def is_treasure_nearby(self, tile):
         adj = self.get_adjacent(tile)
         return any(map(lambda t: t == Treasure, adj))
 
 
+    @log_decor
     def get_adjacent(self, tile):
         '''
             returns a list of all adjacent tiles types for param tile
@@ -103,6 +107,8 @@ class DungeonMap:
         return adj_types
 
 
+    # i'm not adding logging of this function because it is a helper very often used, 
+    # and is too small to have semantic value on it's own
     def in_bounds(self, tile):
         '''
             checks if the Tile is inside dungeon map
@@ -113,6 +119,7 @@ class DungeonMap:
         return horiz_ok and vert_ok
 
 
+    @log_decor
     def set_tile(self, tile, tile_type):
         '''
             changes the type of tile
@@ -121,6 +128,7 @@ class DungeonMap:
         self.tiles[tile[0]][tile[1]] = tile_type
 
 
+    @log_decor
     def map_to_str(self, curr_pos=None):
         '''
             :param self: dungeon map
@@ -142,6 +150,7 @@ class DungeonMap:
         return printed
 
 
+@log_decor
 def chunks(l, n):
     """
         Yield successive n-sized chunks from l.

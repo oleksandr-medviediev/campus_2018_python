@@ -57,5 +57,7 @@ def log_decor(func):
             debug_file_console_logger.debug(end_str)
         else:
             debug_file_logger.debug(end_str)
+
+        return retval
     
     return log_wrapper

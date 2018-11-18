@@ -1,7 +1,7 @@
 from DungeonMap import DungeonMap
 from Player import Player
 import DungeonMap as dm
-from logging_defs import debug_logger as dlog, output_logger as olog
+from logging_decors import log_decor, output_logger as olog, debug_file_console_logger as dlog
 from serialization import save, load
 
 
@@ -15,7 +15,7 @@ player_moves = {
 PLAYER_HP = 3
 TREAUSURES_FOR_WIN = 3
 
-
+@log_decor
 def play_game(size):
     dmap = DungeonMap(size)
     player = Player(TREAUSURES_FOR_WIN, dmap)
@@ -66,6 +66,7 @@ def play_game(size):
         olog.info('\n')
 
 
+@log_decor
 def handle_user_input(player):
     '''
         continuously gets the command from user
@@ -98,6 +99,7 @@ def handle_user_input(player):
 Save, Load = range(2)
 
 
+@log_decor
 def parse_user_input():
     '''
         prompts player to issue a command,
@@ -121,6 +123,7 @@ def parse_user_input():
             olog.info(f'You can go only: {", ".join(player_moves.keys())}')
 
 
+@log_decor
 def win(dmap, end_pos):
     '''
         prints win message
@@ -135,6 +138,7 @@ def win(dmap, end_pos):
     print(dmap.map_to_str(end_pos))
 
 
+@log_decor
 def lose(dmap, end_pos):
     '''
         prints lose message
