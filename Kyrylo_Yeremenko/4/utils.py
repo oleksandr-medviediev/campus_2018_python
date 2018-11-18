@@ -1,7 +1,6 @@
 import pickle
 import logging
-import dungeon_map
-import player
+
 import log
 from decorators import log_decorator
 
@@ -44,10 +43,12 @@ def vector_sum(lhs, rhs):
 
 
 @log_decorator
-def save_game(save_path):
+def save_game(save_path, active_map, active_player):
     """
     Attempts to save game to file in save_path
     :param save_path: String containing path to save file
+    :param active_map: DungeonMap instance
+    :param active_player: Player instance
     :return: Bool, whether game was saved or not
     """
 
@@ -58,7 +59,13 @@ def save_game(save_path):
 
         with open(save_path, 'wb') as save_file:
 
-            pickle.dump([dungeon_map.game_map, player.position], save_file)
+            pickle.dump([
+                active_map.game_map,
+                active_player.position,
+                active_player.hitpoints,
+                active_player.bag],
+                save_file)
+
             logger.info("Successfully saved game!")
 
     except (OSError, IOError) as exc:
@@ -70,10 +77,12 @@ def save_game(save_path):
 
 
 @log_decorator
-def load_game(load_path):
+def load_game(load_path, active_map, active_player):
     """
     Attempts to load game from load_path
     :param load_path: Path to file containing saved game
+    :param active_map: DungeonMap instance
+    :param active_player: Player instance
     :return: Bool, whether file was loaded or not
     """
 
@@ -86,10 +95,12 @@ def load_game(load_path):
 
             save_data = pickle.load(load_file)
 
-            if isinstance(save_data, list) and len(save_data) == 2:
+            if isinstance(save_data, list) and len(save_data) == 4:
 
-                dungeon_map.game_map = save_data[0]
-                player.position = save_data[1]
+                active_map.game_map = save_data[0]
+                active_player.position = save_data[1]
+                active_player.hitpoints = save_data[2]
+                active_player.bag = save_data[3]
                 logger.info("Successfully loaded game.")
 
             else:
