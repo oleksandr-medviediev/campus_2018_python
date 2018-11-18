@@ -8,6 +8,7 @@ import dungeon_map
 import player
 import utils
 import log
+from decorators import log_decorator
 
 SAVE_PATH = "save.dat"
 logger = logging.getLogger(log.LOGGER_NAME)
@@ -92,6 +93,7 @@ def predicate_command(string):
     return bool_result, str_result
 
 
+@log_decorator
 def play_game():
     """
     Plays single game of Dungeon Game
@@ -152,6 +154,7 @@ def play_game():
     logger.info("Game over")
 
 
+@log_decorator
 def init_game():
     """
     Initializes game map and player position
@@ -163,6 +166,7 @@ def init_game():
     player.init_position()
 
 
+@log_decorator
 def start_game():
     """
     Start game dialog

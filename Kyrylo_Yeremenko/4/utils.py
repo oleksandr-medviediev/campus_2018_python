@@ -3,6 +3,7 @@ import logging
 import dungeon_map
 import player
 import log
+from decorators import log_decorator
 
 
 logger = logging.getLogger(log.LOGGER_NAME)
@@ -42,6 +43,7 @@ def vector_sum(lhs, rhs):
     return [lhs[0] + rhs[0], lhs[1] + rhs[1]]
 
 
+@log_decorator
 def save_game(save_path):
     """
     Attempts to save game to file in save_path
@@ -67,6 +69,7 @@ def save_game(save_path):
     return return_value
 
 
+@log_decorator
 def load_game(load_path):
     """
     Attempts to load game from load_path

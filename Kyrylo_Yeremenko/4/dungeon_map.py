@@ -7,6 +7,7 @@ import logging
 import random
 import utils
 import log
+from decorators import log_decorator
 
 SYMBOL_TILE = '*'
 SYMBOL_TRAP = '#'
@@ -21,6 +22,7 @@ game_map = None
 logger = logging.getLogger(log.LOGGER_NAME)
 
 
+@log_decorator
 def generate(size):
     """
     Generates map for Dungeon Game
@@ -65,6 +67,7 @@ def generate(size):
     logger.debug(f"Generated map; {size} x {size} tiles, {trap_count} traps and {treasure_count} treasures")
 
 
+@log_decorator
 def is_index_valid(index):
     """
     Checks if index is valid
@@ -84,6 +87,7 @@ def is_index_valid(index):
     return is_x_valid and is_y_valid
 
 
+@log_decorator
 def check_nearby_tiles(position):
     """
     Checks if any traps or treasures exist in one tile radius from player (ignoring diagonal tile)
@@ -122,6 +126,7 @@ def check_nearby_tiles(position):
     return is_trap_nearby, is_treasure_nearby
 
 
+@log_decorator
 def check_current_tile(position):
     """
     Check if player position contains trap or treasure
@@ -150,6 +155,7 @@ def check_current_tile(position):
     return is_trap, is_treasure
 
 
+@log_decorator
 def print_map():
     """
     Outputs dungeon map

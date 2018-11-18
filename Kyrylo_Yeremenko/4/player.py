@@ -8,11 +8,13 @@ import logging
 import dungeon_map
 import utils
 import log
+from decorators import log_decorator
 
 position = None
 logger = logging.getLogger(log.LOGGER_NAME)
 
 
+@log_decorator
 def move(direction):
     """
     Attempts to move player in specified direction
@@ -54,6 +56,7 @@ def move(direction):
     return is_position_changed
 
 
+@log_decorator
 def init_position():
     """
     Randomly chooses player position on map; should be called after dungeon map was initialized
@@ -76,6 +79,7 @@ def init_position():
             break
 
 
+@log_decorator
 def mark_last_pos():
     """
     Marks last player position before Game Over on map
