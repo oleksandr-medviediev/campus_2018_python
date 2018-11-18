@@ -1,4 +1,5 @@
-import dungeon_map as dm
+from DungeonMap import DungeonMap
+import DungeonMap as dm
 from logging_defs import debug_logger as dlog, output_logger as olog
 from serialization import save, load
 
@@ -12,24 +13,24 @@ player_moves = {
 
 
 def play_game(size):
-    dmap = dm.create_map(size)
+    dmap = DungeonMap(size)
 
-    start = dm.get_random_empty_tile(dmap)
+    start = dmap.get_random_empty_tile()
     dlog.debug(f'Starting at {start}')
 
     olog.info('Note: you can input \'save\' any time to save the game, or \'load\' to load last saved one')
 
     player_pos = start
     while True:
-        assert dm.in_bounds(dmap, player_pos)
+        assert dmap.in_bounds(player_pos)
         # uncomment for perfect debug experience
         # print(dm.map_to_str(dmap, player_pos))
         olog.info(f'you stand at the tile {player_pos}')
 
-        if dm.is_trap_nearby(dmap, player_pos):
+        if dmap.is_trap_nearby(player_pos):
             olog.info("Careful! There's a trap nearby!")
 
-        if dm.is_treasure_nearby(dmap, player_pos):
+        if dmap.is_treasure_nearby(player_pos):
             olog.info("There's a treasure right next to you! Eyes on the prize!")
 
         input_result = handle_user_input(dmap, player_pos)
@@ -51,7 +52,7 @@ def play_game(size):
 
         player_pos = input_result
 
-        tile_type = dm.at(dmap, player_pos)
+        tile_type = dmap.at(player_pos)
         if tile_type == dm.Treasure:
             win(dmap, player_pos)
             break
@@ -88,7 +89,7 @@ def handle_user_input(dmap, curr_pos):
         simulated_pos = (curr_pos[0] + delta[0], curr_pos[1] + delta[1])
         dlog.debug(f'trying to move to {simulated_pos}')
 
-        if dm.in_bounds(dmap, simulated_pos):
+        if dmap.in_bounds(simulated_pos):
             dlog.debug(f'moved to {simulated_pos}')
             return simulated_pos
         else:
@@ -132,7 +133,7 @@ def win(dmap, end_pos):
     olog.info(TREASURE_ASCI)
     olog.info('---------------------------------------------------------')
     olog.info("Now look at all the traps you've evaded!")
-    olog.info(dm.map_to_str(dmap, end_pos))
+    print(dmap.map_to_str(end_pos))
 
 
 def lose(dmap, end_pos):
@@ -146,7 +147,7 @@ def lose(dmap, end_pos):
     olog.info(BLOODY_SWORD_ASCI)
     olog.info('---------------------------------------------------------')
     olog.info("Now look at all the treasures you could've had for yourself!")
-    olog.info(dm.map_to_str(dmap, end_pos))
+    print(dmap.map_to_str(end_pos))
 
 
 TREASURE_ASCI = '''

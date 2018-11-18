@@ -1,6 +1,5 @@
 from logging_defs import debug_logger as dlog
 from logging_defs import output_logger as olog
-import dungeon_map as dmap
 from game import play_game
 
 SIZE = 10
