@@ -28,7 +28,6 @@ def load_game():
     :return: deserialized player position and dungeon map;
     :rtype: a tuple of tuple of ints: (int, int) and a list of lists of DungeonCells.
     '''
-    logging.debug('Method called')
     try:
         with open (SAVE_DATA_FILENAME, 'rb') as load_file:
             return pickle.load(load_file)
