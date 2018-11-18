@@ -28,9 +28,9 @@ def log_decorator(func):
         log_level = 0
 
         if config.IS_DEBUG:
-            log_level = 20
+            log_level = config.LEVEL_INFO
         else:
-            log_level = 10
+            log_level = config.LEVEL_DEBUG
 
         logger.log(log_level, f"Calling {func.__name__}")
         return_value = func(*args, **kwargs)
@@ -55,9 +55,9 @@ def debug_log_decorator(func):
         log_level = 0
 
         if config.IS_DEBUG:
-            log_level = 20
+            log_level = config.LEVEL_INFO
         else:
-            log_level = 10
+            log_level = config.LEVEL_DEBUG
 
         bound = inspect.signature(func).bind(*args, **kwargs)
         log_string_arg_list = ["Arguments passed:"]
