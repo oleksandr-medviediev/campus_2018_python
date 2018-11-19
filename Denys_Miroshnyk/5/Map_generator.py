@@ -41,3 +41,13 @@ def generate_map(map_size):
         init_free_cell(terrain, trap)
 
     return terrain
+
+
+def find_player_position(game_map, field_size):
+    log.debug(f'find_player_position function was called')
+    for i in range(1, field_size + 2):
+        for j in range(1, field_size + 2):
+            if game_map[i][j] == player:
+                log.debug(
+                    f'find_player_position: player position is x = {j}, y = {i}')
+                return (j, i)

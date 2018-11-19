@@ -1,7 +1,7 @@
 from pickle import Pickler
 from pickle import load
 from os.path import isfile
-
+from Custom_logger import logger as log
 
 def save_game(current_map):
     """saves game to "save.txt"
@@ -11,7 +11,7 @@ def save_game(current_map):
     """
 
     Pickler(open("save.txt", 'wb')).dump(current_map)
-    print("game saved!")
+    log.info("game saved!")
 
 
 def load_game():
@@ -23,6 +23,7 @@ def load_game():
 
     if isfile("save.txt"):
         save = load(open("save.txt", 'rb'))
+        log.info("game loaded")
         return save
     else:
-        print("unable to load game")
+        log.info("unable to load game")

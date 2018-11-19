@@ -20,6 +20,7 @@ while (True):
         print(f'Traps -> {Map_generator.trap}')
         for line in game_map[::-1]:
             print(*line, '\n')
+
     elif player_answer == 'load':
         game_map = Save_load.load_game()
 
@@ -33,9 +34,11 @@ while (True):
             print(f'at {Game_loop.player_position}')
             print(f'Treasures -> {Map_generator.treasure}')
             print(f'Traps -> {Map_generator.trap}')
-        for line in game_map[::-1]:
-            print(*line, '\n')
+            for line in game_map[::-1]:
+                print(*line, '\n')
         else:
+            Game_loop.player_position = Map_generator.find_player_position(
+                game_map, field_size)
             Game_loop.loop(game_map)
 
             print(f'at {Game_loop.player_position}')
