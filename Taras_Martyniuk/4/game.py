@@ -1,5 +1,7 @@
-import dungeon_map as dm
-from logging_defs import debug_logger as dlog, output_logger as olog
+from DungeonMap import DungeonMap
+from Player import Player
+import DungeonMap as dm
+from logging_decors import log_decor, output_logger as olog, debug_file_console_logger as dlog
 from serialization import save, load
 
 
@@ -10,38 +12,41 @@ player_moves = {
     'left' : (-1, 0)
 }
 
+PLAYER_HP = 3
+TREAUSURES_FOR_WIN = 3
 
+@log_decor
 def play_game(size):
-    dmap = dm.create_map(size)
+    dmap = DungeonMap(size)
+    player = Player(TREAUSURES_FOR_WIN, dmap)
 
-    start = dm.get_random_empty_tile(dmap)
+    start = dmap.get_random_empty_tile()
     dlog.debug(f'Starting at {start}')
 
     olog.info('Note: you can input \'save\' any time to save the game, or \'load\' to load last saved one')
-
-    player_pos = start
+    player.position = start
     while True:
-        assert dm.in_bounds(dmap, player_pos)
+        assert dmap.in_bounds(player.position)
         # uncomment for perfect debug experience
         # print(dm.map_to_str(dmap, player_pos))
-        olog.info(f'you stand at the tile {player_pos}')
+        olog.info(f'you stand at the tile {player.position}')
 
-        if dm.is_trap_nearby(dmap, player_pos):
+        if dmap.is_trap_nearby(player.position):
             olog.info("Careful! There's a trap nearby!")
 
-        if dm.is_treasure_nearby(dmap, player_pos):
+        if dmap.is_treasure_nearby(player.position):
             olog.info("There's a treasure right next to you! Eyes on the prize!")
 
-        input_result = handle_user_input(dmap, player_pos)
+        input_result = handle_user_input(player)
 
         if input_result == Save:
-            save(dmap, player_pos)
+            save(dmap, player)
             olog.info('Saved your game!\n')
             continue
 
         elif input_result == Load:
             try:
-                dmap, player_pos = load()
+                dmap, player = load()
                 dlog.debug('changed state to loaded:')
                 olog.info('Loaded your game!\n')
             except FileNotFoundError:
@@ -49,33 +54,32 @@ def play_game(size):
                 olog.info('You haven\'t saved it yet!')
             continue
 
-        player_pos = input_result
-
-        tile_type = dm.at(dmap, player_pos)
+        tile_type = dmap.at(player.position)
         if tile_type == dm.Treasure:
-            win(dmap, player_pos)
+            win(dmap, player.position)
             break
 
         if tile_type == dm.Trap:
-            lose(dmap, player_pos)
+            lose(dmap, player.position)
             break
 
         olog.info('\n')
 
 
-def handle_user_input(dmap, curr_pos):
+@log_decor
+def handle_user_input(player):
     '''
-        continuesly gets the command from user
+        continuously gets the command from user
         for move, also simulates the position change
         move command can be rejected (player re-prompted) if it would move player out of the map
+        in that case, user is reprompted until a valid command is issued
 
-        :param dmap: dungeon map
-        :param curr_pos: tile player stands at
+        :param player: Player
 
         :returns 
             Save if save command was issued
             Load is load command was issued
-            Simulated position after moving if move command was issued 
+            None if move command was issued (and successfully simulated)
     '''
     while True:
         command = parse_user_input()
@@ -84,13 +88,10 @@ def handle_user_input(dmap, curr_pos):
             return command
 
         delta = command
-        dlog.debug(f'trying to move by delta of {delta}')
-        simulated_pos = (curr_pos[0] + delta[0], curr_pos[1] + delta[1])
-        dlog.debug(f'trying to move to {simulated_pos}')
 
-        if dm.in_bounds(dmap, simulated_pos):
-            dlog.debug(f'moved to {simulated_pos}')
-            return simulated_pos
+        if player.try_move(delta):
+            dlog.debug(f'moved to {player.position}')
+            return None
         else:
             olog.info("Can't move there - a wall blocks the path")
 
@@ -98,6 +99,7 @@ def handle_user_input(dmap, curr_pos):
 Save, Load = range(2)
 
 
+@log_decor
 def parse_user_input():
     '''
         prompts player to issue a command,
@@ -121,6 +123,7 @@ def parse_user_input():
             olog.info(f'You can go only: {", ".join(player_moves.keys())}')
 
 
+@log_decor
 def win(dmap, end_pos):
     '''
         prints win message
@@ -132,9 +135,10 @@ def win(dmap, end_pos):
     olog.info(TREASURE_ASCI)
     olog.info('---------------------------------------------------------')
     olog.info("Now look at all the traps you've evaded!")
-    olog.info(dm.map_to_str(dmap, end_pos))
+    print(dmap.map_to_str(end_pos))
 
 
+@log_decor
 def lose(dmap, end_pos):
     '''
         prints lose message
@@ -146,7 +150,7 @@ def lose(dmap, end_pos):
     olog.info(BLOODY_SWORD_ASCI)
     olog.info('---------------------------------------------------------')
     olog.info("Now look at all the treasures you could've had for yourself!")
-    olog.info(dm.map_to_str(dmap, end_pos))
+    print(dmap.map_to_str(end_pos))
 
 
 TREASURE_ASCI = '''

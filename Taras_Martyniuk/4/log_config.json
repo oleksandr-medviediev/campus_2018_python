@@ -39,11 +39,16 @@
         }
     },
      "loggers" : { 
-         "Debug Log" : { 
-             "handlers" : [ "console",  "file"],
+         "Debug Log File" : { 
+             "handlers" : ["file"],
              "level" :  "DEBUG",
              "propagate" : "True"
         },
+        "Debug Log File Console" : { 
+            "handlers" : ["file", "console"],
+            "level" :  "DEBUG",
+            "propagate" : "True"
+       },
         "Output Log" : {
             "handlers" : [ "console_lean",  "file_lean"],
             "level" :  "INFO",
