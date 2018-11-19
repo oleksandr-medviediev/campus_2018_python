@@ -1,4 +1,5 @@
 from random import randint
+from Custom_logger import logger as log
 
 empty_cell = '🟋'
 trap = '◉'
@@ -8,6 +9,7 @@ wall = '⏹'
 
 
 def init_free_cell(game_map, cell_type):
+    log.debug("init_free_cell function called")
     while (True):
         i = randint(1, len(game_map[1])-2)
         j = randint(1, len(game_map[1])-2)
@@ -18,6 +20,7 @@ def init_free_cell(game_map, cell_type):
 
 
 def generate_map(map_size):
+    log.debug("generate_map function called")
     terrain = [[empty_cell for j in range(map_size + 2)]
                for i in range(map_size + 2)]
 
