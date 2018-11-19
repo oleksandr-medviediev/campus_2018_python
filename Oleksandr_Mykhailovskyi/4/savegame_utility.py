@@ -1,6 +1,10 @@
 import pickle
 
+from logging_utility import logging_debug_decorator
+from logging_utility import logging_info_decorator
 
+@logging_debug_decorator
+@logging_info_decorator
 def save(game_map, position, filename="savegame.json"):
     """
     Saves game using json dump
@@ -16,6 +20,8 @@ def save(game_map, position, filename="savegame.json"):
     game_map.pop()
 
 
+@logging_debug_decorator
+@logging_info_decorator
 def load(filename="savegame.json"):
     """
     Loads game using json.load
@@ -31,6 +37,8 @@ def load(filename="savegame.json"):
         return game_map, position
 
 
+@logging_debug_decorator
+@logging_info_decorator
 def load_check(mstr, game_map, position):
     if mstr.casefold() == "save".casefold():
         save(game_map, position)
