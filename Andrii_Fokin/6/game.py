@@ -35,6 +35,7 @@ def _player_input(game_map):
 
         if cell_type == cell_treasure or cell_type == cell_trap:
             log.debug(f'_player_input: player is find a {cell_type}')
+            player_position = player_position_new
             result = False
         else:
             game_map[player_position[1]][player_position[0]] = cell_free
