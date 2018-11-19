@@ -2,7 +2,7 @@ from DungeonLogger import main_logger
 from DungeonLogger import debugger_output
 
 
-@debugger_output()
+@debugger_output
 def print_map(world_map):
     """
     Prints world map
@@ -17,7 +17,7 @@ def print_map(world_map):
         main_logger.info(line)
 
 
-@debugger_output()
+@debugger_output
 def print_map_hide_secrets(world_map, secrets, default):
     """
     Prints world map without secrets
@@ -43,7 +43,7 @@ def print_map_hide_secrets(world_map, secrets, default):
         main_logger.info(''.join(lines))
 
 
-@debugger_output()
+@debugger_output
 def warn_player(treasure=False, trap=True):
     """
     Prints warning message

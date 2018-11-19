@@ -2,7 +2,7 @@ from random import randint
 from DungeonLogger import debugger_output
 
 
-@debugger_output()
+@debugger_output
 def fill_the_map(world, size, amount_of_items, item):
     """
     Fills map with given amount of items
@@ -28,7 +28,7 @@ def fill_the_map(world, size, amount_of_items, item):
             i += 1
 
 
-@debugger_output()
+@debugger_output
 def generate(size, empty=' ', trap='#', treasure='@'):
     """
     Generates map: size per size squares with size*size / 10 traps and size*size / 20 treasures

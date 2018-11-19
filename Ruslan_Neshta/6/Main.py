@@ -8,7 +8,7 @@ from DungeonLogger import main_logger
 from DungeonLogger import debugger_output
 
 
-@debugger_output()
+@debugger_output
 def check_game_over(player_position, world, trap, treasure):
     """
     Checks if game is over and returns message if its over
@@ -31,7 +31,7 @@ def check_game_over(player_position, world, trap, treasure):
     return result
 
 
-@debugger_output()
+@debugger_output
 def try_player_move(player_position, index, bound, move):
     """
     Tries to move player in given direction
@@ -55,7 +55,7 @@ def try_player_move(player_position, index, bound, move):
     return succeeded
 
 
-@debugger_output()
+@debugger_output
 def handle_player_move(world, player_position):
     """
     Changes map accordingly to user input
@@ -94,7 +94,7 @@ Input move:'
     return player_position
 
 
-@debugger_output()
+@debugger_output
 def setup_player_position(world, empty, player):
     """
     Randomizes player position on map
@@ -120,7 +120,7 @@ def setup_player_position(world, empty, player):
     return position
 
 
-@debugger_output()
+@debugger_output
 def is_around_of(pos, what, world):
     """
     Returns true if there is 'what' around of 'position'
@@ -142,7 +142,7 @@ def is_around_of(pos, what, world):
     return found
 
 
-@debugger_output()
+@debugger_output
 def generate_warnings_if_required(world, player_position, trap, treasure):
     """
     Generates warnings if required
@@ -161,7 +161,7 @@ def generate_warnings_if_required(world, player_position, trap, treasure):
     View.warn_player(is_treasure, is_trap)
 
 
-@debugger_output()
+@debugger_output
 def play_game(game_save):
     """
     Starts Dungeon game
@@ -231,7 +231,7 @@ def play_game(game_save):
         View.print_map(game_world)
 
 
-@debugger_output()
+@debugger_output
 def main_menu():
     """
     Shows main menu and allows user to make choice

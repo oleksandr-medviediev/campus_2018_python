@@ -5,7 +5,7 @@ from DungeonLogger import debugger_output
 SAVE = 'DungeonGame'
 
 
-@debugger_output()
+@debugger_output
 def save_game(game, type='b'):
     """
     Saves game into a file
@@ -26,7 +26,7 @@ def save_game(game, type='b'):
         raise RuntimeError('invalid type "{}" got'.format(type))
 
 
-@debugger_output()
+@debugger_output
 def save_pickle(game):
     """
     Saves game into binary format
@@ -40,7 +40,7 @@ def save_pickle(game):
         pickle.dump(game, save, protocol=3)
 
 
-@debugger_output()
+@debugger_output
 def save_json(game):
     """
     Saves game into json format
@@ -56,7 +56,7 @@ def save_json(game):
         json.dump(game, save)
 
 
-@debugger_output()
+@debugger_output
 def load_game():
     """
     Loads game from file
@@ -74,7 +74,7 @@ def load_game():
     return game
 
 
-@debugger_output()
+@debugger_output
 def load_pickle():
     """
     Loads game state from binary file
@@ -89,7 +89,7 @@ def load_pickle():
     return result
 
 
-@debugger_output()
+@debugger_output
 def load_json():
     """
     Loads game state from json file
