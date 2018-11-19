@@ -5,82 +5,117 @@ This module handles player movement and state for task 4.1 from Coding Campus 20
 
 import random
 import logging
-import dungeon_map
+from dungeon_map import DungeonMap
 import utils
 import log
+import config
+from decorators import log_decorator, debug_log_decorator
 
-position = None
 logger = logging.getLogger(log.LOGGER_NAME)
 
 
-def move(direction):
-    """
-    Attempts to move player in specified direction
-    :param direction: String containing direction character: U, L, R, D
-    :return: Bool, if player moved to new location
-    """
+class Player:
 
-    global position
+    def __init__(self, active_map):
 
-    logger.debug(f"Attempting to move player at {position} to {direction}...")
+        self.position = self.init_position(active_map)
+        self.bag = 0
+        self.hitpoints = config.PLAYER_HEALTH
 
-    direction = direction.upper()
+    @log_decorator
+    @debug_log_decorator
+    def move(self, direction, active_map):
+        """
+        Attempts to move player in specified direction
+        :param direction: String containing direction character: U, L, R, D
+        :param active_map: DungeonMap instance
+        :return: Bool, if player moved to new location
+        """
 
-    position_offset = None
-    is_position_changed = False
+        logger.debug(f"Attempting to move player at {self.position} to {direction}...")
 
-    if direction == "U":
-        position_offset = (-1, 0)
-    elif direction == "L":
-        position_offset = (0, -1)
-    elif direction == "R":
-        position_offset = (0, +1)
-    elif direction == "D":
-        position_offset = (+1, 0)
+        direction = direction.upper()
 
-    if dungeon_map.is_index_valid(utils.vector_sum(position, position_offset)):
+        position_offset = None
+        is_position_changed = False
 
-        position = utils.vector_sum(position, position_offset)
+        if direction == "U":
+            position_offset = (-1, 0)
+        elif direction == "L":
+            position_offset = (0, -1)
+        elif direction == "R":
+            position_offset = (0, +1)
+        elif direction == "D":
+            position_offset = (+1, 0)
 
-        if dungeon_map.game_map[position[0]][position[1]] == dungeon_map.SYMBOL_TILE:
-            dungeon_map.game_map[position[0]][position[1]] = dungeon_map.SYMBOL_PLAYER
+        if active_map.is_index_valid(utils.vector_sum(self.position, position_offset)):
 
-        is_position_changed = True
-        logger.debug("Player moved successfully")
+            position = utils.vector_sum(self.position, position_offset)
 
-    else:
-        logger.debug(f"Invalid position, couldn't move player to {direction}")
+            if active_map.game_map[position[0]][position[1]] == DungeonMap.SYMBOL_TILE:
+                active_map.game_map[position[0]][position[1]] = DungeonMap.SYMBOL_PLAYER
 
-    return is_position_changed
+            self.position = position
+            is_position_changed = True
+            logger.debug("Player moved successfully")
 
+        else:
+            logger.debug(f"Invalid position, couldn't move player to {direction}")
 
-def init_position():
-    """
-    Randomly chooses player position on map; should be called after dungeon map was initialized
-    :return: None
-    """
+        return is_position_changed
 
-    global position
+    @log_decorator
+    @debug_log_decorator
+    def init_position(self, active_map):
+        """
+        Randomly chooses player position on map; should be called after dungeon map was initialized
+        :param active_map: DungeonMap instance
+        :return: None
+        """
 
-    map_size = len(dungeon_map.game_map)
+        position = None
 
-    while True:
+        map_size = len(active_map.game_map)
 
-        row = random.randint(0, map_size - 1)
-        column = random.randint(0, map_size - 1)
+        if map_size == 0:
+            position = [0, 0]
+        else:
 
-        if dungeon_map.game_map[row][column] == dungeon_map.SYMBOL_TILE:
+            while True:
 
-            position = [row, column]
-            logger.debug(f"Initialized player position at {position}")
-            break
+                row = random.randint(0, map_size - 1)
+                column = random.randint(0, map_size - 1)
 
+                if active_map.game_map[row][column] == DungeonMap.SYMBOL_TILE:
 
-def mark_last_pos():
-    """
-    Marks last player position before Game Over on map
-    :return: None
-    """
+                    position = [row, column]
+                    logger.debug(f"Initialized player position at {position}")
+                    break
 
-    dungeon_map.game_map[position[0]][position[1]] = dungeon_map.SYMBOL_LASTPOS
-    logger.debug(f"Marking last player position at {position}")
+        return position
+
+    @log_decorator
+    @debug_log_decorator
+    def mark_last_pos(self, active_map):
+        """
+        Marks last player position before Game Over on map
+        :param active_map: DungeonMap instance
+        :return: None
+        """
+
+        active_map.game_map[self.position[0]][self.position[1]] = DungeonMap.SYMBOL_LASTPOS
+        logger.debug(f"Marking last player position at {self.position}")
+
+    def is_dead(self):
+        """
+        Checks if player is dead
+        :return: Bool, if player is dead
+        """
+        return self.hitpoints <= 0
+
+    def is_bag_full(self):
+        """
+        Checks if treasure bag is full
+        :return: Bool, if treasure bag is full
+        """
+        return self.bag >= config.PLAYER_BAG_SIZE
