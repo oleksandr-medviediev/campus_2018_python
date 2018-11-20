@@ -5,9 +5,6 @@ class Character:
     def __init__(self, name):
         """
         Character constructor.
-        :__name: name of the character.
-        :__bag: number of treasures the character has.
-        :__hp: number of hit points the character has.
 
         :param name: name of the character.
         """
