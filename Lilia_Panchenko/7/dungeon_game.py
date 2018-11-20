@@ -1,24 +1,26 @@
-import game_step
+from game_step import GameStep
 import pickle
-import player
+from player import Player
 
 from logger import debug_decorator
 from logger import info_decorator
 from logger import set_debug_logging
+from logger import set_info_logging
 
 
 class DungeonGame:
 
-    def __init__():
-        print('ok')
+    def __init__(self):
         self.my_game_step = GameStep()
+        self.my_player = Player()
+
 
     @debug_decorator
     @info_decorator
-    def save_game():
+    def save_game(self):
 
         file = open('savefile.txt', 'wb')
-        to_save = (my_game_step.get_to_save_data(), my_player.position)
+        to_save = (self.my_game_step.get_to_save_data(), self.my_player.name, self.my_player.position)
 
         pickle.dump(to_save, file)
 
@@ -27,77 +29,86 @@ class DungeonGame:
 
     @debug_decorator
     @info_decorator
-    def load_game():
+    def load_game(self):
 
         file = open('savefile.txt', 'rb')
         loaded = pickle.load(file)
 
-        my_game_step.set_loaded_data(loaded[0]) 
-        my_game_step.player_position = loaded[1]
+        self.my_game_step.set_loaded_data(loaded[0]) 
+        self.my_player.name = loaded[1]
+        self.my_player.position = loaded[2]
 
         file.close()
 
 
     @debug_decorator
     @info_decorator
-    def new_game():
-        my_game_step.init_game()
+    def new_game(self):
+
+        self.my_game_step.setup_map()
+        player_name = input("Please, enter your name: ")
+        self.my_player.set_player_name(player_name)
+        self.my_player.spawn_player(self.my_game_step.my_game_map)
 
 
     @debug_decorator
     @info_decorator
-    def is_game_ended():
+    def is_game_ended(self):
 
         game_ended = False
 
-        if my_player.islost:
+        if self.my_player.islost:
             game_ended = True
             print("Sorry! You lost this game!")
 
-        if my_player.iswon:
+        if self.my_player.iswon:
             game_ended = True
             print("Congratulations! You won this game!")
+
+        return game_ended
 
 
     @debug_decorator
     @info_decorator
-    def process_game():
+    def process_game(self):
 
-        print("\nWelcome to dungeon game! Let's play!\n\nYou can save your game in any time by typing 'save'\n\nRemember, you can move up, down, left or right. Your aim is to get to treasure\n")
-        player_name = input("Please, enter your name: ")
+        print("\nWelcome to dungeon game! Let's play!\n\nYou can save your game in any time by typing 'save'"+
+            "\n\nRemember, you can move up, down, left or right. Your aim is to get to treasure\n")
 
-        my_player = Player(player_name, my_game_step.get_map())
-
-        while not is_game_ended():
+        while not self.is_game_ended():
             
-            my_game_step.notify_player_about_traps()
-            my_game_step.notify_player_about_treasures()
+            self.my_game_step.notify_player_about_traps(self.my_player.position)
+            self.my_game_step.notify_player_about_treasures(self.my_player.position)
 
-            print(f'You are on position ({my_game_step.player_position[1]},{my_game_step.player_position[0]})\n')
+            print(f'You are on position ({self.my_player.position[1]}, {self.my_player.position[0]})\n')
 
-            direction = my_player.input_player_choice()
-            if direction != None:
-                my_game_step.perform_next_step(direction)
+            direction = self.my_player.input_direction()
+
+            if direction == 'save':
+                self.save_game()
+            elif direction == 'exit':
+                exit()
+            else:
+                self.my_game_step.perform_next_step(direction, self.my_player)
             
-        my_game_step.print_game_result()
-        my_game_step.print_game_map()
+        self.my_game_step.print_game_result(self.my_player)
+        self.my_game_step.print_game_map(self.my_player.position)
 
-
-print('ok3')
-game = DungeonGame()
-game.init_game()
 
 set_debug_logging()
+set_info_logging()
 
-new_or_load = input("Do you want to play a new game or load old one?\nEnter your choice [N / L]:")
+game = DungeonGame()
+
+new_or_load = input("Do you want to play a new game or load old one?\nEnter your choice [new / load]: ")
 new_or_load = new_or_load.casefold()
 
-while new_or_load not in ['n', 'l']:
+while new_or_load not in ['n', 'l', 'new', 'load']:
     
-    new_or_load = input("Try again\nEnter your choice [N / L]: ")
+    new_or_load = input("Try again\nEnter your choice [new / load]: ")
     new_or_load = new_or_load.casefold()
 
-if new_or_load == 'n':
+if new_or_load == 'n' or new_or_load == 'new':
     game.new_game()
 
 else:
