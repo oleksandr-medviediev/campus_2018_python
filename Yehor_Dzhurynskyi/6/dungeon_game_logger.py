@@ -1,7 +1,10 @@
 import logging
 import functools
+import json
 
-DEBUG_MODE = True
+with open('Yehor_Dzhurynskyi/6/config.json', 'r') as handle:
+    json_config = json.load(handle)
+    DEBUG_MODE = json_config['debug_mode']
 
 logger = logging.getLogger(__name__)
 
