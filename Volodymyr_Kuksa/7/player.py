@@ -63,3 +63,12 @@ class Player(Character):
         """
         self.__position_x = randint(0, map_size - 1)
         self.__position_y = randint(0, map_size - 1)
+
+    def __str__(self):
+        """
+        Return str with player stats.
+
+        :return: str with player stats.
+        :rtype: str.
+        """
+        return f'{self.character_name}: HP: {self.hp}, BAG: {self.bag}'

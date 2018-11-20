@@ -168,10 +168,10 @@ class GameMap:
             elif adjacent_tile == GAME_CHARACTERS['Trap']:
                 traps += 1
 
-        GameMap.output_game_state(treasures, traps)
+        GameMap.output_map_state(treasures, traps)
 
     @staticmethod
-    def output_game_state(treasures, traps):
+    def output_map_state(treasures, traps):
         """
         Output information about nearby treasures and traps.
 

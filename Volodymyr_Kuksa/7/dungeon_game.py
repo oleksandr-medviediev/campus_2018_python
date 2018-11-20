@@ -1,4 +1,5 @@
 import pickle
+import logging
 from player import Player, PLAYER_MOVES
 from game_map import GameMap, GAME_CHARACTERS
 from utils import query_player_input
@@ -44,7 +45,7 @@ class DungeonGame:
         """
         while self.player.is_alive() and not self.player.is_bag_full():
 
-            player_input = query_player_input(f'Enter move {VALID_RUNTIME_INPUTS}: ', VALID_RUNTIME_INPUTS)
+            player_input = query_player_input(f'\nEnter move {VALID_RUNTIME_INPUTS}: ', VALID_RUNTIME_INPUTS)
 
             if player_input == SAVE_COMMAND:
 
@@ -59,6 +60,8 @@ class DungeonGame:
                 self.apply_tile_effects_to_player()
                 self.game_map.mark_tile_as_visited(*position)
 
+            self.print_game_state()
+
         self.on_game_end()
 
     def on_game_end(self):
@@ -66,11 +69,11 @@ class DungeonGame:
         Output game results.
         """
         if not self.player.is_alive():
-            print('You Lost(')
+            logging.info('\nYou Lost(')
         else:
-            print('You Won!')
+            logging.info('\nYou Won!')
 
-        print(self.game_map)
+        logging.info(self.game_map)
 
     def on_game_save(self):
         """
@@ -85,7 +88,6 @@ class DungeonGame:
         """
         Load game from file.
         """
-
         with open(FILE_NAME, 'rb') as save_file:
             data = pickle.load(save_file)
 
@@ -102,6 +104,16 @@ class DungeonGame:
         tile_character = self.game_map.get_tile_character(*self.player.get_position())
 
         if tile_character == GAME_CHARACTERS['Treasure']:
+
+            logging.info('Treasure collected!')
             self.player.increment_bag()
+
         elif tile_character == GAME_CHARACTERS['Trap']:
+
+            logging.info('Player damaged.')
             self.player.decrement_hp()
+
+    def print_game_state(self):
+
+        logging.info(self.player)
+        self.game_map.print_state_on_position(*self.player.get_position())
