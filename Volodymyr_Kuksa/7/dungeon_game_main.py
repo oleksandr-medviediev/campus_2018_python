@@ -1,3 +1,7 @@
+from dungeon_game import DungeonGame
+
 if __name__ == '__main__':
 
-    pass
+    game = DungeonGame()
+
+    game.run_game()
