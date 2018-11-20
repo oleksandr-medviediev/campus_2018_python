@@ -5,6 +5,26 @@ class Character:
         self.bag = 0
 
 
+    @property
+    def hp(self):
+        return self.__hp
+
+
+    @hp.setter
+    def hp(self, value):
+        self.__hp = value
+
+
+    @property
+    def bag(self):
+        return self.__bag
+
+
+    @bag.setter
+    def bag(self, value):
+        self.__bag = value
+
+        
     def is_alive(self):
         """ Function check if player can continue game.
 
