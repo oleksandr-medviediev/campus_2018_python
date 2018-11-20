@@ -4,7 +4,7 @@ import Save_load
 
 field_size = 10
 
-while (True):
+while True:
     player_answer = input(
         "enter 'new' to start new game or 'load' to load saved game:\n").lower()
 
