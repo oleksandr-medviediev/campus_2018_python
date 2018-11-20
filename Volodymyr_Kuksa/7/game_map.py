@@ -196,6 +196,27 @@ class GameMap:
         if not treasures and not traps:
             logging.info('There is nothing nearby.')
 
+    @property
+    def game_map(self):
+        """
+        game_map getter.
+
+        :return: game map.
+        :rtype: 2d list of single-character strings.
+        """
+        return self.__game_map
+
+    @game_map.setter
+    def game_map(self, new_map):
+        """
+        game_map setter.
+
+        :param new_map: new game map.
+        :type new_map: 2d list of single-character str.
+        """
+        self.__game_map = new_map
+        self.__map_size = len(new_map[0])
+
     def __str__(self):
         """
         Return visual representation of game map with border and legend.

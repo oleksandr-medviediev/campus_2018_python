@@ -8,7 +8,7 @@ class Character:
 
         :param name: name of the character.
         """
-        self.__name = name
+        self.__character_name = name
         self.__bag = 0
         self.__hp = 3
 
@@ -53,22 +53,61 @@ class Character:
         return self.__bag >= 3
 
     @property
-    def name(self):
+    def character_name(self):
         """
-        Getter for name just for fun)
+        Getter for name.
 
         :return: name of the character.
         :rtype: str.
         """
-        return self.__name
+        return self.__character_name
 
-    @name.setter
-    def name(self, name):
+    @character_name.setter
+    def character_name(self, new_name):
         """
-        Setter for name just for fun)
+        Setter for name.
 
-        :param name: new name for the character.
-
-        :return: None.
+        :param new_name: new name for the character.
+        :type new_name: str.
         """
-        self.__name = name
+        self.__character_name = new_name
+
+    @property
+    def hp(self):
+        """
+        Getter for hp.
+
+        :return: hp.
+        :rtype: int.
+        """
+        return self.__hp
+
+    @hp.setter
+    def hp(self, new_hp):
+        """
+        Setter for hp.
+
+        :param new_hp: new value of hp.
+        :type new_hp: int.
+        """
+        self.__hp = new_hp
+
+    @property
+    def bag(self):
+        """
+        Getter for bag.
+
+        :return: bag.
+        :rtype: int.
+        """
+        return self.__bag
+
+    @bag.setter
+    def bag(self, new_bag):
+        """
+        Setter for bag.
+
+        :param new_bag: new value of bag.
+        :type new_bag: int.
+        """
+        self.__bag = new_bag
