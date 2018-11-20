@@ -1,3 +1,4 @@
+from random import randint
 from character import Character
 
 PLAYER_MOVES = {'u': (0, -1), 'd': (0, 1), 'l': (-1, 0), 'r': (1, 0)}
@@ -17,9 +18,9 @@ class Player(Character):
         self.__position_x = 0
         self.__position_y = 0
 
-    def move(self, move_name):
+    def calculate_new_position(self, move_name):
         """
-        Execute move and return new position.
+        Return new player position.
 
         :param move_name: name of the move to be executed.
         :type move_name: single character str.
@@ -43,3 +44,22 @@ class Player(Character):
         :type position_y: int.
         """
         self.__position_x, self.__position_y = position_x, position_y
+
+    def get_position(self):
+        """
+        Return player position as a cortege: (position_x, position_y).
+
+        :return: (position_x, position_y).
+        :rtype: (int, int).
+        """
+        return self.__position_x, self.__position_y
+
+    def randomize_position(self, map_size):
+        """
+        Set player to random position.
+
+        :param map_size: size of game map.
+        :type map_size: int.
+        """
+        self.__position_x = randint(0, map_size - 1)
+        self.__position_y = randint(0, map_size - 1)

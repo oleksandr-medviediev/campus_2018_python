@@ -129,7 +129,7 @@ class GameMap:
         :return: Game map character on position.
         :rtype: single-character str.
         """
-        return self.__game_map[position_x][position_y]
+        return self.__game_map[position_y][position_x]
 
     def mark_tile_as_visited(self, position_x, position_y):
         """
@@ -141,7 +141,7 @@ class GameMap:
         :param position_y: y coordinate of the position.
         :type position_y: int.
         """
-        self.__game_map[position_x][position_y] = GAME_CHARACTERS['Visited']
+        self.__game_map[position_y][position_x] = GAME_CHARACTERS['Visited']
 
     def print_state_on_position(self, position_x, position_y):
         """
