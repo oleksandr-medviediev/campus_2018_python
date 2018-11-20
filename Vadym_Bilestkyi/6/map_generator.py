@@ -1,7 +1,8 @@
-from dungeon_logging import logger
+from dungeon_logging import logger, with_logging
 import random
 
 
+@with_logging
 def generate(map_size):
     new_map = [[None] * map_size for _ in range(map_size)]
     logger.debug('Empty map generated')

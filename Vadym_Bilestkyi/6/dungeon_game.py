@@ -1,5 +1,6 @@
-from dungeon_logging import logger
+from dungeon_logging import logger, with_logging
 import world
+import settings
 
 directions = {
     'w': [ 0, -1],
@@ -9,9 +10,20 @@ directions = {
 }
 
 
+@with_logging
 def game_loop():
-    game_started = False
+    while True:
+        user_input = input('Enable debug mode (y/n):')
+        if user_input == 'y':
+            settings.DEBUG_ENABLED = True
+            break
+        elif user_input == 'n':
+            settings.DEBUG_ENABLED = False
+            break
+        else:
+            print('Invalid input. Try again.\n')
 
+    game_started = False
     while not game_started:
         user_input = input('New game(1)\nLoad game (2)\n')
 

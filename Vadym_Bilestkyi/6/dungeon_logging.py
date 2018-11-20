@@ -1,4 +1,7 @@
 import logging
+import functools
+
+import settings
 
 
 logger = logging.getLogger(__name__)
@@ -16,3 +19,24 @@ file_handler.setFormatter(file_format)
 
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
+
+
+def with_logging(fn):
+    @functools.wraps(fn)
+    def wrapper(*args, **kwargs):
+
+        if settings.DEBUG_ENABLED:
+            debug_header_string = '\nFunction \'{}\' was called\nWith args: {}, kwargs: {}'.format(fn.__name__, args, kwargs)
+            logger.warning(debug_header_string)
+            logger.debug(debug_header_string)
+
+        returned_value = fn(*args, **kwargs)
+
+        if settings.DEBUG_ENABLED:
+            debug_trailing_string = '\nFunction {} returned {}'.format(fn.__name__, returned_value)
+            logger.warning(debug_trailing_string)
+            logger.debug(debug_trailing_string)
+
+        return returned_value
+
+    return wrapper
