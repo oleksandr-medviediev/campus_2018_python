@@ -43,10 +43,3 @@ class Player(Character):
         :type position_y: int.
         """
         self.__position_x, self.__position_y = position_x, position_y
-
-
-player = Player('Vovchik')
-
-print(player.name)
-player.name = 'Vovan'
-print(player.name)

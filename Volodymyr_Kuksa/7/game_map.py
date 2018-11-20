@@ -2,14 +2,24 @@ import logging
 from random import shuffle
 
 GAME_CHARACTERS = {'Empty': ' ', 'Trap': 'X', 'Treasure': 'O', 'Spawn': '@', 'Visited': '.'}
+VECTORS_TO_ADJACENT_TILES = ((0, -1), (0, 1), (1, 0), (-1, 0))
 
 
 class GameMap:
 
-    def __init__(self, map_size):
+    def __init__(self, map_size=0):
+        """
+        GameMap constructor.
 
+        :param map_size: size of the map to be constructed.
+        :type map_size: int.
+        """
         self.__map_size = map_size
-        self.__game_map = GameMap.generate_game_map(map_size)
+
+        if map_size > 0:
+            self.__game_map = GameMap.generate_game_map(map_size)
+        else:
+            self.__game_map = []
 
     @staticmethod
     def generate_game_map(map_size):
@@ -105,3 +115,108 @@ class GameMap:
             is_valid = False
 
         return is_valid
+
+    def get_tile_character(self, position_x, position_y):
+        """
+        Return game map character on position with coordinates position_x and position_y.
+
+        :param position_x: x coordinate of the position.
+        :type position_x: int.
+
+        :param position_y: y coordinate of the position.
+        :type position_y: int.
+
+        :return: Game map character on position.
+        :rtype: single-character str.
+        """
+        return self.__game_map[position_x][position_y]
+
+    def mark_tile_as_visited(self, position_x, position_y):
+        """
+        Mark game tile on position with coordinates position_x and position_y as visited.
+
+        :param position_x: x coordinate of the position.
+        :type position_x: int.
+
+        :param position_y: y coordinate of the position.
+        :type position_y: int.
+        """
+        self.__game_map[position_x][position_y] = GAME_CHARACTERS['Visited']
+
+    def print_state_on_position(self, position_x, position_y):
+        """
+
+        :param position_x:
+        :param position_y:
+        :return:
+        """
+        treasures = 0
+        traps = 0
+
+        for offset in VECTORS_TO_ADJACENT_TILES:
+
+            adjacent_x = position_x + offset[0]
+            adjacent_y = position_y + offset[1]
+
+            if not 0 <= adjacent_x < self.__map_size or not 0 <= adjacent_y < self.__map_size:
+                continue
+
+            adjacent_tile = self.__game_map[adjacent_y][adjacent_x]
+
+            if adjacent_tile == GAME_CHARACTERS['Treasure']:
+                treasures += 1
+            elif adjacent_tile == GAME_CHARACTERS['Trap']:
+                traps += 1
+
+        GameMap.output_game_state(treasures, traps)
+
+    @staticmethod
+    def output_game_state(treasures, traps):
+        """
+        Output information about nearby treasures and traps.
+
+        :param treasures: number of treasures in tiles, adjacent to the player.
+        :type treasures: int.
+
+        :param traps: number of traps in tiles, adjacent to the player.
+        :type traps: int.
+
+        :return: None.
+        """
+        if treasures == 1:
+            logging.info('There is a treasure nearby!')
+        elif treasures:
+            logging.info('There are multiple treasures nearby!')
+
+        if traps == 1:
+            logging.info('There is a trap nearby!')
+        elif traps:
+            logging.info('There are multiple traps nearby!')
+
+        if not treasures and not traps:
+            logging.info('There is nothing nearby.')
+
+    def __str__(self):
+        """
+        Return visual representation of game map with border and legend.
+
+        :return: visual representation of game map with border and legend.
+        :rtype: str.
+        """
+        horizontal_border = ''.join(['+', '-' * self.__map_size, '+'])
+
+        result = [horizontal_border]
+
+        for row in self.__game_map:
+            result.append(''.join(['|', ''.join(row), '|']))
+
+        result.append(horizontal_border)
+
+        result.append(f"{GAME_CHARACTERS['Treasure']} - treasures.")
+        result.append(f"{GAME_CHARACTERS['Trap']} - traps.")
+        result.append(f"{GAME_CHARACTERS['Spawn']} - spawn point.")
+        result.append(f"{GAME_CHARACTERS['Visited']} - visited tiles.")
+
+        result = '\n'.join(result)
+
+        return result
