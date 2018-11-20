@@ -1,5 +1,6 @@
 from random import randint
 from character import Character
+import dungeon_game_decorators
 
 PLAYER_MOVES = {'u': (0, -1), 'd': (0, 1), 'l': (-1, 0), 'r': (1, 0)}
 
@@ -18,6 +19,8 @@ class Player(Character):
         self.__position_x = 0
         self.__position_y = 0
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def calculate_new_position(self, move_name):
         """
         Return new player position.
@@ -33,6 +36,8 @@ class Player(Character):
 
         return new_x, new_y
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def set_position(self, position_x, position_y):
         """
         Set new player position.
@@ -45,6 +50,8 @@ class Player(Character):
         """
         self.__position_x, self.__position_y = position_x, position_y
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def get_position(self):
         """
         Return player position as a cortege: (position_x, position_y).
@@ -54,6 +61,8 @@ class Player(Character):
         """
         return self.__position_x, self.__position_y
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def randomize_position(self, map_size):
         """
         Set player to random position.

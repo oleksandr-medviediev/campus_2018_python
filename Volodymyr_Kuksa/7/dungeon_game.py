@@ -3,6 +3,7 @@ import logging
 from player import Player, PLAYER_MOVES
 from game_map import GameMap, GAME_CHARACTERS
 from utils import query_player_input
+import dungeon_game_decorators
 
 FILE_NAME = 'save_file.dg'
 
@@ -39,6 +40,8 @@ class DungeonGame:
         while self.game_map.get_tile_character(*self.player.get_position()) != GAME_CHARACTERS['Empty']:
             self.player.randomize_position(map_size)
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def run_game(self):
         """
         Game loop.
@@ -64,6 +67,8 @@ class DungeonGame:
 
         self.on_game_end()
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def on_game_end(self):
         """
         Output game results.
@@ -75,6 +80,8 @@ class DungeonGame:
 
         logging.info(self.game_map)
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def on_game_save(self):
         """
         Save game to file.
@@ -84,6 +91,8 @@ class DungeonGame:
         with open(FILE_NAME, 'wb') as save_file:
             pickle.dump(data, save_file, protocol=3)
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def on_game_load(self):
         """
         Load game from file.
@@ -97,6 +106,8 @@ class DungeonGame:
         self.player.hp = data[3]
         self.player.bag = data[4]
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def apply_tile_effects_to_player(self):
         """
         Apply to player effects of the tile on which he currently stands on.
@@ -113,6 +124,8 @@ class DungeonGame:
             logging.info('Player damaged.')
             self.player.decrement_hp()
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def print_game_state(self):
 
         logging.info(self.player)

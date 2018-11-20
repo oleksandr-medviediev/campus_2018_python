@@ -1,5 +1,6 @@
 import logging
 from random import shuffle
+import dungeon_game_decorators
 
 GAME_CHARACTERS = {'Empty': ' ', 'Trap': 'X', 'Treasure': 'O', 'Spawn': '@', 'Visited': '.'}
 VECTORS_TO_ADJACENT_TILES = ((0, -1), (0, 1), (1, 0), (-1, 0))
@@ -22,6 +23,8 @@ class GameMap:
             self.__game_map = []
 
     @staticmethod
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def generate_game_map(map_size):
         """
         Return square game map of dimensions size x size filled with randomly placed objects.
@@ -37,7 +40,10 @@ class GameMap:
 
         return game_map
 
+
     @staticmethod
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def generate_flat_map(size_total):
         """
         Return an array of randomly generated characters that represent a sequence of all rows in game map.
@@ -71,6 +77,8 @@ class GameMap:
         return characters
 
     @staticmethod
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def split_rows(size, characters):
         """
         Return an array of batches of characters of size length each.
@@ -93,6 +101,8 @@ class GameMap:
 
         return game_map
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def is_valid_position(self, position_x, position_y):
         """
         Return True if position with coordinates position_x and position_y is valid, False otherwise.
@@ -116,6 +126,8 @@ class GameMap:
 
         return is_valid
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def get_tile_character(self, position_x, position_y):
         """
         Return game map character on position with coordinates position_x and position_y.
@@ -131,6 +143,8 @@ class GameMap:
         """
         return self.__game_map[position_y][position_x]
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def mark_tile_as_visited(self, position_x, position_y):
         """
         Mark game tile on position with coordinates position_x and position_y as visited.
@@ -143,6 +157,8 @@ class GameMap:
         """
         self.__game_map[position_y][position_x] = GAME_CHARACTERS['Visited']
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def print_state_on_position(self, position_x, position_y):
         """
 
@@ -171,6 +187,8 @@ class GameMap:
         GameMap.output_map_state(treasures, traps)
 
     @staticmethod
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def output_map_state(treasures, traps):
         """
         Output information about nearby treasures and traps.

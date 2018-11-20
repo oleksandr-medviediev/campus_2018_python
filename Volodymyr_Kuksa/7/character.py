@@ -1,7 +1,11 @@
+import dungeon_game_decorators
+
+
 class Character:
     """
     Basic character class.
     """
+
     def __init__(self, name):
         """
         Character constructor.
@@ -12,6 +16,8 @@ class Character:
         self.__bag = 0
         self.__hp = 3
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def increment_bag(self, step=1):
         """
         Increment __bag by step.
@@ -23,6 +29,8 @@ class Character:
         """
         self.__bag += step
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def decrement_hp(self, step=1):
         """
         Decrement __hp by step.
@@ -34,6 +42,8 @@ class Character:
         """
         self.__hp -= step
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def is_alive(self):
         """
         Return True if character has more than 0 hit points.
@@ -43,6 +53,8 @@ class Character:
         """
         return self.__hp > 0
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def is_bag_full(self):
         """
         Return True if character has 3 or more treasures in bag.
