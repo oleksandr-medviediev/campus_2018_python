@@ -1,3 +1,5 @@
+from decorators import InfoDecorator
+
 class Character:
     
     def __init__(self):
@@ -41,11 +43,16 @@ class Character:
 
         return self.bag == 3
 
+
+    @InfoDecorator('The treasure picked up.')
     def increase_treasure_amount(self):
         """ Function increase self.bag by 1 point. """
 
         self.bag += 1
 
+
+    @InfoDecorator('The player got trapped')
     def get_trapped(self):
         """ Function decrease self.hp by 1 point. """
+
         self.hp -= 1
