@@ -6,10 +6,6 @@ class Creature:
     """defines basic live game creature
     """
 
-    __health = 0
-    __curr_row = 0
-    __curr_col = 0
-
     @decorators.debug_decorator
     def __init__(self,  row=0, col=0, health=0):
         """init object with position
@@ -21,7 +17,8 @@ class Creature:
 
         """
         self.__health = health
-        self.set_position(row, col)
+        self.__curr_row = row
+        self.__curr_col = col
 
     @property
     def position(self):

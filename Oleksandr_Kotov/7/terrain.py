@@ -18,19 +18,15 @@ from decorators import info_decorator
 
 class Terrain:
 
-    __start_row = 0
-    __start_col = 0
-    __map = []
-    __scale = 0
-
     @info_decorator
     @debug_decorator
-    def __init__(self, scale=0):
+    def __init__(self, scale=1):
         """Generate a map and a starting position
 
         Arguments:
             scale int -- map scale (number of squares == scale * scale)
         """
+
         self.__scale = scale
 
         traps = []
@@ -56,6 +52,7 @@ class Terrain:
         self.__start_row = start_position // scale
         self.__start_col = start_position - self.__start_row * scale
 
+        self.__game_map = []
         row = []
 
         for square in range(size):
@@ -71,7 +68,7 @@ class Terrain:
 
             if len(row) == scale:
 
-                self.__map.append(row)
+                self.__game_map.append(row)
                 row = []
 
     @property
@@ -95,21 +92,17 @@ class Terrain:
             str -- object type located at given row and column
         """
 
-        return self.__map[row][col]
+        return self.__game_map[row][col]
 
     @property
     def scale(self):
         return self.__scale
 
-    @property
-    def map(self):
-        return self.__map
-
     def __str__(self):
 
         string = "\n"
 
-        for row in self.__map:
+        for row in self.__game_map:
 
             for col in row:
                 string += col

@@ -7,8 +7,6 @@ class Player(creature.Creature):
     """defines game player
     """
 
-    __bag = 0
-
     @decorators.debug_decorator
     def __init__(self, row, col, health):
         """initialzie player instance
@@ -19,6 +17,7 @@ class Player(creature.Creature):
             health {int} -- player health
         """
         super().__init__(row, col, health)
+        self.__bag = 0
 
     @decorators.debug_decorator
     def grant_treasure(self, treasure_value):

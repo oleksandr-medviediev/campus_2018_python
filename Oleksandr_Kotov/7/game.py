@@ -16,12 +16,7 @@ from terrain import Terrain
 
 class GameSession:
 
-    __player = None
-    __terrain = None
-
-    __win_condition = 0
-
-    def __init__(self, player_health=0, win_condition=0, map_scale=0):
+    def __init__(self, player_health=0, win_condition=0, map_scale=1):
         """initialize game session
 
         Arguments:
@@ -210,7 +205,7 @@ class GameSession:
 
                     with open("sav.txt", "wb") as savefile:
 
-                        pickle.dump(self, savefile, protocol=0)
+                        pickle.dump(self.__dict__, savefile, protocol=0)
                         log_info("Saved succesfully")
 
                 else:
@@ -243,7 +238,8 @@ class GameSession:
 
             with open("sav.txt", "rb") as savefile:
 
-                self = pickle.load(savefile)
+                temp_dict = pickle.load(savefile)
+                self.__dict__.update(temp_dict)
                 log_debug("game loaded")
                 has_loaded = True
 
