@@ -36,8 +36,13 @@ class Character:
     @log_decorator
     def draw_character(self):
 
-        health_info = "".join(['Health: ', *["[#]" for x in range(0, self.health)], *["[ ]" for x in range(self.health, 3)]])
-        treasures_info = "".join(['Treasures: ', *["[@]" for x in range(0, self.treasures)], *["[ ]" for x in range(self.treasures, 3)]])
+        health_info = "".join(
+            ['Health: ', *["[#]" for x in range(0, self.health)], 
+            *["[ ]" for x in range(self.health, 3)]])
+
+        treasures_info = "".join(
+            ['Treasures: ', *["[@]" for x in range(0, self.treasures)], 
+            *["[ ]" for x in range(self.treasures, 3)]])
         
         my_logger.info(" ".join([health_info, treasures_info]))
 

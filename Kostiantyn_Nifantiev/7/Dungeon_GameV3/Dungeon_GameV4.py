@@ -8,7 +8,7 @@ while True:
 
     game_instance.setup_game()
 
-    while(game_instance.run_farame()):
+    while game_instance.run_farame():
 
         pass
 
