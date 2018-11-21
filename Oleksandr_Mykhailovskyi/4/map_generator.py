@@ -1,5 +1,8 @@
 import random
+
 from logging_utility import logger
+from logging_utility import logging_debug_decorator
+from logging_utility import logging_info_decorator
 
 player_repr = "P"
 fog_repr = "-"
@@ -14,6 +17,8 @@ map_elements = [
 ]
 
 
+@logging_debug_decorator
+@logging_info_decorator
 def shuffle_map(game_map):
     """
     Because random.shuffle with list worked somewhat strangely - 
@@ -22,12 +27,12 @@ def shuffle_map(game_map):
     Args:
         game_map (list[str]): game map
     """
-    logger.debug("map shuffle started")
     for i in game_map:
         random.shuffle(i)
-    logger.debug("map shuffle ended")
 
 
+@logging_debug_decorator
+@logging_info_decorator
 def format_map(game_map, x):
     """
     Makes list of cells list of lists of cells.
@@ -47,6 +52,8 @@ def format_map(game_map, x):
     return formatted_map
 
 
+@logging_debug_decorator
+@logging_info_decorator
 def generate_prob_map(x):
     """
     Generates probabilistic map from map_elements sized x*x
@@ -56,21 +63,21 @@ def generate_prob_map(x):
     Returns:
         [[str...]...] - game map.
     """
-    logger.debug("probabilistic map generation started")
     if not isinstance(x, int):
         logger.debug("probabilistic map gen failed, argument inconsistency")
         return None
-        
+
     probabilities = [i[2]*100 for i in map_elements]
     cells = [i[1] for i in map_elements]
     game_map = random.choices(cells, weights=probabilities, k=x * x)
 
     game_map = format_map(game_map, x)
     shuffle_map(game_map)
-    logger.debug("probabilistic map gen succeeded")
     return game_map
 
 
+@logging_debug_decorator
+@logging_info_decorator
 def generate_map(x):
     """
     Generates map from map_elements sized x*x
@@ -80,7 +87,6 @@ def generate_map(x):
     Returns:
         [[str...]...] - game map.
     """
-    logger.debug("map generation started")
     if not isinstance(x, int):
         logger.debug("map gen failed, arguments incosistency")
         return None
@@ -99,10 +105,11 @@ def generate_map(x):
 
     game_map = format_map(game_map, x)
     shuffle_map(game_map)
-    logger.debug("map gen succeeded")
     return game_map
 
 
+@logging_debug_decorator
+@logging_info_decorator
 def generate_random_map(probabilistic=False):
     """
     Returns map of random size between 10 and 20.
@@ -113,7 +120,6 @@ def generate_random_map(probabilistic=False):
     Returns:
         [[str...]...] - game map.
     """
-    logger.debug("map generation started")
     size = int(random.uniform(10, 20))
     logger.debug("random size generated")
     if probabilistic:
