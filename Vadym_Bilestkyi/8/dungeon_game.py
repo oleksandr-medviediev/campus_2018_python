@@ -29,7 +29,7 @@ def game_loop():
         user_input = input('New game(1)\nLoad game (2)\n')
 
         if user_input == '1':
-            world = World(10)
+            world = World(size=10)
             world.spawn_player(Player('urpoK'))
             logger.warning('New game started')
         elif user_input == '2':
@@ -67,7 +67,6 @@ def game_loop():
                 input_is_valid = False
 
         world.update()
-        world.print()
 
         won = world.is_found_treasure()
         lose = world.is_trapped()

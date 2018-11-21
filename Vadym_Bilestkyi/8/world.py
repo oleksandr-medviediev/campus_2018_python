@@ -17,7 +17,7 @@ class World:
         None: '.',
     }
 
-    def __init__(self, size_or_map):
+    def __init__(self, size=None, map=None):
         self._map = None
         self._size = None
         self._player = None
@@ -30,10 +30,10 @@ class World:
             self._map = map
             self._size = len(map)
 
-        if isinstance(size_or_map, int):
-            _init_new_map(size_or_map)
-        elif isinstance(size_or_map, list):
-            _init_with_existing_map(size_or_map)
+        if map is not None:
+            _init_with_existing_map(map)
+        elif size is not None:
+            _init_new_map(size)
 
     def get_cell(self, x, y):
         return self._map[y][x]
@@ -62,7 +62,7 @@ class World:
         except FileNotFoundError:
             raise RuntimeError('No saved games.')
 
-        world = World(map)
+        world = World(map=map)
         world._player = player
 
         return world
