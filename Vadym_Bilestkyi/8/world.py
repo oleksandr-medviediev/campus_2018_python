@@ -1,141 +1,121 @@
-from dungeon_logging import logger, with_logging
+from dungeon_logging import logger, methods_with_logging
 
 import random
 import map_generator
 import saver
 
 
-world_size = 0
-world = None
-SAVE_DIR = 'savegame.dat'
+@methods_with_logging
+class World:
 
-cell_repr = {
-    'Trap': '#',
-    'Treasure': '$',
-    'Player': 'P',
-    None: '.',
-}
+    SAVE_DIR = 'savegame.dat'
 
+    cell_repr = {
+        'Trap': '#',
+        'Treasure': '$',
+        'Player': 'P',
+        None: '.',
+    }
 
-@with_logging
-def save(player_pos):
-    logger.debug('Try to save game')
-    saver.save([player_pos, world], SAVE_DIR)
-    logger.debug('Game saved successfully')
+    def __init__(self, size_or_map):
+        self._map = None
+        self._size = None
+        self._player = None
 
+        def _init_new_map(size):
+            self._size = size
+            self._map = map_generator.generate(size)
 
-@with_logging
-def load():
-    global world
-    global world_size
+        def _init_with_existing_map(map):
+            self._map = map
+            self._size = len(map)
 
-    logger.debug('Try to load game')
-    try:
-        player_pos, world = saver.load(SAVE_DIR)
-    except FileNotFoundError:
-        raise RuntimeError('No saved games.')
+        if isinstance(size_or_map, int):
+            _init_new_map(size_or_map)
+        elif isinstance(size_or_map, list):
+            _init_with_existing_map(size_or_map)
 
-    world_size = len(world)
-    logger.debug('Game loaded successfully')
-    return player_pos
+    def get_cell(self, x, y):
+        return self._map[y][x]
 
+    def place_cell(self, x, y, cell):
+        self._map[y][x] = cell
 
-@with_logging
-def print_world(player_pos):
-    logger.debug('Printing world')
+    def clear_cell(self, x, y):
+        self.place_cell(x, y, None)
 
-    print('You at: {}'.format(player_pos))
-    for y, row in enumerate(world):
-        for x, cell in enumerate(row):
-            if player_pos[0] == x and player_pos[1] == y:
-                cell = 'Player'
-            print('{} '.format(cell_repr[cell]), end='')
-        print()
+    def spawn_player(self, player):
+        self._player = player
 
-    logger.debug('World was printed')
+        self._player.position = [random.choice(range(self._size)), random.choice(range(self._size))]
 
+        while self.get_cell(*self._player.position) is not None:
+            self._player.position = [random.choice(range(self._size)), random.choice(range(self._size))]
 
-@with_logging
-def get_neighbor_cells(player_pos):
-    logger.debug('Searching for neighbor cells')
-    neighbors = []
-    for dx in [-1, 0, 1]:
-        for dy in [-1, 0, 1]:
-            if (dx, dy) != (0, 0):
-                neighbor_pos = [player_pos[0] + dx, player_pos[1] + dy]
-                if is_inside_world(neighbor_pos):
-                    neighbors.append(neighbor_pos)
+    def save(self):
+        saver.save([self._player, self._map], World.SAVE_DIR)
 
-    logger.debug('Found {} neighbor cells'.format(len(neighbors)))
-    return neighbors
+    @staticmethod
+    def load():
+        try:
+            player, map = saver.load(World.SAVE_DIR)
+        except FileNotFoundError:
+            raise RuntimeError('No saved games.')
 
+        world = World(map)
+        world._player = player
 
-@with_logging
-def is_trap_around(player_pos):
-    logger.debug('Checking for traps')
+        return world
 
-    neighbors = get_neighbor_cells(player_pos)
-    is_trap_around = any(world[neighbor[1]][neighbor[0]] == 'Trap' for neighbor in neighbors)
-    return is_trap_around
+    def print(self):
+        print('You at: {}'.format(self._player.position))
+        for y, row in enumerate(self._map):
+            for x, cell in enumerate(row):
+                if self._player.is_standing_at(x, y):
+                    cell = 'Player'
+                print('{} '.format(World.cell_repr[cell]), end='')
+            print()
 
+    def get_neighbor_cells(self):
+        neighbors = []
+        for dx in [-1, 0, 1]:
+            for dy in [-1, 0, 1]:
+                if (dx, dy) != (0, 0):
+                    neighbor_pos = self._player.get_neighbor_within(dx, dy)
+                    if self.is_inside(neighbor_pos):
+                        neighbors.append(neighbor_pos)
 
-@with_logging
-def is_treasure_around(player_pos):
-    logger.debug('Checking for treasures')
+        return neighbors
 
-    neighbors = get_neighbor_cells(player_pos)
-    is_treasure_around = any(world[neighbor[1]][neighbor[0]] == 'Treasure' for neighbor in neighbors)
-    return is_treasure_around
+    def is_inside(self, pos):
+        return all(0 <= coord < self._size for coord in pos)
 
+    def is_trap_around(self):
+        neighbors = self.get_neighbor_cells()
+        is_trap_around = any(self.get_cell(*neighbor) == 'Trap' for neighbor in neighbors)
+        return is_trap_around
 
-@with_logging
-def is_trapped(player_pos):
-    logger.debug('Checking game over condition')
-    return world[player_pos[1]][player_pos[0]] == 'Trap'
+    def is_treasure_around(self):
+        neighbors = self.get_neighbor_cells()
+        is_treasure_around = any(self.get_cell(*neighbor) == 'Treasure' for neighbor in neighbors)
+        return is_treasure_around
 
+    def is_trapped(self):
+        return self._player.is_dead()
 
-@with_logging
-def is_found_treasure(player_pos):
-    logger.debug('Checking winning condition')
-    return world[player_pos[1]][player_pos[0]] == 'Treasure'
+    def is_found_treasure(self):
+        return self._player.is_rich()
 
+    def update(self):
+        if self.get_cell(*self._player.position) == 'Trap':
+            self.clear_cell(*self._player.position)
+            self._player.hurt()
+        elif self.get_cell(*self._player.position) == 'Treasure':
+            self.clear_cell(*self._player.position)
+            self._player.pickup_treasure()
 
-@with_logging
-def is_inside_world(pos):
-    return all(0 <= coord < len(world) for coord in pos)
+    def move_player(self, direction):
+        new_pos = self._player.get_neighbor_within(*direction)
 
-
-@with_logging
-def move_player(player_pos, direction):
-    logger.debug('Player tries to move')
-    new_pos = [
-        player_pos[0] + direction[0],
-        player_pos[1] + direction[1]
-    ]
-    if is_inside_world(new_pos):
-        player_pos[:] = new_pos
-        logger.debug('Player successfully moves')
-
-
-@with_logging
-def create_world(size):
-    global world_size
-    global world
-
-    world_size = size
-    world = map_generator.generate(size)
-
-    logger.debug('World was created')
-
-
-@with_logging
-def spawn_player():
-    logger.debug('Attempting to spawn player')
-    player_pos = [random.choice(range(world_size)), random.choice(range(world_size))]
-
-    while world[player_pos[1]][player_pos[0]] is not None:
-        player_pos = [random.choice(range(world_size)), random.choice(range(world_size))]
-        logger.debug('Player spawn retrying')
-
-    logger.debug('Player spawned')
-    return player_pos
+        if self.is_inside(new_pos):
+            self._player.position = new_pos

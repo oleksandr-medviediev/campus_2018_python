@@ -1,5 +1,6 @@
 from dungeon_logging import logger, with_logging
-import world
+from world import World
+from player import Player
 import settings
 
 directions = {
@@ -23,19 +24,17 @@ def game_loop():
         else:
             print('Invalid input. Try again.\n')
 
-    game_started = False
-    while not game_started:
+    world = None
+    while world is None:
         user_input = input('New game(1)\nLoad game (2)\n')
 
         if user_input == '1':
-            world.create_world(10)
-            player_pos = world.spawn_player()
-            game_started = True
+            world = World(10)
+            world.spawn_player(Player('urpoK'))
             logger.warning('New game started')
         elif user_input == '2':
             try:
-                player_pos = world.load()
-                game_started = True
+                world = World.load()
                 logger.warning('Game loaded')
             except RuntimeError as error:
                 logger.warning(error)
@@ -43,11 +42,11 @@ def game_loop():
     won = False
     lose = False
     while not (won or lose):
-        if world.is_trap_around(player_pos):
+        if world.is_trap_around():
             logger.warning('There is a trap within one square from you!')
         else:
             logger.warning('No traps around.')
-        if world.is_treasure_around(player_pos):
+        if world.is_treasure_around():
             logger.warning('There is a treasure within one square from you!')
         else:
             logger.warning('No treasures around.')
@@ -59,23 +58,26 @@ def game_loop():
 
             input_is_valid = True
             if user_input in directions.keys():
-                world.move_player(player_pos, directions[user_input])
+                world.move_player(directions[user_input])
             elif user_input == 'save':
-                world.save(player_pos)
+                world.save()
                 logger.warning('Game saved.')
             else:
                 logger.warning('Invalid input. Try again.')
                 input_is_valid = False
 
-        won = world.is_found_treasure(player_pos)
-        lose = world.is_trapped(player_pos)
+        world.update()
+        world.print()
+
+        won = world.is_found_treasure()
+        lose = world.is_trapped()
 
     if won:
         logger.warning('You won!')
     else:
         logger.warning('You lose!')
 
-    world.print_world(player_pos)
+    world.print()
 
 
 if __name__ == '__main__':

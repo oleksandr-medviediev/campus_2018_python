@@ -40,3 +40,17 @@ def with_logging(fn):
         return returned_value
 
     return wrapper
+
+
+def methods_with_logging(cls):
+    # retrieving all user defined methods from class
+    methods = {
+        name: getattr(cls, name) for name in dir(cls)
+        if callable(getattr(cls, name)) and not name.startswith("__")
+    }
+
+    # actual decorating of methods with 'with_logging' decorator
+    for name, method in methods.items():
+        setattr(cls, name, with_logging(method))
+
+    return cls
