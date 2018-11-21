@@ -1,5 +1,5 @@
 import logging
-
+from functools import wraps
 
 my_logger = logging.getLogger(__name__)
 my_logger.setLevel(logging.DEBUG)
@@ -40,6 +40,7 @@ def logger_decorator_maker(is_debug = ''):
 
     def debug_deco(my_func):
 
+        @wraps(my_func)
         def debug_wraper(*args):
 
             my_logger.debug(f"Function {my_func.__name__} has been called with args:")
