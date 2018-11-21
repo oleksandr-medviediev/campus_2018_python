@@ -29,7 +29,7 @@ def set_debug_logging():
 
 def set_info_logging():
 
-    global is_debug
+    global is_info
 
     inp_info = input("Do you want to output logs for game? [yes / no]: ")
     inp_info = inp_info.casefold()

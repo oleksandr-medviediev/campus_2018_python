@@ -1,53 +1,60 @@
-import game_map
+from game_map import GameMap
 from logger import debug_decorator
 from logger import info_decorator
 
 class GameStep:
 
-    def __init__():
-        print('ok1')
-        my_game_map = GameMap()
+    def __init__(self):
+
+        self.my_game_map = GameMap()
+        self.DIRECTION_TO_MOVE = { 'up': [-1, 0], 'down' : [1, 0], 'left' : [0, -1], 'right' : [0, 1]  }
 
 
     @debug_decorator
     @info_decorator
-    def get_to_save_data():
-        return my_game_map.get_to_save_data()
+    def setup_map(self):
+        self.my_game_map.setup_map()
 
 
     @debug_decorator
     @info_decorator
-    def get_game_map():
-        return my_game_map.game_map
-
-    @debug_decorator
-    @info_decorator
-    def set_loaded_data(data):
-
-        my_game_map.mapsize = data[0]
-        my_game_map.game_map = data[1]
+    def get_to_save_data(self):
+        return self.my_game_map.get_to_save_data()
 
 
     @debug_decorator
     @info_decorator
-    def print_game_result():
+    def get_game_map(self):
+        return self.my_game_map
 
-        if is_player_lost:
+    @debug_decorator
+    @info_decorator
+    def set_loaded_data(self, data):
+
+        self.my_game_map.mapsize = data[0]
+        self.my_game_map.game_map = data[1]
+
+
+    @debug_decorator
+    @info_decorator
+    def print_game_result(self, player):
+
+        if player.islost:
             print('So sorry! You have lost this game :(')
-        elif is_player_won:
+        elif player.iswon:
             print('Congratulations! You have won')
 
             
     @debug_decorator
     @info_decorator        
-    def print_game_map(player_position):
+    def print_game_map(self, player_position):
 
         TRAP = '#'
         TREASURE = '*'
         PLAYER = '!'
         EMPTY_CELL = '.'
         
-        game_map = my_game_map.game_map
+        game_map = self.my_game_map.game_map
         game_map = [[TRAP if cell == -1 else cell for cell in row] for row in game_map ]
         game_map = [[TREASURE if cell == 1 else cell for cell in row] for row in game_map ]
         game_map = [[EMPTY_CELL if cell == 0 else cell for cell in row] for row in game_map ]
@@ -62,23 +69,24 @@ class GameStep:
           
     @debug_decorator
     @info_decorator
-    def get_neighbour_values(player_position):
+    def get_neighbour_values(self, player_position):
 
-        neighbour_cells = [[player_position[0] + direction[0], player_position[1] + direction[1]] 
-        for direction in list(DIRECTION_TO_MOVE.values())]
+        neighbour_cells = [[player_position[0] + direction[0], player_position[1] + direction[1]] \
+        for direction in list(self.DIRECTION_TO_MOVE.values())]
+
         neighbour_cells = list(filter(lambda cell: cell[0] >= 0 and cell[1] >= 0 
-            and cell[0] < my_game_map.mapsize and cell[1] < my_game_map.mapsize, neighbour_cells))
+            and cell[0] < self.my_game_map.mapsize and cell[1] < self.my_game_map.mapsize, neighbour_cells))
 
-        neighbour_cells_values = [my_game_map.game_map[cell[0]][cell[1]] for cell in neighbour_cells]
+        neighbour_cells_values = [self.my_game_map.game_map[cell[0]][cell[1]] for cell in neighbour_cells]
 
         return neighbour_cells_values
 
 
     @debug_decorator
     @info_decorator
-    def notify_player_about_traps(player_position):
+    def notify_player_about_traps(self, player_position):
 
-        neighbour_values = get_neighbour_values(player_position)
+        neighbour_values = self.get_neighbour_values(player_position)
         neighbour_values.sort()
 
         has_traps = neighbour_values[0] == -1
@@ -88,9 +96,10 @@ class GameStep:
 
     @debug_decorator
     @info_decorator
-    def notify_player_about_treasures():
+    def notify_player_about_treasures(self, player_position):
 
-        neighbour_values = get_neighbour_values(player_position)
+        neighbour_values = self.get_neighbour_values(player_position)
+        print(player_position[0], player_position[1])
         neighbour_values.sort(reverse = True)
 
         has_treasures = neighbour_values[0] == 1
@@ -100,16 +109,17 @@ class GameStep:
 
     @debug_decorator
     @info_decorator
-    def perform_next_step(direction, player):
+    def perform_next_step(self, direction, player):
 
         old_position = list(player.position)
 
-        direction_to_move = DIRECTION_TO_MOVE[direction]
-        
+        direction_to_move = self.DIRECTION_TO_MOVE[direction]
+
         player.position[0] += direction_to_move[0]
         player.position[1] += direction_to_move[1]
 
-        if player.position[0] < 0 or player.position[1] < 0 or player.position[0] >= my_game_map.mapsize or player.position[1] >= my_game_map.mapsize:
+        if player.position[0] < 0 or player.position[1] < 0 or \
+            player.position[0] >= self.my_game_map.mapsize or player.position[1] >= self.my_game_map.mapsize:
 
             print("You can't move there! You reached border!\n")
             player.position[0] -= direction_to_move[0]
@@ -121,11 +131,11 @@ class GameStep:
 
         row, col = player.position
 
-        if my_game_map.game_map[row][col] == -1:
+        if self.my_game_map.game_map[row][col] == -1:
             player.pick_trap()
+            self.my_game_map.game_map[row][col] = 0
 
-        if my_game_map.game_map[row][col] == 1:
+        if self.my_game_map.game_map[row][col] == 1:
             player.pick_treasure()
+            self.my_game_map.game_map[row][col] = 0
 
-
-    DIRECTION_TO_MOVE = { 'up': [-1, 0], 'down' : [1, 0], 'left' : [0, -1], 'right' : [0, 1]  }
