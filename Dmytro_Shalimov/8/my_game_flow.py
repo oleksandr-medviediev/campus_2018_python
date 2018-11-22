@@ -40,16 +40,16 @@ class MyGameFlow:
             _map_size = int(_user_input)
 
             if _map_size < 5 or _map_size > 50:
-                raise MapSizeError()
+                raise MapSizeError('Invalid map size, try again')
 
         except ValueError:
 
             print('Invalid input, try again')
             _map_size = self.__map_size_input()
 
-        except MapSizeError:
+        except MapSizeError as map_size_error:
             
-            print('Invalid map size, try again')
+            print(map_size_error.message)
             _map_size = self.__map_size_input()
 
         return _map_size
@@ -100,7 +100,7 @@ class MyGameFlow:
                 _loaded_data = pickle.load(load_file)
                
             if _loaded_data[0] != my_game_constants.SAVE_GAME_HEADER:
-                raise LoadDataError()
+                raise LoadDataError('Load data error! Terminating...')
 
 
         except FileNotFoundError:
@@ -108,9 +108,9 @@ class MyGameFlow:
             print('No such file exists! Terminating...')
             quit()
 
-        except LoadDataError:
+        except LoadDataError as load_error:
 
-            print('Load data error! Terminating...')
+            print(load_error.message)
             quit()
 
         except EOFError:

@@ -106,11 +106,11 @@ class MyMap:
                     break
 
             if _player_position == (None, None):
-                raise PlayerNotFoundError()
+                raise PlayerNotFoundError('Player is not found on the map! Terminating...')
         
-        except PlayerNotFoundError:
+        except PlayerNotFoundError as no_player_error:
 
-            print('Player is not found on the map! Terminating...')
+            print(no_player_error.message)
             quit()
 
         return _player_position
