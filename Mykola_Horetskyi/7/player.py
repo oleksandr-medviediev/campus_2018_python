@@ -2,21 +2,16 @@ from decorator import debug_decorator
 from character import Character
 from dungeon_map import DungeonMap
 
-proficiencies_dict = {"warrior":"strength", "soldier":"strength",
-"wizard":"magic", "magician":"magic",
-"rogue":"perception", "thief":"perception",
-"programmer":"none"}
-
-proficiencies = {"melee", "magic", "guile", "none"}
-
-proficiency_immunity = {
-"melee":"monster",
-"magic":"arcane",
-"guile":"device",
-"none":"inquisition"
-}
-
 class Player:
+
+    proficiencies = {"melee", "magic", "guile", "none"}
+
+    proficiency_immunity = {
+    "melee":"monster",
+    "magic":"arcane",
+    "guile":"device",
+    "none":"inquisition"
+    }
 
 
     def __init__(self):

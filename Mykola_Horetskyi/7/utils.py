@@ -1,6 +1,7 @@
 from random import randint, choice
 from decorator import debug_decorator
 from game_logger import logger
+from text import wrong_y_n_input
 
 
 class Position:
@@ -76,3 +77,28 @@ def input_number_from_boundaries(min_value, max_value):
             user_input = input()
 
     return number
+
+
+@debug_decorator
+def process_yes_no_input():
+    """
+    Processes input that shoul be either accept or decline
+
+    return: (bool) True for accept, False for decline
+    """
+    user_input = input().lower()
+
+    if user_input == "y" or user_input == "yes":
+        return True
+
+    elif user_input == "n" or user_input =="no":
+        return False
+
+    logger.info(wrong_y_n_input)
+
+    user_input = input().lower()
+
+    if user_input == "y" or user_input == "yes":
+        return True
+
+    return False

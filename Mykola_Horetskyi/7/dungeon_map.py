@@ -11,41 +11,41 @@ trap_goblins, trap_hidden_blade, trap_curse, trap_inquisition
 from utils import Position
 
 
-cells_dict = {unassigned_cell.legend : unassigned_cell,
-empty_cell.legend : empty_cell,
-entrance_cell.legend : entrance_cell,
-treasure_cell.legend : treasure_cell,
-trap_goblins.legend : trap_goblins,
-trap_hidden_blade.legend : trap_hidden_blade,
-trap_curse.legend : trap_curse,
-trap_inquisition.legend : trap_inquisition
-}
-
-cells_dict_explained = {
-empty_cell.legend : "empty ",
-entrance_cell.legend : "entrance",
-treasure_cell.legend : "treasure",
-trap_goblins.legend : "goblins",
-trap_hidden_blade.legend : "hidden_blade",
-trap_curse.legend : "curse",
-trap_inquisition.legend : "inquisition"
-}
-
-discovery_dict = {
-"player":"p",
-"unknown":"?",
-"empty":"0",
-"treasure near":"+",
-"trap near":"-",
-"treasure and trap near":"%"
-}
-
 directions = (Position(0, 1),
              Position(1, 0),
              Position(0, -1),
              Position(-1, 0))
 
 class DungeonMap:
+
+    cells_dict = {unassigned_cell.legend : unassigned_cell,
+    empty_cell.legend : empty_cell,
+    entrance_cell.legend : entrance_cell,
+    treasure_cell.legend : treasure_cell,
+    trap_goblins.legend : trap_goblins,
+    trap_hidden_blade.legend : trap_hidden_blade,
+    trap_curse.legend : trap_curse,
+    trap_inquisition.legend : trap_inquisition
+    }
+
+    cells_dict_explained = {
+    empty_cell.legend : "empty ",
+    entrance_cell.legend : "entrance",
+    treasure_cell.legend : "treasure",
+    trap_goblins.legend : "goblins",
+    trap_hidden_blade.legend : "hidden_blade",
+    trap_curse.legend : "curse",
+    trap_inquisition.legend : "inquisition"
+    }
+
+    discovery_dict = {
+    "player":"p",
+    "unknown":"?",
+    "empty":"0",
+    "treasure near":"+",
+    "trap near":"-",
+    "treasure and trap near":"%"
+    }
 
 
     def __init__(self):
@@ -164,10 +164,10 @@ class DungeonMap:
         self.width = width
         self.height = height
 
-        self.cells = [[discovery_dict["unknown"] for i in range(height)]
+        self.cells = [[DungeonMap.discovery_dict["unknown"] for i in range(height)]
         for j in range(width)]
 
-        self.cells[start_pos.x][start_pos.y] = discovery_dict["empty"]
+        self.cells[start_pos.x][start_pos.y] = DungeonMap.discovery_dict["empty"]
 
 
     @debug_decorator

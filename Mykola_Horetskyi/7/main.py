@@ -1,3 +1,4 @@
-from game import game_loop
+from game import DungeonGame
 
-game_loop()
+current_game = DungeonGame()
+current_game.game_loop()
