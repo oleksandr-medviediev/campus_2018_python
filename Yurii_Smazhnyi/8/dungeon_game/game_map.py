@@ -41,16 +41,18 @@ class GameMap:
             trap_count = (map_size * map_size) // GameMap.TRAP_MODIFIER
 
             if trap_count < 3:
-                raise MapGeneratorError
-        except MapGeneratorError:
+                raise MapGeneratorError("To few traps! Setting more!")
+        except MapGeneratorError as error:
+            custom_log.logger.warning(error)
             trap_count = 3
 
         try:
             treasure_count = (map_size * map_size) // GameMap.TREASURE_MODIFIER
 
             if treasure_count < 3:
-                raise MapGeneratorError
-        except MapGeneratorError:
+                raise MapGeneratorError("To few Treasures! Setting more!")
+        except MapGeneratorError as error:
+            custom_log.logger.warning(error)
             treasure_count = 3
 
         ground_count = (map_size * map_size) - trap_count - treasure_count - 1

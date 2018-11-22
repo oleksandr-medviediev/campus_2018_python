@@ -46,8 +46,8 @@ class Serializer:
                 game_map = pickle.load(map_file)
                 custom_log.logger.info("Map Loaded!")
                 custom_log.logger.info("---------------------------------------------------")
-        except FileNotFoundError:
+        except FileNotFoundError as error:
             game_map = ""
-            custom_log.logger.error("File Was Not Found")
+            custom_log.logger.error(error)
         
         return game_map

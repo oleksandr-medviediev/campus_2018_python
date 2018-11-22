@@ -20,10 +20,11 @@ class Player:
 
         try:
             if(start_hp <= 0):
-                raise PlayerHPErorr
+                raise PlayerHPErorr("Start HP of player cannot be set zero or below!")
             self.hp = start_hp
-        except PlayerHPErorr:
-            custom_log.logger.warning("Start HP of player cannot be set zero or below!")
+        except PlayerHPErorr as error:
+            
+            custom_log.logger.warning(error)
             self.hp = 1
 
         self.name = name

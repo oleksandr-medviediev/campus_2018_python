@@ -1,10 +1,28 @@
 class MapGeneratorError(Exception):
-    pass
+    def __init__(self, msg):
+        """
+        :param msg: exception message.
+        :msg type: str.
+        """
+
+        self.msg = msg
 
 
 class IncorrectCommandError(Exception):
-    pass
+    def __init__(self, msg):
+        """
+        :param msg: exception message.
+        :msg type: str.
+        """
+
+        self.msg = msg
 
 
 class PlayerHPErorr(Exception):
-    pass
+    def __init__(self, msg):
+        """
+        :param msg: exception message.
+        :msg type: str.
+        """
+
+        self.msg = msg

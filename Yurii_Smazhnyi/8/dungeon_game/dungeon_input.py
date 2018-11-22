@@ -31,20 +31,20 @@ class DungeonInput:
                 direction = input("input command:")
                 
                 if not isinstance(direction, str):
-                    raise ValueError
+                    raise ValueError("You've input not string, try again!")
 
                 if direction in DungeonInput.COMMANDS_TYPES:
                     
                     return direction
                 
-                raise IncorrectCommandError
+                raise IncorrectCommandError("Incorrect command, try again!")
 
-            except IncorrectCommandError:
-                custom_log.logger.info("Incorrect command, try again!")
+            except IncorrectCommandError as error:
+                custom_log.logger.info(error)
                 continue
             
-            except ValueError:
-                custom_log.logger.info("You've input not string, try again!")
+            except ValueError as error:
+                custom_log.logger.info(error)
                 continue
 
 
