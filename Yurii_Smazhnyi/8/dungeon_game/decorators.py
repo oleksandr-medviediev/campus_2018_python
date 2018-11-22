@@ -62,4 +62,3 @@ def info_decorator(func):
         return result
 
     return func_wrapper
-
