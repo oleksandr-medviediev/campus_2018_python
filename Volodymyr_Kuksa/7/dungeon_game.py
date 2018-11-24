@@ -16,6 +16,8 @@ VALID_RUNTIME_INPUTS = (*PLAYER_MOVES.keys(), SAVE_COMMAND)
 
 class DungeonGame:
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def __init__(self):
         """
         DungeonGame constructor.

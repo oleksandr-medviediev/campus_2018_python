@@ -8,6 +8,8 @@ VECTORS_TO_ADJACENT_TILES = ((0, -1), (0, 1), (1, 0), (-1, 0))
 
 class GameMap:
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def __init__(self, map_size=0):
         """
         GameMap constructor.
@@ -39,7 +41,6 @@ class GameMap:
         game_map = GameMap.split_rows(map_size, characters)
 
         return game_map
-
 
     @staticmethod
     @dungeon_game_decorators.log_decor
@@ -215,6 +216,8 @@ class GameMap:
             logging.info('There is nothing nearby.')
 
     @property
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def game_map(self):
         """
         game_map getter.
@@ -225,6 +228,8 @@ class GameMap:
         return self.__game_map
 
     @game_map.setter
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def game_map(self, new_map):
         """
         game_map setter.
@@ -235,6 +240,8 @@ class GameMap:
         self.__game_map = new_map
         self.__map_size = len(new_map[0])
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def __str__(self):
         """
         Return visual representation of game map with border and legend.
