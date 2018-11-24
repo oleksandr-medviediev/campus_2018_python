@@ -87,8 +87,10 @@ def logging_info_decorator(function_to_decorate):
             whatever decorated function returns.
         """
 
-        logger.info(wrapper.__name__)
+        if debug_mode:
+            logger.info(wrapper.__name__)
         result = function_to_decorate(*args, **kwargs)
-        logger.info(wrapper.__name__ + " ended.")
+        if debug_mode:
+            logger.info(wrapper.__name__ + " ended.")
         return result
     return wrapper

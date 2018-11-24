@@ -4,18 +4,6 @@ from logging_utility import logger
 from logging_utility import logging_debug_decorator
 from logging_utility import logging_info_decorator
 
-player_repr = "P"
-fog_repr = "-"
-unknown_repr = "?"
-map_cells_repr = [".", "!", "x"]
-
-# Contains map cells as: (String equivalent, symbol, probability)
-map_elements = [
-    ("Nothing", map_cells_repr[0], 17 / 20),
-    ("Treasure", map_cells_repr[1], 1 / 20),
-    ("Trap", map_cells_repr[2], 1 / 10)
-]
-
 
 @logging_debug_decorator
 @logging_info_decorator
@@ -54,63 +42,65 @@ def format_map(game_map, x):
 
 @logging_debug_decorator
 @logging_info_decorator
-def generate_prob_map(x):
+def generate_prob_map(size, cell_probabilities, cell_reprs):
     """
-    Generates probabilistic map from map_elements sized x*x
+    Generates probabilistic map from map_elements sized size*size
 
     Args:
-        x (int): rows/columns of the map square
+        size (int): rows/columns of the map square
     Returns:
         [[str...]...] - game map.
     """
-    if not isinstance(x, int):
+    if not isinstance(size, int):
         logger.debug("probabilistic map gen failed, argument inconsistency")
-        return None
+        raise ValueError("incorrect type")
 
-    probabilities = [i[2]*100 for i in map_elements]
-    cells = [i[1] for i in map_elements]
-    game_map = random.choices(cells, weights=probabilities, k=x * x)
+    # to make correspondence for each element
+    # e.g. nothing in probabilities[0] and cells[0]
+    probabilities = []
+    cells = []
 
-    game_map = format_map(game_map, x)
+    for name, key in cell_probabilities.items():
+        probabilities.append(key)
+        cells.append(cell_reprs[name])
+
+    game_map = random.choices(cells, weights=probabilities, k=size*size)
+
+    game_map = format_map(game_map, size)
     shuffle_map(game_map)
     return game_map
 
 
 @logging_debug_decorator
 @logging_info_decorator
-def generate_map(x):
+def generate_map(size, cell_quantities, cell_reprs):
     """
-    Generates map from map_elements sized x*x
+    Generates map from map_elements sized size*size
 
     Args:
-        x (int): rows/columns of the map square
+        size (int): rows/columns of the map square.
+        cell_quantities ({str: int}): dictionary for cell amounts.
+        cell_reprs ({str: str}): dictionary for cell representations.
     Returns:
         [[str...]...] - game map.
     """
-    if not isinstance(x, int):
+    if not isinstance(size, int):
         logger.debug("map gen failed, arguments incosistency")
         return None
 
-    cells_amounts = []
-    for entry in map_elements:
-        cells_amounts.append(int(entry[2] * x * x))
-
-    cells = sum(cells_amounts)
-    cells_amounts[0] += x * x - cells
-
     game_map = []
-    for i, entry in enumerate(cells_amounts):
-        for j in range(0, entry):
-            game_map.append(map_elements[i][1])
+    for name, value in cell_quantities:
+        for _ in range(value):
+            game_map.append(cell_reprs[name])
 
-    game_map = format_map(game_map, x)
+    game_map = format_map(game_map, size)
     shuffle_map(game_map)
     return game_map
 
 
 @logging_debug_decorator
 @logging_info_decorator
-def generate_random_map(probabilistic=False):
+def generate_random_map(*args, size, probabilistic=True):
     """
     Returns map of random size between 10 and 20.
 
@@ -120,8 +110,6 @@ def generate_random_map(probabilistic=False):
     Returns:
         [[str...]...] - game map.
     """
-    size = int(random.uniform(10, 20))
-    logger.debug("random size generated")
     if probabilistic:
-        return generate_prob_map(size)
-    return generate_map(size)
+        return generate_prob_map(size, *args)
+    return generate_map(size, *args)
