@@ -22,6 +22,12 @@ class Position:
         self.x = x
         self.y = y
 
+    def __repr__(self):
+        return f'{self.x} {self.y}'
+
+    def __str__(self):
+        return f'{self.x} {self.y}'
+
     @logging_debug_decorator
     @logging_info_decorator
     def clamp(self, min, max):
@@ -135,7 +141,7 @@ class Map:
     @logging_debug_decorator
     @logging_info_decorator
     def map_wrapper(self, position):
-        return self.__game_map[position.x][position.y]
+        return self.__game_map[position.y][position.x]
 
     @logging_debug_decorator
     @logging_info_decorator

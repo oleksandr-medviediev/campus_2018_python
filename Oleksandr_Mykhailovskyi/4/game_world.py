@@ -28,11 +28,11 @@ class GameWorld:
         """
         Initializes player, game map.
         """
-        mapSquareSize = random.randint(0, 20)
+        mapSquareSize = random.randint(10, 20)
         mapSize = Position(mapSquareSize, mapSquareSize)
         startPos = \
-            Position(random.randint(0, mapSquareSize),
-                     random.randint(0, mapSquareSize))
+            Position(random.randint(0, mapSquareSize - 1),
+                     random.randint(0, mapSquareSize - 1))
 
         self.player = Player(position=startPos, hp=3, bag_counter=0)
         self.level = Map(size=mapSize, treasures=6, traps=6)
@@ -129,7 +129,7 @@ class GameWorld:
                 action != "Down" and \
                 action != "Left" and \
                 action != "Right":
-                # raise excepption?
+                # TO DO: raise excepption
                 pass
 
         self.player.move_with_restr(action, self.level.size)
@@ -138,9 +138,12 @@ class GameWorld:
         if self.level.map_wrapper(self.player.position) == \
                 self.level.reprs["treasure"]:
             self.player.bag_counter += 1
+            print("Good job, you found a treasure!")
         elif self.level.map_wrapper(self.player.position) == \
                 self.level.reprs["trap"]:
             self.player.hp -= 1
+            if self.player.hp > 0:
+                print(f'Careful, you\'ve got {self.player.hp} hp left')
 
         # perform win/loss check
         if self.player.hp <= 0:
@@ -168,8 +171,10 @@ class GameWorld:
             print(f'{self.player.position.x} {self.player.position.y}')
         elif action == "Save":
             self.save()
+            print("GAME SAVED")
         elif action == "Load":
             self.load()
+            print("GAME LOADED")
         elif action == "Help":
             print(self.actions)
         elif action == "Exit":
@@ -208,7 +213,7 @@ class GameWorld:
         # update actions
         if(self.game_status == GameState.INGAME):
             self.on_ingame()
-        elif(self.game_status == GameState.ENDING):
+        if(self.game_status == GameState.ENDING):
             self.on_ending()
         else:
             # TO DO: raise exception

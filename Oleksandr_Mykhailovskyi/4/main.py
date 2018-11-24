@@ -27,11 +27,11 @@ def main():
             game_world = GameWorld()
             game_world.update_loop()
 
-        input_action = input("Continue?Y/N\n")
-        input_action = input_action.casefold()
+            input_action = input("Continue?Y/N\n")
+            input_action = input_action.casefold()
 
-        if input_action == "N".casefold():
-            return
+            if input_action == "N".casefold():
+                return
 
 
 if __name__ == '__main__':
