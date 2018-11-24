@@ -21,14 +21,10 @@ class Player:
         self.bag_counter = bag_counter if bag_counter > 0 else 0
 
     @property
-    @logging_debug_decorator
-    @logging_info_decorator
     def hp(self):
         return self.__hp
 
     @hp.setter
-    @logging_debug_decorator
-    @logging_info_decorator
     def hp(self, hp):
         self.__hp = hp if hp > 0 else 0
 

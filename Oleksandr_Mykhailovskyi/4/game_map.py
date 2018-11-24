@@ -30,8 +30,6 @@ class Position:
     def __str__(self):
         return f'{self.x} {self.y}'
 
-    @logging_debug_decorator
-    @logging_info_decorator
     def clamp(self, min, max):
         """
         Clamps to [min, max)
@@ -113,42 +111,28 @@ class Map:
         self.view = Position(1, 1)
 
     @property
-    @logging_debug_decorator
-    @logging_info_decorator
     def size(self):
         return self.__size
 
-    @logging_debug_decorator
-    @logging_info_decorator
     def treasures(self):
         return self.cell_quantities["treasures"]
 
-    @logging_debug_decorator
-    @logging_info_decorator
     def traps(self):
         return self.cell_quantities["traps"]
 
     @property
-    @logging_debug_decorator
-    @logging_info_decorator
     def game_map(self):
         return self.__game_map
 
     @game_map.setter
-    @logging_debug_decorator
-    @logging_info_decorator
     def game_map(self, game_map):
         self.__game_map = game_map
         self.size.x = len(game_map)
         self.size.y = len(game_map)
 
-    @logging_debug_decorator
-    @logging_info_decorator
     def map_wrapper(self, position):
         return self.__game_map[position.y][position.x]
 
-    @logging_debug_decorator
-    @logging_info_decorator
     def get_cell_repr(self, player_pos, pos):
         """
         Returns str representation of pos(i, j).
