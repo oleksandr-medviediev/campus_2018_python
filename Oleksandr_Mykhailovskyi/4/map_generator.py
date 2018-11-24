@@ -53,7 +53,7 @@ def generate_prob_map(size, cell_probabilities, cell_reprs):
     """
     if not isinstance(size, int):
         logger.debug("probabilistic map gen failed, argument inconsistency")
-        raise ValueError("incorrect type")
+        raise TypeError(f'{type(size)} is not int.')
 
     # to make correspondence for each element
     # e.g. nothing in probabilities[0] and cells[0]
@@ -85,8 +85,7 @@ def generate_map(size, cell_quantities, cell_reprs):
         [[str...]...] - game map.
     """
     if not isinstance(size, int):
-        logger.debug("map gen failed, arguments incosistency")
-        return None
+        raise TypeError(f'{type(size)} is not int.')
 
     game_map = []
     for name, value in cell_quantities:
