@@ -1,6 +1,7 @@
 import logging.config
 from dungeon_game import DungeonGame
 import dungeon_game_decorators
+import dungeon_game_exceptions
 
 logging.config.fileConfig('dungeon_game_logger.config')
 
@@ -34,4 +35,9 @@ if __name__ == '__main__':
 
     game = DungeonGame()
 
-    game.run_game()
+    try:
+        game.run_game()
+    except dungeon_game_exceptions.DungeonGameError as error:
+        logging.error(error)
+    finally:
+        game.on_game_end()

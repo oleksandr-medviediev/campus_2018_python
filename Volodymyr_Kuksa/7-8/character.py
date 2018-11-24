@@ -1,4 +1,5 @@
 import dungeon_game_decorators
+import dungeon_game_exceptions
 
 
 class Character:
@@ -29,6 +30,9 @@ class Character:
         """
         self.__bag += step
 
+        if self.bag >= 3:
+            raise dungeon_game_exceptions.PlayerBagFullError
+
     @dungeon_game_decorators.log_decor
     @dungeon_game_decorators.debug_decor
     def decrement_hp(self, step=1):
@@ -41,6 +45,9 @@ class Character:
         :return: None.
         """
         self.__hp -= step
+
+        if not self.__hp:
+            raise dungeon_game_exceptions.PlayerDiedError
 
     @dungeon_game_decorators.log_decor
     @dungeon_game_decorators.debug_decor

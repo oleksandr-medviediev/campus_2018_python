@@ -53,7 +53,7 @@ class DungeonGame:
         """
         Game loop.
         """
-        while self.player.is_alive() and not self.player.is_bag_full():
+        while True:
 
             player_input = query_player_input(f'\nEnter move {VALID_RUNTIME_INPUTS}: ', VALID_RUNTIME_INPUTS)
 
@@ -75,8 +75,6 @@ class DungeonGame:
                 self.game_map.mark_tile_as_visited(*position)
 
             self.print_game_state()
-
-        self.on_game_end()
 
     @dungeon_game_decorators.log_decor
     @dungeon_game_decorators.debug_decor
