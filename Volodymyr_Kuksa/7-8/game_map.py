@@ -8,8 +8,6 @@ VECTORS_TO_ADJACENT_TILES = ((0, -1), (0, 1), (1, 0), (-1, 0))
 
 class GameMap:
 
-    @dungeon_game_decorators.log_decor
-    @dungeon_game_decorators.debug_decor
     def __init__(self, map_size=0):
         """
         GameMap constructor.
@@ -101,31 +99,6 @@ class GameMap:
             game_map.append(row)
 
         return game_map
-
-    @dungeon_game_decorators.log_decor
-    @dungeon_game_decorators.debug_decor
-    def is_valid_position(self, position_x, position_y):
-        """
-        Return True if position with coordinates position_x and position_y is valid, False otherwise.
-
-        :param position_x: x coordinate of the position.
-        :type position_x: int.
-
-        :param position_y: y coordinate of the position.
-        :type position_y: int.
-
-        :return: True if position is valid, False otherwise.
-        """
-        if 0 <= position_x < self.__map_size and 0 <= position_y < self.__map_size:
-
-            is_valid = True
-
-        else:
-
-            logging.info('That path is blocked!')
-            is_valid = False
-
-        return is_valid
 
     @dungeon_game_decorators.log_decor
     @dungeon_game_decorators.debug_decor
@@ -240,8 +213,6 @@ class GameMap:
         self.__game_map = new_map
         self.__map_size = len(new_map[0])
 
-    @dungeon_game_decorators.log_decor
-    @dungeon_game_decorators.debug_decor
     def __str__(self):
         """
         Return visual representation of game map with border and legend.

@@ -6,8 +6,6 @@ class Character:
     Basic character class.
     """
 
-    @dungeon_game_decorators.log_decor
-    @dungeon_game_decorators.debug_decor
     def __init__(self, name):
         """
         Character constructor.

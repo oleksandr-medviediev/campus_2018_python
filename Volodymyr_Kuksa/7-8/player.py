@@ -7,8 +7,6 @@ PLAYER_MOVES = {'u': (0, -1), 'd': (0, 1), 'l': (-1, 0), 'r': (1, 0)}
 
 class Player(Character):
 
-    @dungeon_game_decorators.log_decor
-    @dungeon_game_decorators.debug_decor
     def __init__(self, name):
         """
         Player constructor.
@@ -75,8 +73,6 @@ class Player(Character):
         self.__position_x = randint(0, map_size - 1)
         self.__position_y = randint(0, map_size - 1)
 
-    @dungeon_game_decorators.log_decor
-    @dungeon_game_decorators.debug_decor
     def __str__(self):
         """
         Return str with player stats.

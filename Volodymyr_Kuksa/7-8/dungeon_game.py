@@ -64,8 +64,12 @@ class DungeonGame:
 
             position = self.player.calculate_new_position(player_input)
 
-            if self.game_map.is_valid_position(*position):
-                
+            try:
+                self.game_map.get_tile_character(*position)
+            except IndexError as error:
+                logging.error(error)
+                logging.info('That path is blocked!')
+            else:
                 self.player.set_position(*position)
                 self.apply_tile_effects_to_player()
                 self.game_map.mark_tile_as_visited(*position)

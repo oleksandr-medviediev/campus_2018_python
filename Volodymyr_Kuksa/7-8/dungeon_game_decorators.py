@@ -49,6 +49,9 @@ def debug_decor(func):
     @functools.wraps(func)
     def debug_wrapper(*args, **kwargs):
 
+        # for some reason this decorator doesn't work with class methods like __init__ or __str__
+        # the decorator enters infinite recursion
+        # I believe this is caused by inspect.signature(), at least it raises ValueError in debug mode
         if mode_debug:
 
             bound_arguments = inspect.signature(func).bind(*args, **kwargs)
