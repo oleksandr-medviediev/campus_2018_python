@@ -10,7 +10,7 @@ class Player:
     def __init__(self, position, hp, bag_counter):
         """
         Initializes instance of player.
-        
+
         Args:
             position (Position): player initial position.
             hp (int): player initial hp.

@@ -4,6 +4,8 @@ from logging_utility import logger
 from logging_utility import logging_debug_decorator
 from logging_utility import logging_info_decorator
 
+from game_exceptions import LogicalError
+
 
 class Position:
     """
@@ -137,6 +139,8 @@ class Map:
     @logging_info_decorator
     def game_map(self, game_map):
         self.__game_map = game_map
+        self.size.x = len(game_map)
+        self.size.y = len(game_map)
 
     @logging_debug_decorator
     @logging_info_decorator
@@ -191,3 +195,30 @@ class Map:
                 mlist.append(self.get_cell_repr(player_pos, Position(j, i)))
             mlist.append("\n")
         print(''.join(mlist))
+
+    @logging_debug_decorator
+    @logging_info_decorator
+    def check(self):
+        if self.size.x != self.size.y:
+            raise LogicalError("Map size.x must be = size.y.")
+        if self.size.x != len(self.__game_map):
+            raise LogicalError("Map size argument is not de-facto size.")
+
+        for line in self.__game_map:
+            if self.size.x != len(line):
+                raise LogicalError("Incorrect line size in map.")
+
+            for element in line:
+                if element not in self.reprs.values():
+                    raise ValueError
+
+        size_sq = self.size.x ** 2
+
+        if size_sq < self.cell_quantities["nothing"] or \
+           size_sq < self.cell_quantities["treasures"] or \
+           size_sq < self.cell_quantities["traps"]:
+            raise LogicalError(f'{size_sq} is less than of of cell quantities.')
+
+        for probability in self.probabilities.values():
+            if probability > 1:
+                raise LogicalError(f'Probability {probability} is more than 1.')

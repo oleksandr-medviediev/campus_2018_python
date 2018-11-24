@@ -12,6 +12,8 @@ import savegame_utility
 from logging_utility import logging_debug_decorator
 from logging_utility import logging_info_decorator
 
+from game_exceptions import ActionError
+
 
 class GameState(Enum):
     STARTING = 1,
@@ -69,7 +71,21 @@ class GameWorld:
         """
         Wrapper for savegame_utility load call.
         """
-        self.level.game_map, self.player.position = savegame_utility.load()
+        mmap, player_pos = None, None
+        try:
+            mmap, player_pos = savegame_utility.load()
+        except FileNotFoundError:
+            return
+        self.level.game_map, self.player.position = mmap, player_pos
+
+        try:
+            self.level.check()
+        except Exception as identifier:
+            print(identifier.__str__)
+            raise
+
+        self.player.bag_counter = 0
+        self.player.hp = 3
 
     @logging_debug_decorator
     @logging_info_decorator
@@ -131,8 +147,8 @@ class GameWorld:
                 action != "Down" and \
                 action != "Left" and \
                 action != "Right":
-                # TO DO: raise excepption
-                pass
+            raise ActionError(f'{action} unsupported in this context',
+                              ["Up", "Down", "Left", "Right"])
 
         self.player.move_with_restr(action, self.level.size)
 
@@ -191,6 +207,9 @@ class GameWorld:
             print(self.actions)
         elif action == "Exit":
             self.game_status = GameState.ENDING
+        else:
+            raise ActionError(f'{action} is not supported in this context.',
+                              self.actions)
 
     @logging_debug_decorator
     @logging_info_decorator
@@ -209,7 +228,10 @@ class GameWorld:
         actions_performed = self.update_actions()
 
         for action in actions_performed:
-            self.on_action(action)
+            try:
+                self.on_action(action)
+            except ActionError as identifier:
+                print(identifier.__str__)
 
     @logging_debug_decorator
     @logging_info_decorator
@@ -229,8 +251,7 @@ class GameWorld:
         elif(self.game_status == GameState.ENDING):
             self.on_ending()
         else:
-            # TO DO: raise exception
-            exit(1)
+            raise ValueError(f'{self.game_status} is unsupported!')
 
     @logging_debug_decorator
     @logging_info_decorator
@@ -240,4 +261,8 @@ class GameWorld:
         Exits when self.game_status == GameState.ENDING.
         """
         while not self.ready_to_end:
-            self.update()
+            try:
+                self.update()
+            except ValueError as identifier:
+                print(identifier.__str__)
+                self.ready_to_end = True

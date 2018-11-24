@@ -35,4 +35,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except KeyboardInterrupt as identifier:
+        print("Understandable, for you to know - \
+         you could just write \'exit\'")
