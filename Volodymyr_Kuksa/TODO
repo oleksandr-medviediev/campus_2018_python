@@ -1,0 +1,7 @@
+await on input in main thread
+await on sleep in ai thread
+
+await asyncio.gather(*tasks) # to run tasks concurently
+
+asyncio.run(task) # to run main task
+
