@@ -1,4 +1,5 @@
 import logging
+import functools
 
 
 def logging_setup(logger):
@@ -40,7 +41,8 @@ def logging_debug_decorator(function_to_decorate):
     """
     global logger
 
-    def wrapper(*args):
+    @functools.wraps(function_to_decorate)
+    def wrapper(*args, **kwargs):
         """
         Wrapper function. Prints function name + arguments if debug_mode is True, 
         itherwise just function name on start, end.
@@ -52,11 +54,11 @@ def logging_debug_decorator(function_to_decorate):
         """
         mstr = ""
         if debug_mode:
-            mstr = " with: " + str(args)
+            mstr = f' with {args}, {kwargs}'
 
-        logger.debug(function_to_decorate.__name__ + mstr)
-        result = function_to_decorate(*args)
-        logger.debug(function_to_decorate.__name__ + " ended.")
+        logger.debug(wrapper.__name__ + mstr)
+        result = function_to_decorate(*args, **kwargs)
+        logger.debug(wrapper.__name__ + " ended.")
         return result
     return wrapper
 
@@ -73,7 +75,8 @@ def logging_info_decorator(function_to_decorate):
     """
     global logger
 
-    def wrapper(*args):
+    @functools.wraps(function_to_decorate)
+    def wrapper(*args, **kwargs):
         """
         Wrapper function. Prints function name on before and after start.
         Uses logger.info
@@ -84,8 +87,8 @@ def logging_info_decorator(function_to_decorate):
             whatever decorated function returns.
         """
 
-        logger.info(function_to_decorate.__name__)
-        result = function_to_decorate(*args)
-        logger.info(function_to_decorate.__name__ + " ended.")
+        logger.info(wrapper.__name__)
+        result = function_to_decorate(*args, **kwargs)
+        logger.info(wrapper.__name__ + " ended.")
         return result
     return wrapper
