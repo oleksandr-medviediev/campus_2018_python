@@ -2,6 +2,7 @@ import dungeon_game_player as pm
 import dungeon_game_map as mm
 import dungeon_game_save_and_load as io
 import dungeon_game_logger as log
+import dungeon_game_exceptions as exc
 
 
 class DungeonGame:
@@ -17,26 +18,56 @@ class DungeonGame:
         return: None
 
         """
+
+        result = True
         map_size = 0
+        input_value = 0
 
-        option = int(input("Press 1 to load game and press 2 to create new game"))
+        try:
+            option = str(input("Press 1 to load game and press 2 to create new game"))
 
-        if option == 1:
+            if not option.isdigit():
+                raise TypeError
+
+            input_value = int(option)
+            
+            if (input_value < 1) or (input_value > 2):
+                raise ValueError
+
+        except TypeError:
+            log.logger.error("TypeError exception. Invalid input data type.")
+            result = False
+
+        except ValueError:
+            log.logger.error("ValueError exception. Invalid input data.")
+            result = False
+
+        if input_value == 1:
             game_map = self.__io_manager.load_game()
             self.__game_map.game_matrix = game_map
-        elif option == 2:
+
+            if len(game_map) == 0:
+                result = False
+
+        elif input_value == 2:
             while True:
-                map_size = int(input("Enter the map size [8-15]"))
+                try:
+                    map_size = int(input("Enter the map size [8-15]"))
 
-                if (map_size >= 8) and (map_size <= 15):
-                    break
+                    if (map_size >= 8) and (map_size <= 15):
+                        break
 
-                log.logger.info("Wrong! Enter correct size!")
+                    raise exc.MapException("Invalid map size!")
+                except exc.MapException as map_error:
+                    log.logger.error(map_error.message)
             
             self.__game_map.create_map(map_size)
 
-        position = self.__game_map.player_position
-        self.__player.position = position
+        if result:
+            position = self.__game_map.player_position
+            self.__player.position = position
+        
+        return result
     
 
     def run_game(self):
@@ -57,32 +88,46 @@ class DungeonGame:
 
         while True:
             directions = self.update_player_position()
+        
+            try:
+                value = input("Choose direction 'a'-left, 'd'-right, 'w'-up, 's'-down, 'save'-to save game")
+                if not value in direction_map:
+                    raise ValueError
 
-            value = input("Choose direction 'a'-left, 'd'-right, 'w'-up, 's'-down, 'save'-to save game")
-            if not value in direction_map:
-                log.logger.info("Incorect input direction!")
+                if value == "save":
+                    self.__io_manager.save_game(self.__game_map.game_matrix)
+                    log.logger.info("The game is successfully saved!")
+                    continue
+                
+                if not direction_map[value] in directions:
+                    raise exc.InvalidDirectionException(self.__player.position, direction_map[value])
+
+            except ValueError:
+                log.logger.info("Incorect input value!")
                 continue
-            
-            if value == "save":
-                self.__io_manager.save_game(self.__game_map.game_matrix)
-                log.logger.info("The game is successfully saved!")
-                continue
-            
-            if not direction_map[value] in directions:
-                log.logger.info("You cannot move in this direction!")
+            except exc.InvalidDirectionException as dir_error:
+                log.logger.error(dir_error.message)
                 continue
             
             new_position = self.__player.position
             old_position = new_position.copy()
 
-            if value == "a":
-                new_position[1] -= 1
-            elif value == "d":
-                new_position[1] += 1
-            elif value == "w":
-                new_position[0] -= 1
-            elif value == "s":
-                new_position[0] += 1
+            try:
+                if value == "a":
+                    new_position[1] -= 1
+                elif value == "d":
+                    new_position[1] += 1
+                elif value == "w":
+                    new_position[0] -= 1
+                elif value == "s":
+                    new_position[0] += 1
+
+                if (new_position < 0) or (new_position > self.__game_map.map_size):
+                    raise exc.InvalidPositionException(new_position)
+            
+            except exc.InvalidPositionException as pos_error:
+                log.error(pos_error.position)
+                continue
 
             is_treasure = self.__game_map.check_on_treasure(new_position)
             is_trap = self.__game_map.check_on_trap(new_position)
@@ -158,5 +203,7 @@ class DungeonGame:
 
 if __name__ == ('__main__'):
     game = DungeonGame()
-    game.initialize()
-    game.run_game()
+    is_game_init = game.initialize()
+
+    if is_game_init:
+        game.run_game()

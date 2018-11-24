@@ -5,6 +5,7 @@ import dungeon_game_logger as log
 class GameMap:
     __game_matrix = []
     __player_position = []
+    __map_size = 0
 
     
     def create_map(self, map_size):
@@ -17,6 +18,8 @@ class GameMap:
         :return: None.
 
         """
+        self.__map_size = map_size
+
         for i in range (map_size):
             line = ["_" for j in range(map_size)]
             self.__game_matrix.append(line)
@@ -60,7 +63,12 @@ class GameMap:
                 break
         
         self.print_map()
-    
+
+
+    @property
+    def map_size(self):
+        return self.__map_size
+
 
     @property
     def game_matrix(self):
