@@ -29,8 +29,13 @@ class DungeonGame:
             self.game_map = GameMap()
             self.player = Player('')
 
-            self.on_game_load()
-            return
+            try:
+                self.on_game_load()
+            except FileNotFoundError as error:
+                logging.error(error)
+                logging.info('Save file not found, new game started.')
+            else:
+                return
 
         map_size = int(query_player_input('Enter map size: ', POSSIBLE_MAP_SIZES))
         self.game_map = GameMap(map_size=map_size)
