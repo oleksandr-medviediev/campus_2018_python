@@ -165,6 +165,7 @@ class GameWorld:
                 action == "Left" or \
                 action == "Right":
             self.on_move_action(action)
+            print(f'{self.player.position.x} {self.player.position.y}')
         elif action == "Save":
             self.save()
         elif action == "Load":
@@ -177,18 +178,19 @@ class GameWorld:
     @logging_debug_decorator
     @logging_info_decorator
     def on_ingame(self):
-        print("updating on_ingame")
-
-        print("updating wait for show")
+        """
+        Performs ingame step:
+            1) Show lvl.
+            2) Print hints if any.
+            3) Get Actions input.
+            4) Change state depending on actions.
+        """
         self.level.show(player_pos=self.player.position)
 
-        print("updating wait for hint")
         self.print_hint()
 
-        print("updating wait for update_actions")
         actions_performed = self.update_actions()
 
-        print("updating wait for on_action")
         for action in actions_performed:
             self.on_action(action)
 
@@ -204,7 +206,6 @@ class GameWorld:
         Game step.
         """
         # update actions
-        print("updating update")
         if(self.game_status == GameState.INGAME):
             self.on_ingame()
         elif(self.game_status == GameState.ENDING):
@@ -221,5 +222,4 @@ class GameWorld:
         Exits when self.game_status == GameState.ENDING.
         """
         while self.game_status != GameState.ENDING:
-            print("updating")
             self.update()

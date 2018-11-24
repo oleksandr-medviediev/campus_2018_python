@@ -157,20 +157,16 @@ class Map:
         mrepr = ""
         if pos.x == player_pos.x and pos.y == player_pos.y:
             mrepr = self.reprs["player"]
-            print("player")
         elif pos.x > player_pos.x + self.view.x or \
                 pos.x < player_pos.x - self.view.x or \
                 pos.y > player_pos.y + self.view.y or \
                 pos.y < player_pos.y - self.view.y:
             mrepr = self.reprs["fog"]
-            print(f'{pos.x} {pos.y}')
         elif self.__game_map[pos.y][pos.x] == self.reprs["treasure"] or \
                 self.__game_map[pos.y][pos.x] == self.reprs["trap"]:
             mrepr = self.reprs["unknown"]
-            print("unknown")
         else:
             mrepr = self.__game_map[pos.y][pos.x]
-            print("wat")
         return mrepr
 
     @logging_debug_decorator
@@ -184,11 +180,7 @@ class Map:
         """
 
         mlist = []
-        print("showing lvl")
-        print(self.__game_map)
         for i in range(self.size.x):
-            print("line")
-            print(mlist)
             for j in range(self.size.y):
                 mlist.append(self.get_cell_repr(player_pos, Position(j, i)))
             mlist.append("\n")

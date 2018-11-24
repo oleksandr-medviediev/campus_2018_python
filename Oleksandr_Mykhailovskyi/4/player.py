@@ -47,7 +47,7 @@ class Player:
         if action == "Left":
             self.position.x -= 1
         elif action == "Right":
-            self.position.y += 1
+            self.position.x += 1
 
 
     @logging_debug_decorator
