@@ -53,6 +53,8 @@ class GameWorld:
 
         self.game_status = GameState.INGAME
 
+        self.ready_to_end = False
+
     @logging_debug_decorator
     @logging_info_decorator
     def save(self):
@@ -138,10 +140,20 @@ class GameWorld:
         if self.level.map_wrapper(self.player.position) == \
                 self.level.reprs["treasure"]:
             self.player.bag_counter += 1
+
+            position = self.player.position
+            self.level.game_map[position.y][position.x] = \
+                self.level.reprs["nothing"]
+
             print("Good job, you found a treasure!")
         elif self.level.map_wrapper(self.player.position) == \
                 self.level.reprs["trap"]:
             self.player.hp -= 1
+
+            position = self.player.position
+            self.level.game_map[position.y][position.x] = \
+                self.level.reprs["nothing"]
+
             if self.player.hp > 0:
                 print(f'Careful, you\'ve got {self.player.hp} hp left')
 
@@ -203,6 +215,7 @@ class GameWorld:
     @logging_info_decorator
     def on_ending(self):
         print("This world will miss you, goodbye!")
+        self.ready_to_end = True
 
     @logging_debug_decorator
     @logging_info_decorator
@@ -213,7 +226,7 @@ class GameWorld:
         # update actions
         if(self.game_status == GameState.INGAME):
             self.on_ingame()
-        if(self.game_status == GameState.ENDING):
+        elif(self.game_status == GameState.ENDING):
             self.on_ending()
         else:
             # TO DO: raise exception
@@ -226,5 +239,5 @@ class GameWorld:
         Wrapper around update.
         Exits when self.game_status == GameState.ENDING.
         """
-        while self.game_status != GameState.ENDING:
+        while not self.ready_to_end:
             self.update()
