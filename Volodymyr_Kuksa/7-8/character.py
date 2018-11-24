@@ -65,8 +65,6 @@ class Character:
         return self.__bag >= 3
 
     @property
-    @dungeon_game_decorators.log_decor
-    @dungeon_game_decorators.debug_decor
     def character_name(self):
         """
         Getter for name.
@@ -77,8 +75,6 @@ class Character:
         return self.__character_name
 
     @character_name.setter
-    @dungeon_game_decorators.log_decor
-    @dungeon_game_decorators.debug_decor
     def character_name(self, new_name):
         """
         Setter for name.
@@ -89,8 +85,6 @@ class Character:
         self.__character_name = new_name
 
     @property
-    @dungeon_game_decorators.log_decor
-    @dungeon_game_decorators.debug_decor
     def hp(self):
         """
         Getter for hp.
@@ -101,8 +95,6 @@ class Character:
         return self.__hp
 
     @hp.setter
-    @dungeon_game_decorators.log_decor
-    @dungeon_game_decorators.debug_decor
     def hp(self, new_hp):
         """
         Setter for hp.
@@ -113,8 +105,6 @@ class Character:
         self.__hp = new_hp
 
     @property
-    @dungeon_game_decorators.log_decor
-    @dungeon_game_decorators.debug_decor
     def bag(self):
         """
         Getter for bag.
@@ -125,8 +115,6 @@ class Character:
         return self.__bag
 
     @bag.setter
-    @dungeon_game_decorators.log_decor
-    @dungeon_game_decorators.debug_decor
     def bag(self, new_bag):
         """
         Setter for bag.

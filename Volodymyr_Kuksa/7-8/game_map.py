@@ -115,6 +115,9 @@ class GameMap:
         :return: Game map character on position.
         :rtype: single-character str.
         """
+        if position_y < 0 or position_x < 0:
+            raise IndexError
+
         return self.__game_map[position_y][position_x]
 
     @dungeon_game_decorators.log_decor
