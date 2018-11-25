@@ -1,3 +1,4 @@
+import threading
 import dungeon_game_decorators
 import dungeon_game_exceptions
 
@@ -16,6 +17,8 @@ class Character:
         self.__character_name = name
         self.__bag = 0
         self.__hp = 3
+
+        self.hp_lock = threading.Lock()
 
     @dungeon_game_decorators.log_decor
     @dungeon_game_decorators.debug_decor
@@ -44,7 +47,11 @@ class Character:
 
         :return: None.
         """
+        self.hp_lock.acquire()
+
         self.__hp -= step
+
+        self.hp_lock.release()
 
         if not self.__hp:
             raise dungeon_game_exceptions.PlayerDiedError

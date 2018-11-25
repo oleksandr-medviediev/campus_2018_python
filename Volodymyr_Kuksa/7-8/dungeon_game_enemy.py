@@ -30,5 +30,5 @@ class Enemy(Player):
 
         if 0 <= new_x < map_size and 0 <= new_y < map_size:
             self.set_position(*new_position)
-            
+
         logging.info(f'Enemy moved {new_position}')

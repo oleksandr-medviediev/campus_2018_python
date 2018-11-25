@@ -163,7 +163,7 @@ class DungeonGame:
         """
         enemy = Enemy()
 
-        while True:
+        while self.is_game_running():
 
             time.sleep(3)
             enemy.random_move(self.map_size)
