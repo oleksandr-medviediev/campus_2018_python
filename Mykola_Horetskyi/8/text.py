@@ -154,7 +154,7 @@ inquisition_fight = {
 
 inquisition_survival = {
 "other":[("You plead innocent but for no awail. You are fastened to the rack. "
-"Luckily it seems that inquisitors are rather busy people very because after "
+"Luckily it seems that inquisitors are rather busy people because after "
 "giving the rack a few turns and poking you with soft cushions"
 "they sat you in a comfy chair and hurry away to get another victim.")],
 
@@ -171,8 +171,6 @@ enter_name_prompt = "Your name is.."
 
 load_game_on_start_prompt = ("It seems there already exists adventurer with "
 "that name. Is that you?(y/n)")
-
-wrong_y_n_input = "Enter 'y' for yes, anything else for no."
 
 new_game_start = ("While your country goes through economic recession, "
 "you're fired from your job. With no money to pay for food or rent "
