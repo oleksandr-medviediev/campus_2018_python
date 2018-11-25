@@ -10,6 +10,8 @@ trap_goblins, trap_hidden_blade, trap_curse, trap_inquisition
 
 from utils import Position
 
+from custom_errors import DungeonMapInitializationError,\
+ DungeonMapCellOutOfBoundsError
 
 directions = (Position(0, 1),
              Position(1, 0),
@@ -39,6 +41,7 @@ class DungeonMap:
     }
 
     discovery_dict = {
+    "entrance":"e",
     "player":"p",
     "unknown":"?",
     "empty":"0",
@@ -88,7 +91,8 @@ class DungeonMap:
         returns: value of cell with those coordinates if it's inside map
         False otherwise
         """
-
+        # Not using DungeonMapCellOutOfBoundsError since returning False is part
+        # of intended functionality
         if not self.is_position_in_map(pos):
             return False
 
@@ -99,18 +103,16 @@ class DungeonMap:
         """
         Assignes value to cell at position pos.
 
-        param: pos (Position) position of the cell in question
-
-        returns: True if cell is inside map and value assigned
-        False otherwise
+        param: pos (Position) position of the cell
         """
 
-        if not self.is_position_in_map(pos):
-            return False
+        try:
+            self.cells[pos.x][pos.y] = value
 
-        self.cells[pos.x][pos.y] = value
+        except IndexError:
+            raise DungeonMapCellOutOfBoundsError("Attempt to assign value to "
+            "cell out of dungeon map bounds", pos)
 
-        return True
 
     @debug_decorator
     def initialize(self, height, width, treasure_number, traps, start_pos):
@@ -123,10 +125,15 @@ class DungeonMap:
         param: traps (iterateble) traps to put on map
         param: start_pos (Position) player starting position on map
         """
-        if width * height < treasure_number + len(traps) + 1:
-            logger.debug("Incorrect parameters in DungeonMap initialize."
-            " Map can't fit all of the cells")
-            return
+        try:
+            is_input_valid = width * height > treasure_number + len(traps) + 1
+        except TypeError as error:
+            raise DungeonMapInitializationError("Incorrect parameter type in "
+            "DungeonMap initialize. \n {}".fromat(str(error)))
+        else:
+            if not is_input_valid:
+                raise DungeonMapInitializationError("Incorrect parameters in "
+                "DungeonMap initialize. Map can't fit all of the cells.")
 
         self.width = width
         self.height = height
@@ -136,7 +143,12 @@ class DungeonMap:
 
         logger.debug("empty map generated")
 
-        self.cells[start_pos.x][start_pos.y] = entrance_cell.legend
+        try:
+            self.cells[start_pos.x][start_pos.y] = entrance_cell.legend
+        except IndexError:
+            raise DungeonMapInitializationError("Incorrect parameters in "
+            "DungeonMap initialize. Strating position is out of DungeonMap "
+            "boundaries")
 
         while treasure_number > 0:
             pos = Position.generate_random_position(width, height)

@@ -1,6 +1,6 @@
 from random import randint, choice
 from copy import deepcopy
-from pickle import dump, load
+from pickle import dump, load, UnpicklingError
 from os.path import isfile
 from game_logger import logger
 from decorator import debug_decorator
@@ -10,6 +10,8 @@ from trap import trap_legends, Trap
 from dungeon_cell import treasure_cell, empty_cell, entrance_cell
 from player import Player
 from dungeon_map import DungeonMap
+from custom_errors import NotValidSaveFileError
+import hashlib
 import text
 
 class DungeonGame:
@@ -259,6 +261,9 @@ class DungeonGame:
              DungeonMap.discovery_dict["treasure and trap near"])
             input()
 
+        elif DungeonGame.dmap.cell(DungeonGame.player.position) == entrance_cell.legend:
+            DungeonGame.player.discovered_map.assign_cell(DungeonGame.player.position,\
+            DungeonMap.discovery_dict["entrance"])
         else:
             DungeonGame.player.discovered_map.assign_cell(DungeonGame.player.position,\
              DungeonMap.discovery_dict["empty"])
@@ -271,7 +276,8 @@ class DungeonGame:
         """
         Saves current game.
         """
-        current_data = (DungeonGame.player, DungeonGame.dmap)
+        hash = hashlib.md5(str(DungeonGame.player.name).encode());
+        current_data = (hash, DungeonGame.player, DungeonGame.dmap)
         save_file_name = "".join([DungeonGame.player.name, ".pickle"])
 
         logger.debug("saving to {}".format(save_file_name))
@@ -291,9 +297,18 @@ class DungeonGame:
         logger.debug("loading from {}".format(save_file_name))
 
         with open(save_file_name, 'rb') as save_file:
-            game_data = load(save_file)
+            try:
+                game_data = load(save_file)
+            except UnpicklingError as error:
+                raise NotValidSaveFileError("UnpicklingError:{}".\
+                format(str(error)), save_file_name)
 
-        DungeonGame.player, DungeonGame.dmap = game_data
+        hash = hashlib.md5(str(DungeonGame.player.name).encode());
+
+        if hash == game_data[0]:
+            _, DungeonGame.player, DungeonGame.dmap = game_data
+        else:
+            raise NotValidSaveFileError("Save file hash not verified.", save_file_name)
 
 
     @debug_decorator

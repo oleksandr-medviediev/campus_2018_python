@@ -1,7 +1,6 @@
 from random import randint, choice
 from decorator import debug_decorator
 from game_logger import logger
-from text import wrong_y_n_input
 
 
 class Position:
@@ -58,23 +57,21 @@ def input_number_from_boundaries(min_value, max_value):
 
     return: int from given boundaries that is entered by user
     """
-    user_input = input().lower()
 
-    number = None
-
-    while not number and number != 0:
-
-        if (user_input.isdigit()
-        and int(user_input) >= min_value
-        and int(user_input) <= max_value):
-            number = int(user_input)
-
-        if not number:
-            logger.debug("incorrect input from user")
+    while True:
+        try:
+            number = int(input())
+        except ValueError:
+            logger.debug("non-numeric input from user")
             logger.info("please enter number between {} {}".
             format(min_value, max_value))
-
-            user_input = input()
+        else:
+            if number >= min_value and number <= max_value:
+                break
+            else:
+                logger.debug("input from user out of specified bounds")
+                logger.info("please enter number between {} {}".
+                format(min_value, max_value))
 
     return number
 
@@ -94,7 +91,7 @@ def process_yes_no_input():
     elif user_input == "n" or user_input =="no":
         return False
 
-    logger.info(wrong_y_n_input)
+    logger.info("Enter 'y' or 'yes' for yes, anything else for no.")
 
     user_input = input().lower()
 
