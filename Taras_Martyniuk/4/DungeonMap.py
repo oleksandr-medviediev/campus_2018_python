@@ -21,7 +21,7 @@ class DungeonMap:
         wrapper on a 2D array holding Tile type enums
         provides tile filtering methods
 
-        P.S - i really need to write that 'self' every time? Why would they do this to us? 
+        P.S - do i really need to write that 'self' every time? Why would they do this to us? 
     '''
     @log_decor
     def __init__(self, size):
@@ -30,6 +30,9 @@ class DungeonMap:
         where 1/10 tiles are treasures and other 2/10 - traps
         :param size: int, > 0
         '''
+        if size <= 0:
+            raise ValueError('size must be > 0')
+
         count = size * size
         trap_count = floor(count * TRAP_QUOTA)
         treasure_count = floor(count * TREASURE_QUOTA)
@@ -68,13 +71,18 @@ class DungeonMap:
                 return maybe_empty
 
     
-    # it's a pity i can't just write array_2D[(0, 0)]
     def at(self, tile):
         '''
             gets type of the Tile
             :param tile: Tile
         '''
-        assert self.in_bounds(tile)
+        # an alternative would be to delegate indices to the [] operator
+        # and let it throw an index out of bounds error
+        # should i bother to validate indices myself here?
+        # P.S adding it anyway because of 3 exceptions requirement)
+        if not self.in_bounds(tile):
+            raise IndexError('tile out of the map')
+
         return self.tiles[tile[0]][tile[1]]
 
 

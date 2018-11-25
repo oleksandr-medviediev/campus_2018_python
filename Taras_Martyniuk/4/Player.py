@@ -14,12 +14,9 @@ class Player:
         """   
         assert isinstance(health, int)
         self.position = (0, 0)
-        self.dungeon_map = dmap
-        # should i even make these private?
-        # is adding a public interface modifiers (loseHealth) enough?
-        # (the setters would still be present)
         self.__health = health
         self.__treasures = 0
+        self.dungeon_map = dmap
 
 
     @property
@@ -37,10 +34,12 @@ class Player:
         '''
             takes away 1 health
             :throws RuntimeError: if no health left
+            :returns: boolean indicating if the blow was fatal
         '''
         if self.health <= 0:
             raise RuntimeError('already dead')
         self.__health -= 1
+        return self.__health == 0
 
     
     @log_decor
@@ -64,7 +63,7 @@ class Player:
                 
         """   
         if move_dt[0] not in (0, 1, -1) or move_dt[1] not in (0, 1, -1):
-            raise ValueError()
+            raise ValueError('move delta must move player only one tile (no diagonal movement)')
 
         assert self.dungeon_map.in_bounds(self.position)
 

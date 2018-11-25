@@ -12,8 +12,8 @@ player_moves = {
     'left' : (-1, 0)
 }
 
-PLAYER_HP = 3
-TREAUSURES_FOR_WIN = 3
+PLAYER_HP = 2
+TREAUSURES_FOR_WIN = 2
 
 @log_decor
 def play_game(size):
@@ -28,7 +28,7 @@ def play_game(size):
     while True:
         assert dmap.in_bounds(player.position)
         # uncomment for perfect debug experience
-        # print(dm.map_to_str(dmap, player_pos))
+        print(dmap.map_to_str(player.position))
         olog.info(f'you stand at the tile {player.position}')
 
         if dmap.is_trap_nearby(player.position):
@@ -56,12 +56,21 @@ def play_game(size):
 
         tile_type = dmap.at(player.position)
         if tile_type == dm.Treasure:
-            win(dmap, player.position)
-            break
+            olog.info('The Treasure is yours!')
+            player.add_treasure()
 
-        if tile_type == dm.Trap:
-            lose(dmap, player.position)
-            break
+            if player.treasures >= TREAUSURES_FOR_WIN:
+                win(dmap, player.position)
+                break
+
+        elif tile_type == dm.Trap:
+            dead = player.loseHealth()
+            if dead:
+                lose(dmap, player.position)
+                break
+            
+            olog.info('Ouch! That hurt!')
+            olog.info(f'You feel like you could endure only {player.health} more such hits')
 
         olog.info('\n')
 

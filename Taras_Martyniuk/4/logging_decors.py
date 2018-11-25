@@ -5,7 +5,7 @@ import inspect
 import inspect, itertools
 
 
-DEBUG = True
+DEBUG = False
 
 
 # they said it on the docs that dict config is cooler than file config, 
