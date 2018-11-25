@@ -7,7 +7,9 @@ import logging
 import random
 import utils
 import log
+import config
 from decorators import log_decorator, debug_log_decorator
+from exceptions import MapInitError
 
 RATIO_TRAPS = 10.0
 RATIO_TREASURE = 20.0
@@ -23,9 +25,17 @@ class DungeonMap:
     SYMBOL_PLAYER = '+'
     SYMBOL_LASTPOS = 'X'
 
-    def __init__(self, size):
+    def __init__(self, size, do_generate=True):
+        """
+        Class constructor
+        :param size: Generated map size
+        :param do_generate: Whether to initiate map generation
+        """
 
-        self.game_map = self.generate(size)
+        if do_generate:
+            self.game_map = self.generate(size)
+        else:
+            self.game_map = []
 
     @log_decorator
     @debug_log_decorator
@@ -38,6 +48,11 @@ class DungeonMap:
 
         trap_count = int((size ** 2) / RATIO_TRAPS)
         treasure_count = int((size ** 2) / RATIO_TREASURE)
+
+        if trap_count <= 0:
+            raise MapInitError("Error initializing trap count. Try larger map size.")
+        if treasure_count < config.PLAYER_BAG_SIZE:
+            raise MapInitError("Error initializing treasure count. Try larger map size.")
 
         return_map = [[DungeonMap.SYMBOL_TILE for j in range(size)] for i in range(size)]
 
