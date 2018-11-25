@@ -1,6 +1,7 @@
 import dungeon_game_logger
 from character import Character
 
+
 class Player(Character):
 
     def __init__(self, x, y):
@@ -8,7 +9,6 @@ class Player(Character):
         super().__init__()
         self.x = x
         self.y = y
-
 
     def input(self, level):
         """
@@ -42,9 +42,17 @@ class Player(Character):
         """
 
         if new_cell == '!':
-            self._health -= 1
+            self.hit(1)
         elif new_cell == '$':
             self._bag += 1
+
+    def hit(self, damage):
+        """
+        decrease player's health
+            :param int damage: magnitude of damage
+        """
+
+        self._health -= damage
 
     def is_dead(self):
         """

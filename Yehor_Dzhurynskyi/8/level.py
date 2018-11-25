@@ -8,9 +8,10 @@ from dungeon_game_logger import log_decorator
 import dungeon_game_logger
 import dungeon_game_error
 
+
 class Level:
 
-    def update(self):
+    def update(self, lock):
         """
         function that being called on each tick
         """
@@ -26,8 +27,13 @@ class Level:
             dungeon_game_logger.logger.info('f{error}')
             return
 
+        lock.acquire()
+
         self.player.x += dx
         self.player.y += dy
+
+        lock.release()
+
         self.player.on_location_changed(destination_cell)
 
         if destination_cell == '!' or destination_cell == '$':
@@ -39,7 +45,6 @@ class Level:
             dungeon_game_logger.logger.info('You fell into third trap, GAME OVER =<')
         elif self.player.is_won():
             dungeon_game_logger.logger.info('You found three treasure, VICTORY!')
-
 
     def cell_at(self, x, y):
         """
@@ -58,16 +63,13 @@ class Level:
 
         return cell
 
-
     @property
     def size(self):
         return self.__size
 
-
     @property
     def player(self):
         return self.__player
-
 
     @debug_decorator
     @log_decorator('saving level...')
@@ -78,7 +80,6 @@ class Level:
 
         with open('save.pickable', 'wb') as handle:
             pickle.dump(self, handle)
-
 
     @staticmethod
     @debug_decorator
@@ -117,17 +118,19 @@ class Level:
         generated_level = Level()
         generated_level.__level_data = ''.join(cells)
         generated_level.__size = size
-        generated_level.__player = generated_level.__spawn_player()
+
+        player_x, player_y = generated_level.random_inner_point()
+        generated_level.__player = Player(player_x, player_y)
 
         return generated_level
 
     @debug_decorator
-    @log_decorator('spawning player...', logging.INFO)
-    def __spawn_player(self):
+    @log_decorator('randoming inner point...', logging.INFO)
+    def random_inner_point(self):
         """
-        reserve valid location for player on level
-            :return: x and y coord of spawned player
-            :rtype: Player
+        reserve valid location for character on level
+            :return: x and y coord of spawned character
+            :rtype: tuple
         """
 
         while True:
@@ -135,11 +138,10 @@ class Level:
             cell_pos = random.randint(0, len(self.__level_data) - 1)
             if self.__level_data[cell_pos] == '_':
 
-                player_x, player_y = cell_pos % self.size, cell_pos // self.size
+                point_x, point_y = cell_pos % self.size, cell_pos // self.size
                 break
 
-        return Player(player_x, player_y)
-
+        return point_x, point_y
 
     def print(self):
         """
