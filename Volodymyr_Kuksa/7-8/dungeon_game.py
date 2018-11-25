@@ -2,6 +2,7 @@ import pickle
 import logging
 import time
 from player import Player, PLAYER_MOVES
+from dungeon_game_enemy import Enemy
 from game_map import GameMap, GAME_CHARACTERS
 from utils import query_player_input
 import dungeon_game_decorators
@@ -38,15 +39,15 @@ class DungeonGame:
             else:
                 return
 
-        map_size = int(query_player_input('Enter map size: ', POSSIBLE_MAP_SIZES))
-        self.game_map = GameMap(map_size=map_size)
+        self.map_size = int(query_player_input('Enter map size: ', POSSIBLE_MAP_SIZES))
+        self.game_map = GameMap(map_size=self.map_size)
 
         player_name = input('Enter your name: ')
         self.player = Player(player_name)
-        self.player.randomize_position(map_size)
+        self.player.randomize_position(self.map_size)
 
         while self.game_map.get_tile_character(*self.player.get_position()) != GAME_CHARACTERS['Empty']:
-            self.player.randomize_position(map_size)
+            self.player.randomize_position(self.map_size)
 
     @dungeon_game_decorators.log_decor
     @dungeon_game_decorators.debug_decor
@@ -54,7 +55,7 @@ class DungeonGame:
         """
         Game loop.
         """
-        while True:
+        while self.is_game_running():
 
             player_input = query_player_input(f'\nEnter move {VALID_RUNTIME_INPUTS}: ', VALID_RUNTIME_INPUTS)
 
@@ -157,8 +158,18 @@ class DungeonGame:
     @dungeon_game_decorators.log_decor
     @dungeon_game_decorators.debug_decor
     def execute_enemy(self):
+        """
+        Update enemy.
+        """
+        enemy = Enemy()
 
         while True:
 
             time.sleep(3)
-            logging.info('tutu')
+            enemy.random_move(self.map_size)
+
+            if enemy.get_position() == self.player.get_position():
+
+                logging.info('Enemy found player(')
+                self.player.decrement_hp()
+                enemy.randomize_position(self.map_size)
