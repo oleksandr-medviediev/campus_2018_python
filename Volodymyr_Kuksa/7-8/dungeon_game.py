@@ -1,5 +1,6 @@
 import pickle
 import logging
+import time
 from player import Player, PLAYER_MOVES
 from game_map import GameMap, GAME_CHARACTERS
 from utils import query_player_input
@@ -136,6 +137,28 @@ class DungeonGame:
     @dungeon_game_decorators.log_decor
     @dungeon_game_decorators.debug_decor
     def print_game_state(self):
-
+        """
+        Output game state.
+        """
         logging.info(self.player)
         self.game_map.print_state_on_position(*self.player.get_position())
+
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
+    def is_game_running(self):
+        """
+        Return True if the game is running, False otherwise.
+
+        :return: True if the game is running, False otherwise.
+        :rtype: bool.
+        """
+        return self.player.is_alive() and not self.player.is_bag_full()
+
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
+    def execute_enemy(self):
+
+        while True:
+
+            time.sleep(3)
+            logging.info('tutu')
