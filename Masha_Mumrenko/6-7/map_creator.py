@@ -144,7 +144,8 @@ class DungeonGameMap:
         :param map_size: loaded map_size 
         :paramtype map_size: list(int,int)
         """
-        self.generated_map = loaded_map
+        self.generated_map = []
+        self.generated_map.extend(loaded_map)
         self.map_size_x = map_size[0]
         self.map_size_y = map_size[1]
 	
