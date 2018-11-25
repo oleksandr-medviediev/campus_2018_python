@@ -3,76 +3,98 @@ from Player import Player
 import DungeonMap as dm
 from logging_decors import log_decor, output_logger as olog, debug_file_console_logger as dlog
 from serialization import save, load
-
-
-player_moves = {
-    'up' : (0, 1),
-    'right' : (1, 0),
-    'down' : (0, -1),
-    'left' : (-1, 0)
-}
+from utils import player_moves
+from threading import Event
 
 PLAYER_HP = 2
 TREAUSURES_FOR_WIN = 2
 
+
 @log_decor
 def play_game(size):
     dmap = DungeonMap(size)
-    player = Player(TREAUSURES_FOR_WIN, dmap)
+
+    player_dead = Event()
+    player_won = Event()
+
+    player = Player(TREAUSURES_FOR_WIN, dmap, lambda: player_dead.set())
 
     start = dmap.get_random_empty_tile()
     dlog.debug(f'Starting at {start}')
 
     olog.info('Note: you can input \'save\' any time to save the game, or \'load\' to load last saved one')
     player.position = start
-    while True:
-        assert dmap.in_bounds(player.position)
-        # uncomment for perfect debug experience
-        print(dmap.map_to_str(player.position))
-        olog.info(f'you stand at the tile {player.position}')
 
-        if dmap.is_trap_nearby(player.position):
-            olog.info("Careful! There's a trap nearby!")
+    while not player_dead.is_set() or player_won.is_set():
+        run_turn(player_dead, player_won, player, dmap)
 
-        if dmap.is_treasure_nearby(player.position):
-            olog.info("There's a treasure right next to you! Eyes on the prize!")
+    won = player_won.is_set()
+    lost = player_dead.is_set()
+    assert won != lost
 
-        input_result = handle_user_input(player)
+    if won:
+        win(dmap, player.position)
+    else:
+        assert lost
+        lose(dmap, player.position)
 
-        if input_result == Save:
-            save(dmap, player)
-            olog.info('Saved your game!\n')
-            continue
 
-        elif input_result == Load:
-            try:
-                dmap, player = load()
-                dlog.debug('changed state to loaded:')
-                olog.info('Loaded your game!\n')
-            except FileNotFoundError:
-                dlog.debug('Tried to load when savefile does not exist')
-                olog.info('You haven\'t saved it yet!')
-            continue
+@log_decor
+def run_turn(death_event, win_event, player, dmap):
+    '''
+        notifies about object nearby, polls for input, applies the input
+        if the player died, death_event is set,
+        if he's won - win_event is set
 
-        tile_type = dmap.at(player.position)
-        if tile_type == dm.Treasure:
-            olog.info('The Treasure is yours!')
-            player.add_treasure()
+        :param death_event, win_event: Events
+        :param dmap: DungeonMap
+        :param player: Player
+    '''
+    assert dmap.in_bounds(player.position)
+    # uncomment for perfect debug experience
+    print(dmap.map_to_str(player.position))
+    olog.info(f'you stand at the tile {player.position}')
 
-            if player.treasures >= TREAUSURES_FOR_WIN:
-                win(dmap, player.position)
-                break
+    if dmap.is_trap_nearby(player.position):
+        olog.info("Careful! There's a trap nearby!")
 
-        elif tile_type == dm.Trap:
-            dead = player.loseHealth()
-            if dead:
-                lose(dmap, player.position)
-                break
-            
-            olog.info('Ouch! That hurt!')
-            olog.info(f'You feel like you could endure only {player.health} more such hits')
+    if dmap.is_treasure_nearby(player.position):
+        olog.info("There's a treasure right next to you! Eyes on the prize!")
 
-        olog.info('\n')
+    input_result = handle_user_input(player)
+
+    if input_result == Save:
+        save(dmap, player)
+        olog.info('Saved your game!\n')
+        return
+
+    elif input_result == Load:
+        try:
+            dmap, player = load()
+            dlog.debug('changed state to loaded:')
+            olog.info('Loaded your game!\n')
+        except FileNotFoundError:
+            dlog.debug('Tried to load when savefile does not exist')
+            olog.info('You haven\'t saved it yet!')
+        return
+
+    tile_type = dmap.at(player.position)
+    if tile_type == dm.Treasure:
+        assert player.treasures < TREAUSURES_FOR_WIN
+        olog.info('The Treasure is yours!')
+        player.add_treasure()
+
+        if player.treasures >= TREAUSURES_FOR_WIN:
+            win_event.set()
+            return
+
+    elif tile_type == dm.Trap:
+        player.lose_health()
+        
+        olog.info('Ouch! That hurt!')
+        olog.info(f'You feel like you could endure only {player.health} more such hits')
+
+    olog.info('\n')
 
 
 @log_decor

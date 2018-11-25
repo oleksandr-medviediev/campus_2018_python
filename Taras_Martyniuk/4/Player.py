@@ -1,22 +1,21 @@
 from DungeonMap import DungeonMap
 from logging_decors import log_decor, debug_file_console_logger as dlog
-
+from utils import move_directions, tuple_add
 
 class Player:
-    '''
-        in-game living entity
-    '''
     @log_decor
-    def __init__(self, health, dmap):
+    def __init__(self, health, dmap, on_death):
         """
             :param health: starting hp 
             :param dmap: DungeonMap this player is going to navigate
+            :param onDeath: parameterless callback, executed when player dies
         """   
         assert isinstance(health, int)
         self.position = (0, 0)
+        self.dungeon_map = dmap
+        self.on_death = on_death
         self.__health = health
         self.__treasures = 0
-        self.dungeon_map = dmap
 
 
     @property
@@ -30,16 +29,21 @@ class Player:
 
 
     @log_decor
-    def loseHealth(self):
+    def lose_health(self):
         '''
             takes away 1 health
+            if player is killed, executes on_death
             :throws RuntimeError: if no health left
             :returns: boolean indicating if the blow was fatal
         '''
         if self.health <= 0:
             raise RuntimeError('already dead')
         self.__health -= 1
-        return self.__health == 0
+        dead = self.__health == 0
+
+        if dead:
+            self.on_death()
+        return dead
 
     
     @log_decor
@@ -62,8 +66,8 @@ class Player:
             :returns: True if the try was successful else False 
                 
         """   
-        if move_dt[0] not in (0, 1, -1) or move_dt[1] not in (0, 1, -1):
-            raise ValueError('move delta must move player only one tile (no diagonal movement)')
+        if move_dt not in move_directions:
+            raise ValueError(f'move delta must be one of {move_directions}')
 
         assert self.dungeon_map.in_bounds(self.position)
 
