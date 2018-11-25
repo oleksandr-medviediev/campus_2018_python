@@ -87,6 +87,10 @@ class Player:
             custom_log.logger.info(f"You've stepped on the Trap!!!")
             self.hp -= 1
 
+        elif item == GameMap.ENEMY_SYMBOL:
+            custom_log.logger.info(f"Enemy have found you!!!")
+            self.hp -= 1
+
 
     @decorators.info_decorator
     @decorators.debug_decorator

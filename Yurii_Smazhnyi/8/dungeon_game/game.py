@@ -1,10 +1,13 @@
 import decorators
 import custom_log
+from threading import Event
 from serializer import Serializer
 from vector2 import Vector2
 from dungeon_input import DungeonInput
 from game_map import GameMap
 from player import Player
+from enemy import Enemy
+from enemy_thread import EnemyThread
 
 
 class Game:
@@ -14,7 +17,7 @@ class Game:
     def __init__(self):
         self.game_map = GameMap(10)
         self.player = Player("Halk", 3)
-
+        self.enemy = Enemy()
 
     @decorators.info_decorator
     @decorators.debug_decorator
@@ -70,11 +73,16 @@ class Game:
         :rtype: None.
         """
 
+        stop_flag = Event()
+
+        enemy_thread = EnemyThread(self.enemy, self.player, self.game_map, stop_flag)
+        enemy_thread.start()
+
         custom_log.logger.info("---------------------------------------------------")
 
         while True:
 
-            valid_direction = self.game_map.get_valid_directions()
+            valid_direction = self.game_map.get_player_valid_directions()
 
             custom_log.logger.info("Input 'save'/'load' to save/load the game.")
             custom_log.logger.info(f"Valid directions - {valid_direction}")
@@ -109,12 +117,14 @@ class Game:
 
             custom_log.logger.info("---------------------------------------------------")
 
-            if self.player.hp == 0:
+            if self.player.hp <= 0:
                 self.end_game()
                 break
             elif self.player.bag == Game.TREASURE_TO_WIN:
                 self.win_game()
                 break
+        
+        stop_flag.set()
 
 
     @decorators.info_decorator

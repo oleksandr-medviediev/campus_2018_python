@@ -16,6 +16,7 @@ class GameMap:
     GROUND_SYMBOL = 'O'
     TRAP_SYMBOL = 'X'
     PLAYER_SYMBOL = 'T'
+    ENEMY_SYMBOL = 'E'
     TREASURE_SYMBOL = '='
 
     TRAP_MODIFIER = 10
@@ -24,6 +25,7 @@ class GameMap:
 
     def __init__(self, map_size):
         self._map = self._create_map(map_size)
+        self.spawn_enemy()
 
 
     @decorators.info_decorator
@@ -55,6 +57,7 @@ class GameMap:
             custom_log.logger.warning(error)
             treasure_count = 3
 
+
         ground_count = (map_size * map_size) - trap_count - treasure_count - 1
 
         str_map = GameMap.GROUND_SYMBOL * ground_count
@@ -73,6 +76,49 @@ class GameMap:
 
     @decorators.info_decorator
     @decorators.debug_decorator
+    def replace_character(self, position, new_character):
+        """
+        Replace character on map with new
+
+        :param position: position of character to replace
+        :position type: Vector2
+        :param new_character: new character 
+        :new_character type: str
+
+        """
+
+        self._map[position.y] = replace_str_index(self._map[position.y], position.x, new_character)
+
+
+    @decorators.info_decorator
+    @decorators.debug_decorator
+    def spawn_enemy(self):
+        """
+        Method for spawning enemy on random posion
+        Raise an exeption if enemy wasn't spawned.
+
+        :returns: None
+        """
+
+
+        start_index = random.randint(0, len(self._map) / 2)
+
+        for i in range(start_index, len(self._map)):
+
+            for j in range(0, len(self._map[0])):
+
+                if self._map[i][j] == GameMap.GROUND_SYMBOL:
+
+                    self._map[i] = replace_str_index(self._map[i], j, GameMap.ENEMY_SYMBOL)
+
+                    return
+
+        raise MapGeneratorError("Enemy couldn't spawned!")
+
+
+
+    @decorators.info_decorator
+    @decorators.debug_decorator
     def print_map(self):
         """
         Formatted shortcut for printing game_map.
@@ -87,10 +133,12 @@ class GameMap:
 
     @decorators.info_decorator
     @decorators.debug_decorator
-    def get_player_pos(self):
+    def get_character_pos(self, symbol):
         """
-        Returns player's position from game map.
-
+        Returns character's position from game map.
+        
+        :param symbol: symbol that represents character on map
+        :symbol type: str
         :returns: players position as (x,y).
         :rtype: list of two ints.
         """
@@ -100,7 +148,7 @@ class GameMap:
 
         for i in range(len(self._map)):
 
-            x_index = self._map[i].find(GameMap.PLAYER_SYMBOL)
+            x_index = self._map[i].find(symbol)
 
             if x_index != -1:
                 y_index = i
@@ -109,13 +157,41 @@ class GameMap:
         return Vector2(x_index, y_index)
 
 
+    @decorators.info_decorator
+    @decorators.debug_decorator
+    def get_player_pos(self):
+        """
+        Returns player's position from game map.
+
+        :returns: players position as (x,y).
+        :rtype: list of two ints.
+        """
+
+        return self.get_character_pos(GameMap.PLAYER_SYMBOL)
+
 
     @decorators.info_decorator
     @decorators.debug_decorator
-    def get_valid_directions(self):
+    def get_enemy_pos(self):
         """
-        Returns possible player's moves.
+        Returns player's position from game map.
 
+        :returns: players position as (x,y).
+        :rtype: list of two ints.
+        """
+
+        return self.get_character_pos(GameMap.ENEMY_SYMBOL)
+
+
+
+    @decorators.info_decorator
+    @decorators.debug_decorator
+    def get_character_valid_directions(self, symbol):
+        """
+        Returns possible character's moves.
+
+        :param symbol: symbol that represents character on map
+        :symbol type: str
         :returns: list of possible moves.
         :rtype: list of strings.
         """
@@ -123,23 +199,49 @@ class GameMap:
         x_size = len(self._map[0])
         y_size = len(self._map)
 
-        player_pos = self.get_player_pos()
+        character_pos = self.get_character_pos(symbol)
 
         valid_directions = []
 
-        if player_pos.x > 0:
+        if character_pos.x > 0:
             valid_directions.append(DungeonInput.COMMANDS_TYPES[0])
 
-        if player_pos.x < x_size - 1:
+        if character_pos.x < x_size - 1:
             valid_directions.append(DungeonInput.COMMANDS_TYPES[1])
 
-        if player_pos.y < y_size - 1:
+        if character_pos.y < y_size - 1:
             valid_directions.append(DungeonInput.COMMANDS_TYPES[2])
 
-        if player_pos.y > 0:
+        if character_pos.y > 0:
             valid_directions.append(DungeonInput.COMMANDS_TYPES[3])
 
         return valid_directions
+
+
+    @decorators.info_decorator
+    @decorators.debug_decorator
+    def get_player_valid_directions(self):
+        """
+        Returns possible player's moves.
+
+        :returns: list of possible moves.
+        :rtype: list of strings.
+        """
+
+        return self.get_character_valid_directions(GameMap.PLAYER_SYMBOL)
+
+
+    @decorators.info_decorator
+    @decorators.debug_decorator
+    def get_enemy_valid_directions(self):
+        """
+        Returns possible enemy's moves.
+
+        :returns: list of possible moves.
+        :rtype: list of strings.
+        """
+
+        return self.get_character_valid_directions(GameMap.ENEMY_SYMBOL)
 
 
     @decorators.info_decorator
@@ -185,6 +287,59 @@ class GameMap:
 
     @decorators.info_decorator
     @decorators.debug_decorator
+    def move_enemy(self, direction):
+        """
+        Move enemy on Game Map.
+
+        :param direction: direction to move.
+        :direction type: str.
+        :returns: item player stepped on.
+        :rtype: str.
+        """
+
+        item_stepped_on = GameMap.GROUND_SYMBOL
+
+        character_pos = self.get_enemy_pos()
+
+        if direction == DungeonInput.COMMANDS_TYPES[0]:
+
+            item_stepped_on = self._map[character_pos.y][character_pos.x - 1]
+
+            if item_stepped_on != GameMap.PLAYER_SYMBOL:
+
+                self._map[character_pos.y] = replace_str_index(self._map[character_pos.y],character_pos.x - 1, GameMap.ENEMY_SYMBOL)
+            
+        elif direction == DungeonInput.COMMANDS_TYPES[1]:
+
+            item_stepped_on = self._map[character_pos.y][character_pos.x + 1]
+
+            if item_stepped_on != GameMap.PLAYER_SYMBOL:
+
+                self._map[character_pos.y] = replace_str_index(self._map[character_pos.y],character_pos.x + 1, GameMap.ENEMY_SYMBOL)
+
+        elif direction == DungeonInput.COMMANDS_TYPES[2]:
+
+            item_stepped_on = self._map[character_pos.y + 1][character_pos.x]
+
+            if item_stepped_on != GameMap.PLAYER_SYMBOL:
+            
+                self._map[character_pos.y + 1] = replace_str_index(self._map[character_pos.y + 1],character_pos.x, GameMap.ENEMY_SYMBOL)
+
+        elif direction == DungeonInput.COMMANDS_TYPES[3]:
+
+            item_stepped_on = self._map[character_pos.y - 1][character_pos.x]
+
+            if item_stepped_on != GameMap.PLAYER_SYMBOL:
+
+                self._map[character_pos.y - 1] = replace_str_index(self._map[character_pos.y - 1],character_pos.x, GameMap.ENEMY_SYMBOL)
+            
+        self._map[character_pos.y] = replace_str_index(self._map[character_pos.y], character_pos.x, GameMap.GROUND_SYMBOL)
+
+        return item_stepped_on
+
+
+    @decorators.info_decorator
+    @decorators.debug_decorator
     def is_item_near_player(self, item):
         """
         Returns result of check is some item near player.
@@ -195,7 +350,7 @@ class GameMap:
         :rtype: bool.
         """
 
-        possible_directions = self.get_valid_directions()
+        possible_directions = self.get_player_valid_directions()
 
         player_pos = self.get_player_pos()
 
@@ -254,3 +409,4 @@ def replace_str_index(text,index=0,replacement=''):
 if __name__ == "__main__":
     my_map = GameMap(10)
     my_map.print_map()
+    my_map.get_player_pos()
