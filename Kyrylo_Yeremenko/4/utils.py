@@ -70,6 +70,11 @@ def save_game(save_path, active_map, active_player):
 
             logger.info("Successfully saved game!")
 
+    except pickle.PicklingError:
+
+        return_value = False
+        logger.info("Could not save game! Couldn't pickle save data.")
+
     except (OSError, IOError) as exc:
 
         return_value = False
@@ -110,6 +115,16 @@ def load_game(load_path, active_map, active_player):
 
                 return_value = False
                 logger.info("Loading failed! Unpickled invalid data.")
+
+    except MemoryError:
+
+        return_value = False
+        logger.info("Loading failed! File structure invalid, received Memory Error.")
+
+    except pickle.UnpicklingError:
+
+        return_value = False
+        logger.info("Loading failed! Couldn't unpickle file contents.")
 
     except (OSError, IOError) as exc:
 
