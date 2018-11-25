@@ -2,6 +2,8 @@ from logger import debug_decorator
 from logger import info_decorator
 from random import choice
 
+from custom_exception import PlayerInputError
+
 
 class Player:
 
@@ -38,13 +40,19 @@ class Player:
     @info_decorator
     def input_direction(self):
 
-        player_choice = input('Where do you want to move:\n')
-        player_choice.casefold()
-
         available_choices = ['up', 'down', 'left', 'right', 'save', 'exit']
-        while not player_choice in available_choices:
-            player_choice = input("I'm sorry, I don't understand your choice.\nTry once more:\n")
+        while True:
+
+            player_choice = input('Where do you want to move:\n')
             player_choice.casefold()
+            try:
+                if player_choice not in available_choices:
+                    raise PlayerInputError(player_choice)
+                else:
+                    break
+
+            except PlayerInputError:
+                print("Something wrong entered! Try again...")
 
         return player_choice
 
