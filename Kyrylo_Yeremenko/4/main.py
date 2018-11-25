@@ -4,12 +4,14 @@ This module is starting point for task 4.1 from Coding Campus 2018 Python course
 """
 
 import logging
+import threading
 from dungeon_map import DungeonMap
 from player import Player
 import utils
 import log
 from decorators import log_decorator, debug_log_decorator
 from exceptions import InputError, MapInitError
+from enemy import ThreadEnemyWrapper
 import config
 
 SAVE_PATH = "save.dat"
@@ -17,6 +19,7 @@ logger = logging.getLogger(log.LOGGER_NAME)
 
 active_map = None
 active_player = None
+thread_enemy = None
 
 
 def validator_map_size(string):
@@ -108,9 +111,19 @@ def play_game():
 
     while True:
 
+        active_map.print_map()
+
+        player_hitpoints = active_player.get_hitpoints()
         is_trap_nearby, is_treasure_nearby = active_map.check_nearby_tiles(active_player.position)
 
         print("\n\n")
+
+        if active_player.is_dead():
+
+            logger.info("Player is killed")
+            print("You grow weak and fall to the cold floor, dropping your bag beside you. You feel you can't go anymore further.")
+            print("Dungeon consumes you!")
+            break
 
         if is_trap_nearby:
             print("Your senses detect a trap in nearby tile. Watch your step!")
@@ -119,7 +132,7 @@ def play_game():
 
         logger.info(f"Player position {active_player.position}")
         print(f"Your position is ({active_player.position[1]}, {active_player.position[0]})")
-        print(f"Your health is {active_player.hitpoints} HP")
+        print(f"Your health is {player_hitpoints} HP")
         print(f"Your bag has space for {config.PLAYER_BAG_SIZE - active_player.bag } more chests.\n")
 
         command = utils.get_input(validator_command, "Input command [Save] or [Move]: ")
@@ -146,9 +159,9 @@ def play_game():
 
         if is_trap:
 
-            logger.info(f"Player is damaged by 1 hitpoint. Hitpoints left: {active_player.hitpoints - 1}")
+            logger.info(f"Player is damaged by 1 hitpoint. Hitpoints left: {player_hitpoints - 1}")
             print("You spring the trap and it firmly clenches around your leg.")
-            active_player.hitpoints -= 1
+            active_player.decrease_hitpoints()
 
             if active_player.is_dead():
 
@@ -182,7 +195,6 @@ def play_game():
 
     active_player.mark_last_pos(active_map)
     logger.info("Game over")
-
 
 @log_decorator
 @debug_log_decorator
@@ -219,6 +231,7 @@ def start_game():
 
     global active_map
     global active_player
+    global thread_enemy
 
     active_map = DungeonMap(0, False)
     active_player = Player(active_map)
@@ -237,6 +250,9 @@ def start_game():
         logger.info("Starting new game.")
         init_game()
 
+    thread_enemy = ThreadEnemyWrapper(active_map, active_player)
+    thread_enemy.start()
+
 
 if __name__ == "__main__":
 
@@ -250,6 +266,8 @@ if __name__ == "__main__":
 
         print("\nGAME OVER\n")
         active_map.print_map()
+
+        thread_enemy.join()
 
         response = utils.get_input(validator_response, "Try again? [Y\\N]: ")
 

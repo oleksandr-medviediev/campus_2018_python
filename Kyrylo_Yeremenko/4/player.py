@@ -5,6 +5,8 @@ This module handles player movement and state for task 4.1 from Coding Campus 20
 
 import random
 import logging
+import threading
+from copy import copy
 from dungeon_map import DungeonMap
 import utils
 import log
@@ -21,6 +23,8 @@ class Player:
         self.position = self.init_position(active_map)
         self.bag = 0
         self.hitpoints = config.PLAYER_HEALTH
+        self.lock_position = threading.Lock()
+        self.lock_health = threading.Lock()
 
     @log_decorator
     @debug_log_decorator
@@ -55,7 +59,10 @@ class Player:
             if active_map.game_map[position[0]][position[1]] == DungeonMap.SYMBOL_TILE:
                 active_map.game_map[position[0]][position[1]] = DungeonMap.SYMBOL_PLAYER
 
+            self.lock_position.acquire()
             self.position = position
+            self.lock_position.release()
+
             is_position_changed = True
             logger.debug("Player moved successfully")
 
@@ -111,7 +118,7 @@ class Player:
         Checks if player is dead
         :return: Bool, if player is dead
         """
-        return self.hitpoints <= 0
+        return self.get_hitpoints() <= 0
 
     def is_bag_full(self):
         """
@@ -119,3 +126,16 @@ class Player:
         :return: Bool, if treasure bag is full
         """
         return self.bag >= config.PLAYER_BAG_SIZE
+
+    def get_hitpoints(self):
+        return copy(self.hitpoints)
+
+    def decrease_hitpoints(self, damage=1):
+        """
+        Decrease player hitpoints thread-safely
+        :param damage: Amount of damage, defaults to 1
+        :return: None
+        """
+        self.lock_health.acquire()
+        self.hitpoints -= damage
+        self.lock_health.release()
