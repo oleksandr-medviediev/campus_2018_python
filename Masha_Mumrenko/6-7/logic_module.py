@@ -31,13 +31,12 @@ class Game:
         :return: new position
         :rtype: (int,int)
         """        
-        previous_position = self.player.position
-        self.game_map.mark_path(previous_position)
+        self.game_map.mark_path(self.player.position)
         
         self.player.move(self.moving_commands[command])
 
         if not self.player.check_new_position([self.game_map.map_size_x,self.game_map.map_size_y]):
-            self.player.position = previous_position
+            self.player.move_opposite(self.moving_commands[command])
             logger.logging_object.warning(self.warnings[0])            
 
 

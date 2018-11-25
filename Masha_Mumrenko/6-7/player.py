@@ -40,9 +40,19 @@ class Player(Character):
         :paramtype: tuple(int,int)
         """
         self.position[0] = self.position[0] + direction[0]
-        self.position[1] = self.position[1] + direction[1]
+        self.position[1] = self.position[1] + direction[1]          
         
+
+    def move_opposite(self, direction):
+        """
+        Changes the position of player opposite to given direction
+        :param: value how to change the position
+        :paramtype: tuple(int,int)
+        """
+        self.position[0] = self.position[0] - direction[0]
+        self.position[1] = self.position[1] - direction[1]
         
+            
     @logger_decorator.time_logger_decorator
     @logger_decorator.debug_logger_decorator
     def check_new_position(self, borders):
