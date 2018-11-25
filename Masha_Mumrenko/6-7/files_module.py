@@ -47,19 +47,3 @@ def load_game():
 
     return generated_map, map_size, player_position, bag, hp, name, enemy_position
 
-
-def check_loading():
-    """
-    Checks that saved game exists in file with SAVE_FILE_NAME name
-    :return: if file to load exists
-    :rtype: bool
-    """
-    can_be_loaded = False
-    if os.path.isfile(SAVE_FILE_NAME):
-        can_be_loaded = True
-
-    if not can_be_loaded:
-        logger.logging_object.error("No saved file ")
-
-    return can_be_loaded
-

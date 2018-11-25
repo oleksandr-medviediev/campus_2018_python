@@ -1,5 +1,7 @@
 from character import Character
 import logger_decorator
+import logging
+from dungeon_game_error import PlayerDeadError
 
 class Player(Character):
 
@@ -50,7 +52,16 @@ class Player(Character):
         """
         Reduces the hp in one point
         """
-        self.hp -=1
+        try:
+
+            if self.hp <= 0 :
+                raise PlayerDeadError()
+            
+        except PlayerDeadError as error:
+            logger.logging_object.error(error)
+            
+        else:   
+            self.hp -=1
 
 
     @logger_decorator.time_logger_decorator

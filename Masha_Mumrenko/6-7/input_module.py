@@ -1,6 +1,8 @@
 import logger_decorator
 import logging
 import logger
+from dungeon_game_error import MapSizeValueError
+from dungeon_game_error import CommandError
 
 def read_game_config():
     """
@@ -15,14 +17,20 @@ def read_game_config():
         map_size_x = input(f'The width of the map: ')
         map_size_y = input(f'The lenght of the map: ')
 
-    map_size_x = int(map_size_x)
-    map_size_y = int(map_size_y)
-
-    while (map_size_x < 8 or map_size_y < 8) or (map_size_x > 20 or map_size_y > 20):
-        map_size_x = input(f'Input right width of the map: ')
-        map_size_y = input(f'Input right lenght of the map: ')
+    try:
+        
         map_size_x = int(map_size_x)
         map_size_y = int(map_size_y)
+
+        if (map_size_x < 8 or map_size_y < 8) or (map_size_x > 20 or map_size_y > 20):
+            raise MapSizeValueError((map_size_x,map_size_y))
+
+
+    except (TypeError, MapSizeValueError) as error:
+         logger.logging_object.error(error)
+         logger.logging_object.info('Map size must be integer in range [8;20]. Map size is set to default value 9x9\n ')
+         map_size_x = 9
+         map_size_y = 9
 
     return map_size_x,map_size_y
 
@@ -41,9 +49,17 @@ def read_input(moving_commands,managing_commands):
     command_names.extend(managing_commands)
     command = input(f'Choose your next command.\n{command_names}: ').lower()
 
-    while command not in command_names:
-        command = input(f'Such command doesn''t exist.\nYour command: ').lower()
 
+    try:
+        
+        if command not in command_names:
+            raise CommandError()
+
+    except CommandError as error:
+        
+        logger.logging_object.error(error)
+        return read_input(moving_commands,managing_commands)
+            
     return command
 
 
@@ -53,7 +69,7 @@ def main_menu_option():
     :return: command
     :rtype: str
     """
-    debug_mode_on = input(f'To enable debug mode type y/Y').lower()
+    debug_mode_on = input(f'To enable debug mode type y/Y\n').lower()
 
     if debug_mode_on == 'y':
         

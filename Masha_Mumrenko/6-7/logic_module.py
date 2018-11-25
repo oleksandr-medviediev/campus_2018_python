@@ -177,8 +177,6 @@ class Game:
             
             is_end = self.is_game_ended()
 
-            #self.game_map.print_map()
-
         self.game_map.generated_map[self.player.position[0]][self.player.position[1]] = self.game_map.game_entities['player']
 
 
@@ -193,16 +191,19 @@ if __name__ == '__main__':
         map_size_x,map_size_y = read_game_config()
         game = Game(map_size_x, map_size_y, player_name)
         
-    elif files_module.check_loading():
-
-        game = Game(5, 5, player_name)
-        game.reinit(files_module.load_game())
-
     else:
         
-        logger.logging_object.info("Can't load game\n")
-        map_size_x,map_size_y = read_game_config()
-        game = Game(map_size_x, map_size_y, "DefaultName")
+        try:
+            
+            game = Game(5, 5, player_name)
+            game.reinit(files_module.load_game())
+
+        except FileNotFoundError as occured_error:
+            
+            logger.logging_object.error(occured_error)
+            logger.logging_object.info("Can't load game. New game will be started\n")
+            map_size_x,map_size_y = read_game_config()
+            game = Game(map_size_x, map_size_y, "DefaultName")
 
     game_main_thread = threading.Thread(target=game.run_game_loop)
     enemy_thread = threading.Thread(target=game.update_enemy)
