@@ -2,7 +2,8 @@ import level
 import game
 import dungeon_game_logger
 import os
-import error as dungeon_game_error
+import dungeon_game_error
+import pickle
 
 
 def choose_option():
@@ -30,25 +31,43 @@ def choose_option():
     return option
 
 
-save_exists = os.path.isfile('save.pickable')
-option = choose_option() if save_exists else 1
-
-if option == 1:
+def create_new_game():
+    """
+    creates new dungeon game
+    :return: generated level of selected size
+    :rtype: Level
+    """
 
     while True:
 
-        size_str = input('Enter level size (N x N): ')
-        if size_str.isnumeric() and int(size_str) >= 5:
+        level_size = input('Enter level size (N x N): ')
 
-            size = int(size_str)
+        try:
+            level_size = int(level_size)
+
+            if level_size < 5:
+                raise dungeon_game_error.WrongInputDungeonGameError(f'{option}', '>= 5 integer')
+
             break
 
-        dungeon_game_logger.logger.warning('Wrong input! It should be integer >= 5 number')
+        except (ValueError, dungeon_game_error.WrongInputDungeonGameError) as error:
+            dungeon_game_logger.logger.warning(f'{error}')
+            continue
 
-    game_level = level.Level.generate(size)
+    return level.Level.generate(level_size)
 
+option = choose_option()
+
+if option == 1:
+    game_level = create_new_game()
 elif option == 2:
-    game_level = level.Level.load()
+
+    try:
+        game_level = level.Level.load()
+
+    except (FileNotFoundError, pickle.UnpicklingError) as error:
+        dungeon_game_logger.logger.warning(f'{error}')
+        game_level = create_new_game()
 
 game_process = game.Game(game_level)
 game_process.loop()

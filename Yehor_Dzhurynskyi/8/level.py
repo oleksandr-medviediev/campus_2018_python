@@ -6,6 +6,7 @@ from player import Player
 from dungeon_game_logger import debug_decorator
 from dungeon_game_logger import log_decorator
 import dungeon_game_logger
+import dungeon_game_error
 
 class Level:
 
@@ -18,11 +19,11 @@ class Level:
         desired_x = self.player.x + dx
         desired_y = self.player.y + dy
 
-        destination_cell = self.cell_at(desired_x, desired_y)
+        try:
+            destination_cell = self.cell_at(desired_x, desired_y)
+        except dungeon_game_error.CellOutOfBoundsDungeonGameError as error:
 
-        if destination_cell == '#':
-
-            dungeon_game_logger.logger.info('Can\'t move in this way\n')
+            dungeon_game_logger.logger.info('f{error}')
             return
 
         self.player.x += dx
@@ -50,7 +51,10 @@ class Level:
         """
 
         out_of_bounds = x < 0 or y < 0 or x >= self.size or y >= self.size
-        cell = '#' if out_of_bounds else self.__level_data[x + y * self.size]
+        if out_of_bounds:
+            raise dungeon_game_error.CellOutOfBoundsDungeonGameError(self.size, x, y)
+
+        cell = self.__level_data[x + y * self.size]
 
         return cell
 
