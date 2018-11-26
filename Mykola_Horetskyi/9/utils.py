@@ -37,6 +37,15 @@ class Position:
 
         return result
 
+    @debug_decorator
+    def __eq__(self, pos):
+        """
+        Checks if positions are equal
+        """
+        result = self.x  == pos.x and self.y == pos.y
+
+        return result
+
 
 @debug_decorator
 def print_dictionary(dict):

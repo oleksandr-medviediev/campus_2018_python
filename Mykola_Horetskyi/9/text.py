@@ -143,7 +143,8 @@ curse_defeat = {
 "other":["You slowly succumb to the curse..."]
 }
 
-inquisition_encounter = ["You certainly didn't expect the Spanish Inqusition."]
+inquisition_encounter = ["You certainly didn't expect the Spanish Inqusition.",
+"Suddenly three man wearing red robes barge into the room."]
 
 inquisition_fight = {
 "other":[("You are charged that you did on diverse dates commit heresy"
@@ -165,6 +166,36 @@ inquisition_survival = {
 
 inqusition_defeat = {
 "other":["Nobody escapes the Inquisition."]
+}
+
+gazebo_encounter = ["You see gazebo."]
+
+gazebo_fight = {
+"melee":["You attack gazebo with your sword."],
+
+"magic":["You cast a fireball at gazebo"],
+
+"guile":["You make a pothot at gazebo with your trusty crossbow."],
+
+"other":["It's pretty nice gazebo. You wonder what is it doing in dungeon."]
+}
+
+gazebo_survival = {
+"melee":["Axe would be much more handy, the sword can't do much against gazebo"
+" except making it angry. Wounded, you hastly retreat."],
+
+"magic":["Fire does wonders against gazebo. However you're hurt by burning debris"],
+
+"guile":["Your weapon is useless agains gazebo, you flee, managing to save"
+" your life, not unscatched, however."],
+
+"other":["You take a brake and sit in gazebo for some time."]
+}
+
+gazebo_defeat = {
+"magic":["The gazebo is burning well, but it makes it even more angry. "
+"It catches and eats you"],
+"other":[" You've awakened the Gazebo; it catches you and eats you."]
 }
 
 enter_name_prompt = "Your name is.."

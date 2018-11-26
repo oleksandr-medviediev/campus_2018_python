@@ -4,7 +4,7 @@ from random import choice
 import text
 
 
-trap_types = ("arcane", "device", "monster", "unusual")
+trap_types = ("arcane", "device", "monster", "unusual","ultimate")
 
 
 class Trap(DungeonCell):
@@ -16,7 +16,7 @@ class Trap(DungeonCell):
         Trap class constructor
         """
         super().__init__(legend, description)
-        self.trap_type = trap_type
+        self.enemy_type = trap_type
         self.fight_description = fight_description
         self.survive_description = survive_description
         self.defeat_description = defeat_description
@@ -31,15 +31,15 @@ text.hidden_blade_fight, text.hidden_blade_survival, text.hidden_blade_defeat)
 trap_curse = Trap("magic", "c", text.curse_encounter,\
 text.curse_fight, text.curse_survival, text.curse_defeat)
 
+trap_gazebo = Trap("unusual", "g", text.gazebo_encounter,\
+text.gazebo_fight, text.gazebo_survival, text.gazebo_defeat)
+
 trap_inquisition = Trap("unusual", "i", text.inquisition_encounter,\
 text.inquisition_fight, text.inquisition_survival, text.inqusition_defeat)
 
 
 trap_legends = (trap_goblins.legend, trap_hidden_blade.legend,\
-trap_curse.legend, trap_inquisition.legend)
-
-trap_legends_for_random_generation = (trap_goblins.legend, trap_hidden_blade.legend,\
-trap_curse.legend)
+trap_curse.legend, trap_gazebo.legend)
 
 
 class Trap(DungeonCell):
@@ -48,7 +48,7 @@ class Trap(DungeonCell):
     @debug_decorator
     def generate_traps(trap_number):
         """
-        Generates trap_number almost random trap legends
+        Generates trap_number random trap legends
 
         param: trap_number (int) number of traps to be generated
 
@@ -56,15 +56,8 @@ class Trap(DungeonCell):
         """
         traps = []
 
-        if trap_number <= 0:
-            logger.debug("Generate traps called with trap number = 0")
-            return traps
-
-        traps.append(trap_inquisition.legend)
-        trap_number -= 1
-
         while trap_number > 0:
-            traps.append(choice(trap_legends_for_random_generation))
+            traps.append(choice(trap_legends))
             trap_number -= 1
 
         return traps

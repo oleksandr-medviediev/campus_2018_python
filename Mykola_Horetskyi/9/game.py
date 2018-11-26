@@ -11,8 +11,11 @@ from dungeon_cell import treasure_cell, empty_cell, entrance_cell
 from player import Player
 from dungeon_map import DungeonMap
 from custom_errors import NotValidSaveFileError
+from enemy import Enemy, enemies_list
 import hashlib
+import threading
 import text
+import time
 
 class DungeonGame:
 
@@ -27,6 +30,8 @@ class DungeonGame:
 
     trap_rarity = 0.2
     treasure_rarity = 0.05
+
+    enemy_turn_time = 3.0
 
 
     actions = {"go north":'w',
@@ -61,14 +66,30 @@ class DungeonGame:
     "a":Position(-1, 0)
     }
 
+    position_directions = [Position(0, 1), Position(1,0), Position(0, -1), Position(-1, 0)]
+
     dmap = DungeonMap()
     player = Player()
+    enemy = choice(enemies_list)
 
 
     @debug_decorator
     def __init__(self):
         pass
 
+
+    @debug_decorator
+    def is_game_ended(self):
+        """
+        Checks if one of conditions for ending game is met:
+        currently they are:
+        1) Player collects treasure_to_win number of treasures.
+        2) Player's health reaches zero.
+        """
+        is_game_over = (DungeonGame.player.bag >= DungeonGame.treasure_to_win
+        or DungeonGame.player.health <= 0)
+
+        return is_game_over
 
     @debug_decorator
     def init_new_game(self):
@@ -112,6 +133,8 @@ class DungeonGame:
         DungeonGame.player.position = starting_position
         DungeonGame.player.discovered_map.initialize_discovered_map(height, width,\
          starting_position)
+
+        self.respawn_enemy()
 
 
 
@@ -206,30 +229,10 @@ class DungeonGame:
             DungeonGame.player.bag += 1
 
         elif current_cell.legend in trap_legends:
-            if DungeonGame.player.proficiency in current_cell.fight_description.keys():
-                logger.info(choice(current_cell.fight_description[DungeonGame.player.proficiency]))
-            else:
-                logger.info(choice(current_cell.fight_description["other"]))
-            input()
 
-            is_damaged = DungeonGame.player.proficiency_immunity[DungeonGame.player.proficiency] != current_cell.trap_type
+            self.process_hostile_encounter(current_cell)
 
-            if is_damaged:
-                DungeonGame.player.take_damage()
-
-            if DungeonGame.player.is_alive():
-                if DungeonGame.player.proficiency in current_cell.survive_description.keys():
-                    logger.info(choice(current_cell.survive_description[DungeonGame.player.proficiency]))
-                else:
-                    logger.info(choice(current_cell.survive_description["other"]))
-                input()
-
-            else:
-                if DungeonGame.player.proficiency in current_cell.defeat_description.keys():
-                    logger.info(choice(current_cell.defeat_description[DungeonGame.player.proficiency]))
-                else:
-                    logger.info(choice(current_cell.defeat_description["other"]))
-                input()
+            if not self.player.is_alive():
                 return
 
         if DungeonGame.dmap.cell(DungeonGame.player.position) != entrance_cell.legend:
@@ -277,7 +280,7 @@ class DungeonGame:
         Saves current game.
         """
         hash = hashlib.md5(str(DungeonGame.player.name).encode());
-        current_data = (hash, DungeonGame.player, DungeonGame.dmap)
+        current_data = (str(hash), DungeonGame.player, DungeonGame.enemy, DungeonGame.dmap)
         save_file_name = "".join([DungeonGame.player.name, ".pickle"])
 
         logger.debug("saving to {}".format(save_file_name))
@@ -305,10 +308,105 @@ class DungeonGame:
 
         hash = hashlib.md5(str(DungeonGame.player.name).encode());
 
-        if hash == game_data[0]:
-            _, DungeonGame.player, DungeonGame.dmap = game_data
+        if str(hash) == game_data[0]:
+            _, DungeonGame.player, DungeonGame.enemy, DungeonGame.dmap = game_data
         else:
             raise NotValidSaveFileError("Save file hash not verified.", save_file_name)
+
+
+    @debug_decorator
+    def respawn_enemy(self):
+        """
+        Respawns enemy at random not occupied by Player cell.
+        """
+
+        DungeonMap.enemy = choice(enemies_list)
+
+        enemy_position = Position.generate_random_position(DungeonGame.dmap.width,\
+        DungeonGame.dmap.height)
+
+        while enemy_position == DungeonGame.player.position:
+            enemy_position = Position.generate_random_position(DungeonGame.dmap.width,\
+            DungeonGame.dmap.height)
+
+        DungeonMap.enemy.position = enemy_position
+
+        logger.debug("enemy spawned at {},{}".format(DungeonGame.enemy.position.x,\
+        DungeonGame.enemy.position.y))
+
+
+
+    @debug_decorator
+    def process_enemy_turn(self):
+        """
+        Moves enemy to random ajucent cell
+        """
+        new_position = DungeonGame.enemy.position + choice(DungeonGame.position_directions)
+
+        while not self.dmap.is_position_in_map(new_position):
+            new_position = DungeonGame.enemy.position + choice(DungeonGame.position_directions)
+
+        DungeonGame.enemy.position = new_position
+
+        logger.debug("enemy moves to {},{}".format(DungeonGame.enemy.position.x,\
+        DungeonGame.enemy.position.y))
+
+
+    @debug_decorator
+    def process_enemy(self):
+        """
+        Process enemy turns, which are made in enemy_turn_time intervals.
+        """
+        time_of_last_turn = time.time()
+
+        while not self.is_game_ended():
+
+            if DungeonGame.enemy.position == DungeonGame.player.position:
+                logger.debug("enemy finds player")
+                self.process_hostile_encounter(DungeonGame.enemy)
+                self.respawn_enemy()
+
+            current_time = time.time()
+
+            if current_time - time_of_last_turn > DungeonGame.enemy_turn_time:
+
+                self.process_enemy_turn()
+                time_of_last_turn = current_time
+
+
+
+
+    @debug_decorator
+    def process_hostile_encounter(self, hostile_entity):
+        """
+        Resolves Player's encounter with Trap or Enemy.
+        """
+
+        if DungeonGame.player.proficiency in hostile_entity.fight_description.keys():
+            logger.info(choice(hostile_entity.fight_description[DungeonGame.player.proficiency]))
+        else:
+            logger.info(choice(hostile_entity.fight_description["other"]))
+        input()
+
+        is_damaged = DungeonGame.player.proficiency_immunity[DungeonGame.player.proficiency]\
+         != hostile_entity.enemy_type
+
+        if is_damaged:
+            DungeonGame.player.take_damage()
+
+        if DungeonGame.player.is_alive():
+            if DungeonGame.player.proficiency in hostile_entity.survive_description.keys():
+                logger.info(choice(hostile_entity.survive_description[DungeonGame.player.proficiency]))
+            else:
+                logger.info(choice(hostile_entity.survive_description["other"]))
+            input()
+
+        else:
+            if DungeonGame.player.proficiency in hostile_entity.defeat_description.keys():
+                logger.info(choice(hostile_entity.defeat_description[DungeonGame.player.proficiency]))
+            else:
+                logger.info(choice(hostile_entity.defeat_description["other"]))
+            input()
 
 
     @debug_decorator
@@ -342,9 +440,11 @@ class DungeonGame:
             else:
                 self.init_new_game()
 
+            threading.Thread(target=self.process_enemy).start()
+
             self.process_room()
 
-            while DungeonGame.player.is_alive() and DungeonGame.player.bag < DungeonGame.treasure_to_win:
+            while not self.is_game_ended():
                 self.process_player_commands()
 
 
