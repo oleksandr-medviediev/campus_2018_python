@@ -48,7 +48,10 @@ class DungeonMap:
 
         dungeon_logger.logger.debug(f"Move with command: {command}")
     
-        self.dun_map[position[0]][position[1]] = '0'
+        try:
+            self.dun_map[position[0]][position[1]] = '0'
+        except TypeError as error:
+            dungeon_logger.logger.info(f'TypeError occured: {error}')
         move_ret_val = dungeon_logic.make_move_if_possible(position, size, command)
         
         if move_ret_val == False:
