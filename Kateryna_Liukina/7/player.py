@@ -1,9 +1,12 @@
 from Game_logger import logger
 from Game_logger import log_decorator
 from Game_logger import debug_decorator
+from custom_exeption import InvalidDirectionError
 
 
 class Player:
+
+    direction_map = {'up': [1, 0], 'down': [-1, 0], 'left': [0, -1], 'right': [0, 1]}
 
     @log_decorator
     @debug_decorator
@@ -22,15 +25,19 @@ class Player:
 
     @log_decorator
     @debug_decorator
-    def move(self, game_map, direction):
+    def move(self, game_map, game_input):
         """
         Function moves player on game_map in given direction
         Args:
             game_map(GameMap): game map
-            direction(list(int)): direction to move
+            game_input(str): direction to move
         Returns:
             none
         """
+        if game_input not in self.direction_map.keys():
+            raise InvalidDirectionError
+        
+        direction = direction_map[game_input]
         self.position[0] += direction[0]
         self.position[1] += direction[1]
 
