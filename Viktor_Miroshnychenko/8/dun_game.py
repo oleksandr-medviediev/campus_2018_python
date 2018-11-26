@@ -3,6 +3,7 @@ import dungeon_decorators
 import dun_player
 import dun_map
 import dungeon_serializer
+import dungeon_exception
 
 
 class Game:
@@ -55,7 +56,11 @@ class Game:
 
             if self.player.command in dun_map.COMMANDS:
 
-                self.dun_map.process_move(self.player)
+                try:
+                    self.dun_map.process_move(self.player)
+                except dungeon_exception.CommandError as error:
+                    dungeon_logger.logger.info(f'Invalid Player command: {error}')
+                
                 self.dun_map.print_map()
 
             elif self.player.command in dun_player.MENU_COMMANDS:

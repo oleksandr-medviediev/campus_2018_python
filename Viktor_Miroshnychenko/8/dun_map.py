@@ -4,6 +4,7 @@ import dungeon_logic
 import dungeon_decorators
 import dungeon_logger
 import dun_player
+import dungeon_exception
 
 
 
@@ -45,6 +46,8 @@ class DungeonMap:
         position = player.position
         size = len(self.dun_map[0])
         command = player.command
+        if command not in COMMANDS:
+            raise dungeon_exception.CommandError
 
         dungeon_logger.logger.debug(f"Move with command: {command}")
     
