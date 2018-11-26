@@ -5,8 +5,8 @@ class TerrainGenerationError(Exception):
 
     def __str__(self):
 
-        string = "Terrain generaion exception raised."
-        string.join(F" Trying to set scale to {self.__scale}.")
+        string = F"Terrain generaion exception raised. \
+            Trying to set scale to {self.__scale}."
 
         return string
 

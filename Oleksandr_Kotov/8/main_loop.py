@@ -33,8 +33,8 @@ while True:
                 if (scale < 1):
                     raise exceptions.TerrainGenerationError(scale)
 
-            except exceptions.TerrainGenerationError:
-                log_info(F"Entered scale is to small: {scale}")
+            except exceptions.TerrainGenerationError as instance:
+                log_info(instance)
                 continue
                 
             except ValueError:
@@ -64,8 +64,8 @@ while True:
         else:
             raise exceptions.MenuCommandError(command)
 
-    except exceptions.MenuCommandError:
-            log_info(F"Unknown command entered in menu: {command}")
+    except exceptions.MenuCommandError as instance:
+            log_info(instance)
 
 try:
     game_session.run()
