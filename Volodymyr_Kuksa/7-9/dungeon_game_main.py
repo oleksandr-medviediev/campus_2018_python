@@ -1,4 +1,5 @@
 import logging.config
+import threading
 from dungeon_game import DungeonGame
 import dungeon_game_decorators
 import dungeon_game_exceptions
@@ -29,15 +30,28 @@ def query_logging_mode():
             dungeon_game_decorators.mode_log = True
 
 
+def dungeon_game_exception_wrapper(func):
+
+    try:
+        func()
+    except dungeon_game_exceptions.DungeonGameError as error:
+        logging.error(error)
+        game.on_game_end()
+
+
 if __name__ == '__main__':
 
     query_logging_mode()
 
     game = DungeonGame()
 
-    try:
-        game.run_game()
-    except dungeon_game_exceptions.DungeonGameError as error:
-        logging.error(error)
-    finally:
-        game.on_game_end()
+    game_thread = threading.Thread(target=dungeon_game_exception_wrapper, args=(game.run_game,), name='Game')
+    enemy_thread = threading.Thread(target=dungeon_game_exception_wrapper, args=(game.execute_enemy,), name='Enemy')
+
+    game_thread.start()
+    enemy_thread.start()
+
+    logging.debug(threading.enumerate())
+
+    enemy_thread.join()
+    game_thread.join()
