@@ -4,7 +4,8 @@ import game_map
 import player
 import math
 import pickle
-from functools import partial
+import enemy
+from threading import Thread
 
 
 
@@ -30,6 +31,8 @@ def dungeon_game():
     game_over = False
     player_win = False
 
+    run_enemy(game_map_, player_)
+    
     while not game_over:
 
         player_.print_info()
@@ -103,7 +106,24 @@ def load():
     player_.position = game_save[1]
     player_.hp = game_save[2]
     player_.treasure = game_save[3]
-    return game_map_, player_
+    return game_map_, player_  
+
+    
+@log_decorator
+@debug_decorator
+def run_enemy(game_map_, player_):
+    """
+    Function create enemy and thread
+    Args:
+        game_map_(GameMap): game map to save
+        player_(Player): player to save
+    Returns:
+        None
+    """
+    enemy_ = enemy.Enemy(game_map_)
+    enemy_thread = Thread(target = enemy_.run_logic, args = (game_map_, player_))
+    enemy_thread.setDaemon(True)
+    enemy_thread.start()
 
 
 dungeon_game()
