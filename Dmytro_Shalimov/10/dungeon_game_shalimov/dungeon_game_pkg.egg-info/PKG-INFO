@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: dungeon-game-pkg
+Version: 1.0
+Summary: A Dungeon Game package
+Home-page: UNKNOWN
+Author: Dmytro Shalimov
+License: UNKNOWN
+Description: # Dungeon Game
+        
+        Dungeon Game by Shalim23
+        Avoid traps and enemies, collect treasures and have fun
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
