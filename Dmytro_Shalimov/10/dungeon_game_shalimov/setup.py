@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="dungeon_game_pkg",
-    version="1.0",
+    version="1.4",
     author="Dmytro Shalimov",
     description="A Dungeon Game package",
     long_description=long_description,
