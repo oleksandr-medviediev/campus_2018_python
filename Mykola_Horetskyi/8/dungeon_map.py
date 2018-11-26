@@ -91,8 +91,7 @@ class DungeonMap:
         returns: value of cell with those coordinates if it's inside map
         False otherwise
         """
-        # Not using DungeonMapCellOutOfBoundsError since returning False is part
-        # of intended functionality
+        
         if not self.is_position_in_map(pos):
             return False
 
@@ -126,14 +125,18 @@ class DungeonMap:
         param: start_pos (Position) player starting position on map
         """
         try:
-            is_input_valid = width * height > treasure_number + len(traps) + 1
+            is_input_valid = width * height > treasure_number + len(traps)
         except TypeError as error:
             raise DungeonMapInitializationError("Incorrect parameter type in "
             "DungeonMap initialize. \n {}".fromat(str(error)))
         else:
             if not is_input_valid:
-                raise DungeonMapInitializationError("Incorrect parameters in "
-                "DungeonMap initialize. Map can't fit all of the cells.")
+                try:
+                    raise DungeonMapInitializationError("Incorrect parameters in "
+                    "DungeonMap initialize. Map can't fit all of the cells.")
+                #made because try daoesn't work without exept
+                except DungeonMapInitializationError:
+                    raise
 
         self.width = width
         self.height = height

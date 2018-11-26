@@ -277,7 +277,7 @@ class DungeonGame:
         Saves current game.
         """
         hash = hashlib.md5(str(DungeonGame.player.name).encode());
-        current_data = (hash, DungeonGame.player, DungeonGame.dmap)
+        current_data = (str(hash), DungeonGame.player, DungeonGame.dmap)
         save_file_name = "".join([DungeonGame.player.name, ".pickle"])
 
         logger.debug("saving to {}".format(save_file_name))
@@ -290,7 +290,10 @@ class DungeonGame:
     def load_game(self):
         """
         Loading game data from file.
+
+        returns True on succsessful load, False on failed
         """
+
 
         save_file_name = "".join([DungeonGame.player.name, ".pickle"])
 
@@ -299,16 +302,27 @@ class DungeonGame:
         with open(save_file_name, 'rb') as save_file:
             try:
                 game_data = load(save_file)
+
             except UnpicklingError as error:
-                raise NotValidSaveFileError("UnpicklingError:{}".\
-                format(str(error)), save_file_name)
+                try:
+                    raise NotValidSaveFileError("UnpicklingError:{}".\
+                    format(str(error)), save_file_name)
+                except NotValidSaveFileError as custom_error:
+                    logger.debug(str(custom_error))
+                    return False
 
         hash = hashlib.md5(str(DungeonGame.player.name).encode());
 
-        if hash == game_data[0]:
+        if str(hash) == game_data[0]:
             _, DungeonGame.player, DungeonGame.dmap = game_data
+            return True
+
         else:
-            raise NotValidSaveFileError("Save file hash not verified.", save_file_name)
+            try:
+                raise NotValidSaveFileError("Save file hash not verified.", save_file_name)
+            except NotValidSaveFileError as custom_error:
+                logger.debug(str(custom_error))
+                return False
 
 
     @debug_decorator
