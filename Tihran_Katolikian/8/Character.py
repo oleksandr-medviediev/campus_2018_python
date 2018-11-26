@@ -5,6 +5,7 @@ from LoggerDecorator import logger_decorator
 import logging
 from DungeonMap import DungeonCell
 import DungeonGameConfig
+from CannotSaveGameError import CannotSaveGameError
 
 
 class PlayerCommand(Enum):
@@ -149,6 +150,11 @@ class Character(UpdateList):
                 logging.info('You found nothing. Keep exploring the map!:)')
 
         else:
-            DungeonGameSaveLoad.save_game(self.__position, self.__dungeon_map.dungeon_map)
-            logging.debug('Game if saved.')
-            logging.info('Game is saved.')
+            try:
+                DungeonGameSaveLoad.save_game(self.__position, self.__dungeon_map.dungeon_map)
+            except CannotSaveGameError as error:
+                logging.error(error)
+                logging.info(f'Sorry, but we can\'t save the game due to some problems. It\'s likely that we have not\
+                a permission to write the data to a file. Try making the game folder writable for this program.')
+            else:
+                logging.info('Game is saved.')

@@ -4,6 +4,7 @@ import logging
 from LoggerDecorator import logger_decorator
 from sys import exit
 from NoSavedDataFileError import NoSavedDataFileError
+from CannotSaveGameError import CannotSaveGameError
 
 
 SAVE_DATA_FILENAME = 'save.data'
@@ -19,9 +20,13 @@ def save_game(player_position, dungeon_map):
     :type dungeon_map: a list of lists of DungeonCells.
     '''
     logging.debug('Method called')
-    with open (SAVE_DATA_FILENAME, 'wb') as save_file:
-        position_and_map = player_position, dungeon_map
-        pickle.dump(position_and_map, save_file)
+    try:
+        with open (SAVE_DATA_FILENAME, 'wb') as save_file:
+            position_and_map = player_position, dungeon_map
+            pickle.dump(position_and_map, save_file)
+    except OSError as error:
+        logging.critical(f'Cannot save game due to an exception: {error}.')
+        raise CannotSaveGameError(SAVE_DATA_FILENAME, error)
 
 @logger_decorator
 def load_game():

@@ -14,4 +14,4 @@ class NonUpdatableClildError(Exception):
 
 
     def __str__(self):
-        return f'"{type(self.__object)}" is not "UpdateList."'
+        return f'"{type(self.__object)}" is not "UpdateList".'
