@@ -40,7 +40,6 @@ class GameMap:
 
         return game_map
 
-
     @staticmethod
     @dungeon_game_decorators.log_decor
     @dungeon_game_decorators.debug_decor
@@ -103,31 +102,6 @@ class GameMap:
 
     @dungeon_game_decorators.log_decor
     @dungeon_game_decorators.debug_decor
-    def is_valid_position(self, position_x, position_y):
-        """
-        Return True if position with coordinates position_x and position_y is valid, False otherwise.
-
-        :param position_x: x coordinate of the position.
-        :type position_x: int.
-
-        :param position_y: y coordinate of the position.
-        :type position_y: int.
-
-        :return: True if position is valid, False otherwise.
-        """
-        if 0 <= position_x < self.__map_size and 0 <= position_y < self.__map_size:
-
-            is_valid = True
-
-        else:
-
-            logging.info('That path is blocked!')
-            is_valid = False
-
-        return is_valid
-
-    @dungeon_game_decorators.log_decor
-    @dungeon_game_decorators.debug_decor
     def get_tile_character(self, position_x, position_y):
         """
         Return game map character on position with coordinates position_x and position_y.
@@ -141,6 +115,9 @@ class GameMap:
         :return: Game map character on position.
         :rtype: single-character str.
         """
+        if position_y < 0 or position_x < 0:
+            raise IndexError
+
         return self.__game_map[position_y][position_x]
 
     @dungeon_game_decorators.log_decor
@@ -215,6 +192,8 @@ class GameMap:
             logging.info('There is nothing nearby.')
 
     @property
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def game_map(self):
         """
         game_map getter.
@@ -225,6 +204,8 @@ class GameMap:
         return self.__game_map
 
     @game_map.setter
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def game_map(self, new_map):
         """
         game_map setter.

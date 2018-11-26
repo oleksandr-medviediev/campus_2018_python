@@ -16,6 +16,8 @@ VALID_RUNTIME_INPUTS = (*PLAYER_MOVES.keys(), SAVE_COMMAND)
 
 class DungeonGame:
 
+    @dungeon_game_decorators.log_decor
+    @dungeon_game_decorators.debug_decor
     def __init__(self):
         """
         DungeonGame constructor.
@@ -27,8 +29,13 @@ class DungeonGame:
             self.game_map = GameMap()
             self.player = Player('')
 
-            self.on_game_load()
-            return
+            try:
+                self.on_game_load()
+            except FileNotFoundError as error:
+                logging.error(error)
+                logging.info('Save file not found, new game started.')
+            else:
+                return
 
         map_size = int(query_player_input('Enter map size: ', POSSIBLE_MAP_SIZES))
         self.game_map = GameMap(map_size=map_size)
@@ -46,7 +53,7 @@ class DungeonGame:
         """
         Game loop.
         """
-        while self.player.is_alive() and not self.player.is_bag_full():
+        while True:
 
             player_input = query_player_input(f'\nEnter move {VALID_RUNTIME_INPUTS}: ', VALID_RUNTIME_INPUTS)
 
@@ -57,15 +64,17 @@ class DungeonGame:
 
             position = self.player.calculate_new_position(player_input)
 
-            if self.game_map.is_valid_position(*position):
-                
+            try:
+                self.game_map.get_tile_character(*position)
+            except IndexError as error:
+                logging.error(error)
+                logging.info('That path is blocked!')
+            else:
                 self.player.set_position(*position)
                 self.apply_tile_effects_to_player()
                 self.game_map.mark_tile_as_visited(*position)
 
             self.print_game_state()
-
-        self.on_game_end()
 
     @dungeon_game_decorators.log_decor
     @dungeon_game_decorators.debug_decor
