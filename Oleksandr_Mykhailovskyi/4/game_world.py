@@ -1,6 +1,9 @@
 import random
+import threading
+import time
 from sys import exit
 from enum import Enum
+
 
 from player import Player
 
@@ -13,6 +16,8 @@ from logging_utility import logging_debug_decorator
 from logging_utility import logging_info_decorator
 
 from game_exceptions import ActionError
+
+from game_enemy import Enemy
 
 
 class GameState(Enum):
@@ -37,6 +42,9 @@ class GameWorld:
                      random.randint(0, mapSquareSize - 1))
 
         self.player = Player(position=startPos, hp=3, bag_counter=0)
+        self.enemy = Enemy(3, 1, Position(1, 1),
+                           Position(0, 0), Position(mapSize.x, mapSize.y))
+
         self.level = Map(size=mapSize, treasures=6, traps=6)
 
         self.actions = {
@@ -55,7 +63,31 @@ class GameWorld:
 
         self.game_status = GameState.INGAME
 
-        self.ready_to_end = False
+        self.__ready_to_end = False
+
+        self.mrlock = threading.RLock()
+
+        def enemy_update(enemy, player):
+            while not self.ready_to_end:
+                time.sleep(3)
+                enemy.update(player)
+
+        self.enemyThread = threading.Thread(target=enemy_update, args=(self.enemy, self.player))
+        self.enemyThread.start()
+      #  threading._start_new_thread(Enemy.update, (self.enemy, self.player)
+
+    @property
+    def ready_to_end(self):
+        self.mrlock.acquire()
+        res = self.__ready_to_end
+        self.mrlock.release()
+        return res
+
+    @ready_to_end.setter
+    def ready_to_end(self, value):
+        self.mrlock.acquire()
+        self.__ready_to_end = value
+        self.mrlock.release()
 
     @logging_debug_decorator
     @logging_info_decorator
@@ -221,7 +253,8 @@ class GameWorld:
             3) Get Actions input.
             4) Change state depending on actions.
         """
-        self.level.show(player_pos=self.player.position)
+        self.level.show(player_pos=Position(self.player.position.x, self.player.position.y),
+                        enemies_pos=[Position(self.enemy.position.x, self.enemy.position.y)])
 
         self.print_hint()
 

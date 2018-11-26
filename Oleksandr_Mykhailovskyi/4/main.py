@@ -10,7 +10,7 @@ from game_world import GameWorld
 
 def main():
     print("Wilkommen im Dungeon Game!\n")
-    print("To save game just enter save during your turn")
+    print("To save/load game just enter save/load during your turn")
 
     while True:
         logger.info("game started")

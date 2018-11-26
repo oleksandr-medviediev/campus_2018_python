@@ -1,3 +1,5 @@
+import threading
+
 from logging_utility import logging_debug_decorator
 from logging_utility import logging_info_decorator
 
@@ -20,13 +22,21 @@ class Player:
         self.__hp = hp if hp > 0 else 0
         self.bag_counter = bag_counter if bag_counter > 0 else 0
 
+        self.mrlock = threading.RLock()
+        self.hp_lock = threading.RLock()
+
     @property
     def hp(self):
-        return self.__hp
+        self.hp_lock.acquire()
+        res = self.__hp
+        self.hp_lock.release()
+        return res
 
     @hp.setter
     def hp(self, hp):
+        self.hp_lock.acquire()
         self.__hp = hp if hp > 0 else 0
+        self.hp_lock.release()
 
     @logging_debug_decorator
     @logging_info_decorator
@@ -35,6 +45,7 @@ class Player:
         Args:
             action (str): action Up/Down/Left/Right.
         """
+        self.mrlock.acquire()
         if action == "Up":
             self.position.y -= 1
         elif action == "Down":
@@ -44,6 +55,7 @@ class Player:
             self.position.x -= 1
         elif action == "Right":
             self.position.x += 1
+        self.mrlock.release()
 
 
     @logging_debug_decorator

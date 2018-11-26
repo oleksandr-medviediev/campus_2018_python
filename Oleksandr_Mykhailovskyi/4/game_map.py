@@ -11,8 +11,6 @@ class Position:
     """
     Wrapper for 2D coordinates.
     """
-    @logging_debug_decorator
-    @logging_info_decorator
     def __init__(self, x, y):
         """
         Initializes public x, y coordinates.
@@ -87,7 +85,8 @@ class Map:
             "trap": "x",
             "fog": "-",
             "unknown": "?",
-            "player": "P"
+            "player": "P",
+            "enemy": "E"
             }
 
         # cell probabilities
@@ -165,7 +164,7 @@ class Map:
 
     @logging_debug_decorator
     @logging_info_decorator
-    def show(self, player_pos):
+    def show(self, player_pos, enemies_pos):
         """
         Prints map.
 
@@ -176,8 +175,13 @@ class Map:
         mlist = []
         for i in range(self.size.x):
             for j in range(self.size.y):
+                pass
                 mlist.append(self.get_cell_repr(player_pos, Position(j, i)))
             mlist.append("\n")
+
+        # show enemies
+        for enemy_pos in enemies_pos:
+            mlist[enemy_pos.y*(self.size.y+1)+enemy_pos.x] = self.reprs["enemy"]
         print(''.join(mlist))
 
     @logging_debug_decorator
