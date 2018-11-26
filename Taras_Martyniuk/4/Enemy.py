@@ -17,6 +17,8 @@ class Enemy:
             :param dmap: DungeonMap
         '''
         self.position = dmap.get_random_empty_tile()
+        self.patrol_repeat_timer = None
+        
 
     
     def start_patroling(self, dmap, player):
@@ -30,16 +32,27 @@ class Enemy:
         self.try_attack_player(player)
 
         tile_val = dmap.at(self.position)
-        # eats our treasure!
         if tile_val == dm.Treasure:
             dlog.debug(f'enemy ate treasure at {self.position}')
-            dmap.set_tile(self.position, dm.Empty)
 
         elif tile_val == dm.Trap:
-            dlog.debug(f'enemy respawned to {self.position}')
+            dlog.debug(f'enemy died from a trap at {self.position}')
             self.position = dmap.get_random_empty_tile()
+            dlog.debug(f'enemy respawned to {self.position}')
 
-        threading.Timer(self.MOVE_INTERVAL, partial(self.start_patroling, dmap, player)).start()
+        # eats our treasure, or destroys the trap by activating it
+        dmap.set_tile(self.position, dm.Empty)
+
+        curried = partial(self.start_patroling, dmap, player)
+        self.patrol_repeat_timer = threading.Timer(self.MOVE_INTERVAL, curried)
+        self.patrol_repeat_timer.start()
+
+    def stop_patroling(self):
+        '''
+            stops chasing player
+        '''
+        if self.patrol_repeat_timer:
+            self.patrol_repeat_timer.cancel()
 
 
     @log_decor
@@ -79,5 +92,5 @@ class Enemy:
         '''
         if self.gotcha_player(player):
             dlog.debug('damaged player')
+            olog.info('the grue\'s got you!')
             player.lose_health()
-            

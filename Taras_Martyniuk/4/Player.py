@@ -1,5 +1,5 @@
 from DungeonMap import DungeonMap
-from logging_decors import log_decor, debug_file_console_logger as dlog
+from logging_decors import log_decor, debug_file_console_logger as dlog, output_logger as olog
 from utils import move_directions, tuple_add
 from exceptions import AlreadyDeadError
 
@@ -46,6 +46,10 @@ class Player:
 
         if dead:
             self.on_death()
+        else:
+            olog.info('Ouch! That hurt!')
+            olog.info(f'You feel like you could endure only {self.health} more such hits')
+
         return dead
 
     

@@ -8,8 +8,8 @@ from threading import Event
 from Enemy import Enemy
 
 
-PLAYER_HP = 2
-TREAUSURES_FOR_WIN = 2
+PLAYER_HP = 1
+TREAUSURES_FOR_WIN = 1
 
 
 @log_decor
@@ -32,20 +32,22 @@ def play_game(size):
 
     print(dmap.map_to_str(player.position, enemy.position))
 
-    while not player_dead.is_set() or player_won.is_set():
+    while not player_dead.is_set() and not player_won.is_set():
         run_turn(player_dead, player_won, player, dmap)
         # uncomment for perfect debug experience
         print(dmap.map_to_str(player.position, enemy.position))
+
+    enemy.stop_patroling()
 
     won = player_won.is_set()
     lost = player_dead.is_set()
     assert won != lost
 
     if won:
-        win(dmap, player.position)
+        win(dmap, player.position, enemy.position)
     else:
         assert lost
-        lose(dmap, player.position)
+        lose(dmap, player.position, enemy.position)
 
 
 @log_decor
@@ -98,9 +100,6 @@ def run_turn(death_event, win_event, player, dmap):
 
     elif tile_type == dm.Trap:
         player.lose_health()
-        
-        olog.info('Ouch! That hurt!')
-        olog.info(f'You feel like you could endure only {player.health} more such hits')
 
     olog.info('\n')
 
@@ -163,7 +162,7 @@ def parse_user_input():
 
 
 @log_decor
-def win(dmap, end_pos):
+def win(dmap, player_end_pos, enemy_end_pos):
     '''
         prints win message
         :param dmap: dungeon map
@@ -174,11 +173,11 @@ def win(dmap, end_pos):
     olog.info(TREASURE_ASCI)
     olog.info('---------------------------------------------------------')
     olog.info("Now look at all the traps you've evaded!")
-    print(dmap.map_to_str(end_pos))
+    print(dmap.map_to_str(player_end_pos, enemy_end_pos))
 
 
 @log_decor
-def lose(dmap, end_pos):
+def lose(dmap, end_pos, enemy_end_pos):
     '''
         prints lose message
         :param dmap: dungeon map
@@ -189,7 +188,7 @@ def lose(dmap, end_pos):
     olog.info(BLOODY_SWORD_ASCI)
     olog.info('---------------------------------------------------------')
     olog.info("Now look at all the treasures you could've had for yourself!")
-    print(dmap.map_to_str(end_pos))
+    print(dmap.map_to_str(end_pos, enemy_end_pos))
 
 
 TREASURE_ASCI = '''
