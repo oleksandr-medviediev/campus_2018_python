@@ -31,14 +31,11 @@ def load(filename="savegame.json"):
     Returns:
         [[str...]...] - game_map, [int, int] - position
     """
-    with open(filename, "rb") as fin:
-        game_map = pickle.load(fin)
-        position = game_map.pop()
-        return game_map, position
-
-
-@logging_debug_decorator
-@logging_info_decorator
-def load_check(mstr, game_map, position):
-    if mstr.casefold() == "save".casefold():
-        save(game_map, position)
+    try:
+        with open(filename, "rb") as fin:
+            game_map = pickle.load(fin)
+            position = game_map.pop()
+            return game_map, position
+    except FileNotFoundError:
+        print("No savegame file was found!")
+        raise
