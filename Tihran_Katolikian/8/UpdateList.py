@@ -1,3 +1,6 @@
+from NonUpdatableChildError import NonUpdatableClildError
+
+
 class UpdateList:
 
     def __init__(self):
@@ -22,7 +25,10 @@ class UpdateList:
         :param child: a child;
         :type child: UpdateList.
         '''
-        self.__children.append(child)
+        if isinstance(child, UpdateList):
+            self.__children.append(child)
+        else:
+            raise NonUpdatableClildError(child)
 
     
     def add_children(self, *children):
@@ -31,4 +37,8 @@ class UpdateList:
         :param *children: a children;
         :type children: a tuple of UpdateLists.
         '''
-        self.__children.extend(children)
+        if all(isinstance(child, UpdateList) for child in children):
+            self.__children.extend(children)
+        else:
+            not_update_lists = [child for child in children if not isinstance(child, UpdateList)]
+            raise NonUpdatableClildError(not_update_lists[0])
