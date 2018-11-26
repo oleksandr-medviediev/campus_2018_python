@@ -1,4 +1,5 @@
 from dungeon_logging import logger, methods_with_logging
+from dungeon_errors import OutOfMapError, NoSavedGamesError, InvalidMapSizeError
 
 import random
 import map_generator
@@ -17,18 +18,31 @@ class World:
         None: '.',
     }
 
+    MAP_SIZE_RANGE = 5, 100
+
     def __init__(self, size=None, map=None):
         self._map = None
         self._size = None
         self._player = None
 
         def _init_new_map(size):
+            if not isinstance(size, int):
+                raise TypeError('size must be an integer')
+
+            if size not in range(*World.MAP_SIZE_RANGE):
+                raise InvalidMapSizeError('Map size has to be in range from {} to {}'.format(*World.MAP_SIZE_RANGE))
+
             self._size = size
             self._map = map_generator.generate(size)
 
         def _init_with_existing_map(map):
-            self._map = map
-            self._size = len(map)
+            if isinstance(map, list) and len(map) != 0:
+                if isinstance(map[0], list):
+                    self._map = map
+                    self._size = len(map)
+                    return
+
+            raise TypeError('map must be a list of lists')
 
         if map is not None:
             _init_with_existing_map(map)
@@ -60,7 +74,7 @@ class World:
         try:
             player, map = saver.load(World.SAVE_DIR)
         except FileNotFoundError:
-            raise RuntimeError('No saved games.')
+            raise NoSavedGamesError
 
         world = World(map=map)
         world._player = player
@@ -119,3 +133,5 @@ class World:
 
         if self.is_inside(new_pos):
             self._player.position = new_pos
+        else:
+            raise OutOfMapError('Can\'t move further. Player has already reached the edge of the world.')
