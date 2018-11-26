@@ -2,6 +2,7 @@ from DungeonGameMapGenerator import DungeonGameMapGenerator, DungeonCell
 from UpdateList import UpdateList
 from LoggerDecorator import logger_decorator
 import logging
+import random
 
 
 class DungeonMap(UpdateList):
@@ -18,8 +19,10 @@ class DungeonMap(UpdateList):
         self.dungeon_map = None
         self.__size = None
         self.__player_position = None
+        self.__enemy_position = None
 
     
+    @logger_decorator
     def generate_new_map(self, map_size):
         '''
         Generates a new map.
@@ -30,6 +33,7 @@ class DungeonMap(UpdateList):
         self.__player_position, self.dungeon_map = self.__generator.generate_map(map_size)
 
 
+    @logger_decorator
     def init_from_load(self, player_position, dungeon_map):
         '''
         Inits map from instance.
@@ -43,6 +47,7 @@ class DungeonMap(UpdateList):
         self.__player_position = player_position
 
 
+    @logger_decorator
     def __init_dicts(self):
         '''
         Function is used to initialize a dicts that is used for input.
@@ -51,14 +56,16 @@ class DungeonMap(UpdateList):
             DungeonCell.EMPTY : ' ',
             DungeonCell.PLAYER : '*',
             DungeonCell.TRAP: ' ',
-            DungeonCell.TREASURE: ' '
+            DungeonCell.TREASURE: ' ',
+            DungeonCell.ENEMY: 'A'
         }
 
         self.__output_everything_map = {
             DungeonCell.EMPTY : ' ',
             DungeonCell.PLAYER : '*',
             DungeonCell.TRAP: '#',
-            DungeonCell.TREASURE: '$'
+            DungeonCell.TREASURE: '$',
+            DungeonCell.ENEMY: 'A'
         }
 
 
@@ -110,6 +117,24 @@ class DungeonMap(UpdateList):
 
 
     @logger_decorator
+    def move_enemy(self, new_position):
+        '''
+        Function is used to move enemy around the map.
+        :param new_position: the new position of enemy;
+        :return: a cell on which enemy will stay after moving;
+        :type new_position: tuple: (int, int);
+        :rtype: DungeonCell
+        '''
+        old_x, old_y = self.__enemy_position
+        self.__enemy_position = new_position
+        new_x, new_y = self.__enemy_position
+        previous_cell = self.dungeon_map[new_x][new_y]
+        self.dungeon_map[old_x][old_y] = DungeonCell.EMPTY
+        self.dungeon_map[new_x][new_y] = DungeonCell.ENEMY
+        return previous_cell
+
+
+    @logger_decorator
     def get_cell_on_position(self, position):
         '''
         Function returns a dundeon cell on position;
@@ -120,6 +145,18 @@ class DungeonMap(UpdateList):
         '''
         x, y = position
         return self.dungeon_map[x][y]
+
+
+    @logger_decorator
+    def add_enemy_on_position(self, position):
+        '''
+        Method is used to add an enemy on position. In current implementation the game can only have 1 enemy.
+        :param position: a position of added enemy;
+        :type position: tuple: (int, int).
+        '''
+        self.__enemy_position = position
+        x, y = self.__enemy_position
+        self.dungeon_map[x][y] = DungeonCell.ENEMY
 
 
     @logger_decorator
@@ -144,7 +181,7 @@ class DungeonMap(UpdateList):
 
     
     @logger_decorator
-    def __get_cells_near(self, position):
+    def get_cells_near(self, position):
         '''
         Function used to get all cells that are near the position on map;
         :param position: a position on map;
@@ -173,6 +210,47 @@ class DungeonMap(UpdateList):
 
         return cells
 
+    
+    @logger_decorator
+    def get_positions_near(self, position):
+        '''
+        Method is used to get positions near given position on the map.
+        :param position: a position;
+        :return: positions near the position;
+        :type position: tuple: (int, int);
+        :rtype: a list of tuples (int, int).
+        '''
+        x, y = position
+        near_positions = []
+        if x != 0:
+            near_positions.append((x - 1, y))
+        
+        if x != self.__size - 1:
+            near_positions.append((x + 1, y))
+
+        if y != 0:
+            near_positions.append((x, y - 1))
+
+        if y != self.__size - 1:
+            near_positions.append((x, y + 1))
+
+        return near_positions
+
+
+    @logger_decorator
+    def get_random_cell_if(self, condition):
+        '''
+        Method is used to get a random cell on map if some conditional function returns True.
+        :param condition: a function that expects a parameter of type DungeonCell and retunts bool;
+        :type condition: any callable type.
+        '''
+        filtered_cells = []
+        for i in range(self.__size):
+            for j in range(self.__size):
+                if condition(self.dungeon_map[i][j]):
+                    filtered_cells.append((i, j))
+        return random.choice(filtered_cells)
+
 
     @logger_decorator
     def update(self):
@@ -180,7 +258,7 @@ class DungeonMap(UpdateList):
 
         self.output(self.__hide_everything_except_player_map)
 
-        cells_near_player = self.__get_cells_near(self.__player_position)
+        cells_near_player = self.get_cells_near(self.__player_position)
 
         traps_nearby = [cell for cell in cells_near_player if cell is DungeonCell.TRAP]
         if traps_nearby:

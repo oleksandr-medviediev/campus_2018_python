@@ -7,6 +7,7 @@ from DungeonMap import DungeonMap
 import DungeonGameConfig
 import DungeonGameSaveLoad
 from NoSavedDataFileError import NoSavedDataFileError
+from Enemy import Enemy
 
 
 NEW_GAME, LOAD_GAME = range(2)
@@ -25,6 +26,7 @@ class DungeonGame:
         '''
         self.__dungeon_map = DungeonMap()
         self.__character = None
+        self.__enemy = None
         self.__game_start_mode = None
         self.__current_game_state = GAME_MENU
 
@@ -91,8 +93,10 @@ class DungeonGame:
                 self.process_game_start()
             else:
                 self.__character = Character('User', DungeonGameConfig.PLAYER_HP, self.__dungeon_map)
+                self.__enemy = Enemy('Enemy', self.__character, self.__dungeon_map)
                 self.__current_game_state = GAMEPLAY
                 self.__update_list.add_children(self.__dungeon_map, self.__character)
+                self.__enemy.start_moving()
 
         elif self.__current_game_state is GAMEPLAY:
             logging.info(f'Current character stats: hp - {self.__character.get_hp()}, num of treasures - \

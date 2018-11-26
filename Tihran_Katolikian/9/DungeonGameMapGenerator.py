@@ -8,6 +8,7 @@ class DungeonCell(Enum):
     PLAYER = 1
     TREASURE = 2
     TRAP = 3
+    ENEMY = 4
 
 
 class DungeonGameMapGenerator:

@@ -4,9 +4,12 @@ from sys import exit
 
 
 config_filename = 'dungeon_game_config.json'
+
 IS_DEBUG_MODE = None
 PLAYER_HP = None
 NUMBER_OF_TREASURES_TO_WIN = None
+ENEMY_DAMAGE = None
+ENEMY_SPEED = None
 
 def load_config():
     '''
@@ -20,9 +23,14 @@ def load_config():
             global IS_DEBUG_MODE
             global PLAYER_HP
             global NUMBER_OF_TREASURES_TO_WIN
+            global ENEMY_DAMAGE
+            global ENEMY_SPEED	
+
             IS_DEBUG_MODE = config_variables['IS_DEBUG_MODE']
             PLAYER_HP = config_variables['PLAYER_HP']
             NUMBER_OF_TREASURES_TO_WIN = config_variables['NUMBER_OF_TREASURES_TO_WIN']
+            ENEMY_DAMAGE = config_variables['ENEMY_DAMAGE']
+            ENEMY_SPEED = config_variables['ENEMY_SPEED']
     except FileNotFoundError as error:
         logging.critical("Config file not found: program cannot be executed properly without config.")
         exit(f'No config file found on address: {config_filename}')

@@ -58,6 +58,15 @@ class Character(UpdateList):
         return self.__hp
 
 
+    def receive_damage(self, damage):
+        '''
+        Makes character to receive a given damage.
+        :param damage: a damage;
+        :type damage: int.
+        '''
+        self.__hp -= damage
+
+
     def is_alive(self):
         '''
         Function is used to know if character is alive.
