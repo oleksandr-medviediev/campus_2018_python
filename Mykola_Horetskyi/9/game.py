@@ -3,7 +3,7 @@ from copy import deepcopy
 from pickle import dump, load, UnpicklingError
 from os.path import isfile
 from game_logger import logger
-from decorator import debug_decorator
+from decorator import debug_decorator, thread_lock_decorator
 from utils import Position, print_dictionary, input_number_from_boundaries,\
 process_yes_no_input
 from trap import trap_legends, Trap
@@ -91,6 +91,7 @@ class DungeonGame:
 
         return is_game_over
 
+
     @debug_decorator
     def init_new_game(self):
         """
@@ -135,8 +136,6 @@ class DungeonGame:
          starting_position)
 
         self.respawn_enemy()
-
-
 
 
     @debug_decorator
@@ -203,7 +202,6 @@ class DungeonGame:
             map_to_print.print_map()
 
 
-
     @debug_decorator
     def process_room(self):
         """
@@ -220,20 +218,27 @@ class DungeonGame:
 
         logger.debug("entered cell {}".format(current_cell))
 
+        if DungeonGame.enemy.position == DungeonGame.player.position:
+
+            logger.debug("enemy finds player")
+            self.process_hostile_encounter(DungeonGame.enemy)
+            self.respawn_enemy()
+
+            if not self.player.is_alive():
+                return
+
         current_cell = DungeonMap.cells_dict[current_cell]
 
-        logger.info(choice(current_cell.description))
-        input()
-
-        if current_cell.legend == treasure_cell.legend:
-            DungeonGame.player.bag += 1
-
-        elif current_cell.legend in trap_legends:
-
+        if current_cell.legend in trap_legends:
             self.process_hostile_encounter(current_cell)
 
             if not self.player.is_alive():
                 return
+        else:
+            logger.info(choice(current_cell.encounter_description))
+
+            if current_cell.legend == treasure_cell.legend:
+                DungeonGame.player.bag += 1
 
         if DungeonGame.dmap.cell(DungeonGame.player.position) != entrance_cell.legend:
             DungeonGame.dmap.assign_cell(DungeonGame.player.position, empty_cell.legend)
@@ -248,13 +253,11 @@ class DungeonGame:
             logger.info(choice(text.adjacent_trap))
             DungeonGame.player.discovered_map.assign_cell(DungeonGame.player.position,\
              DungeonMap.discovery_dict["trap near"])
-            input()
 
         elif not is_trap_nearby and is_treasure_nearby:
             logger.info(choice(text.adjacent_treasure))
             DungeonGame.player.discovered_map.assign_cell(DungeonGame.player.position,\
              DungeonMap.discovery_dict["treasure near"])
-            input()
 
         elif is_trap_nearby and is_treasure_nearby:
             logger.info(choice(text.adjacent_trap))
@@ -262,7 +265,6 @@ class DungeonGame:
             logger.info(choice(text.adjacent_treasure))
             DungeonGame.player.discovered_map.assign_cell(DungeonGame.player.position,\
              DungeonMap.discovery_dict["treasure and trap near"])
-            input()
 
         elif DungeonGame.dmap.cell(DungeonGame.player.position) == entrance_cell.legend:
             DungeonGame.player.discovered_map.assign_cell(DungeonGame.player.position,\
@@ -270,8 +272,6 @@ class DungeonGame:
         else:
             DungeonGame.player.discovered_map.assign_cell(DungeonGame.player.position,\
              DungeonMap.discovery_dict["empty"])
-
-
 
 
     @debug_decorator
@@ -293,7 +293,10 @@ class DungeonGame:
     def load_game(self):
         """
         Loading game data from file.
+
+        returns True on succsessful load, False on failed
         """
+
 
         save_file_name = "".join([DungeonGame.player.name, ".pickle"])
 
@@ -302,16 +305,27 @@ class DungeonGame:
         with open(save_file_name, 'rb') as save_file:
             try:
                 game_data = load(save_file)
+
             except UnpicklingError as error:
-                raise NotValidSaveFileError("UnpicklingError:{}".\
-                format(str(error)), save_file_name)
+                try:
+                    raise NotValidSaveFileError("UnpicklingError:{}".\
+                    format(str(error)), save_file_name)
+                except NotValidSaveFileError as custom_error:
+                    logger.debug(str(custom_error))
+                    return False
 
         hash = hashlib.md5(str(DungeonGame.player.name).encode());
 
         if str(hash) == game_data[0]:
             _, DungeonGame.player, DungeonGame.enemy, DungeonGame.dmap = game_data
+            return True
+
         else:
-            raise NotValidSaveFileError("Save file hash not verified.", save_file_name)
+            try:
+                raise NotValidSaveFileError("Save file hash not verified.", save_file_name)
+            except NotValidSaveFileError as custom_error:
+                logger.debug(str(custom_error))
+                return False
 
 
     @debug_decorator
@@ -335,7 +349,6 @@ class DungeonGame:
         DungeonGame.enemy.position.y))
 
 
-
     @debug_decorator
     def process_enemy_turn(self):
         """
@@ -351,6 +364,11 @@ class DungeonGame:
         logger.debug("enemy moves to {},{}".format(DungeonGame.enemy.position.x,\
         DungeonGame.enemy.position.y))
 
+        if DungeonGame.enemy.position == DungeonGame.player.position:
+            logger.debug("enemy finds player")
+            self.process_hostile_encounter(DungeonGame.enemy)
+            self.respawn_enemy()
+
 
     @debug_decorator
     def process_enemy(self):
@@ -361,32 +379,25 @@ class DungeonGame:
 
         while not self.is_game_ended():
 
-            if DungeonGame.enemy.position == DungeonGame.player.position:
-                logger.debug("enemy finds player")
-                self.process_hostile_encounter(DungeonGame.enemy)
-                self.respawn_enemy()
-
             current_time = time.time()
 
             if current_time - time_of_last_turn > DungeonGame.enemy_turn_time:
-
                 self.process_enemy_turn()
                 time_of_last_turn = current_time
 
 
-
-
     @debug_decorator
+    @thread_lock_decorator
     def process_hostile_encounter(self, hostile_entity):
         """
         Resolves Player's encounter with Trap or Enemy.
         """
+        logger.info(choice(hostile_entity.encounter_description))
 
         if DungeonGame.player.proficiency in hostile_entity.fight_description.keys():
             logger.info(choice(hostile_entity.fight_description[DungeonGame.player.proficiency]))
         else:
             logger.info(choice(hostile_entity.fight_description["other"]))
-        input()
 
         is_damaged = DungeonGame.player.proficiency_immunity[DungeonGame.player.proficiency]\
          != hostile_entity.enemy_type
@@ -399,14 +410,12 @@ class DungeonGame:
                 logger.info(choice(hostile_entity.survive_description[DungeonGame.player.proficiency]))
             else:
                 logger.info(choice(hostile_entity.survive_description["other"]))
-            input()
 
         else:
             if DungeonGame.player.proficiency in hostile_entity.defeat_description.keys():
                 logger.info(choice(hostile_entity.defeat_description[DungeonGame.player.proficiency]))
             else:
                 logger.info(choice(hostile_entity.defeat_description["other"]))
-            input()
 
 
     @debug_decorator

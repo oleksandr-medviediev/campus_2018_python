@@ -10,7 +10,7 @@ class DungeonCell:
         DungeonCell class constructor
         """
         self.legend = legend
-        self.description = description
+        self.encounter_description = description
 
 
 unassigned_cell = DungeonCell("-", text.unassigned_cell_description)

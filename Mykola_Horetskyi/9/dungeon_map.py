@@ -132,8 +132,12 @@ class DungeonMap:
             "DungeonMap initialize. \n {}".fromat(str(error)))
         else:
             if not is_input_valid:
-                raise DungeonMapInitializationError("Incorrect parameters in "
-                "DungeonMap initialize. Map can't fit all of the cells.")
+                try:
+                    raise DungeonMapInitializationError("Incorrect parameters in "
+                    "DungeonMap initialize. Map can't fit all of the cells.")
+                #made because try daoesn't work without exept
+                except DungeonMapInitializationError:
+                    raise
 
         self.width = width
         self.height = height
@@ -192,11 +196,12 @@ class DungeonMap:
 
         printed_map.reverse()
 
-        for row in printed_map:
-            for cell in row:
-                print(str(cell), " ", end = '')
+        map_string = ""
 
-            print('')
+        for row in printed_map:
+            map_string  = "\n".join([map_string, " ".join(row)])
+
+        logger.info(map_string);
 
     @debug_decorator
     def check_for_adjacent_types(self, pos, types):

@@ -1,5 +1,6 @@
 import functools
 import inspect
+import threading
 from game_logger import logger
 import config
 
@@ -25,10 +26,30 @@ def debug_decorator(func):
             result = func(*args, **kwargs)
 
             logger.debug("{} returns {}".format(func.__name__, result))
-            
+
         else:
             result = func(*args, **kwargs)
 
         return result
 
     return debug_wrapper
+
+
+def thread_lock_decorator(func):
+    """
+    Locks execution of a function.
+    """
+    @functools.wraps(func)
+    def thread_lock_wrapper(*args, **kwargs):
+
+        lock = threading.Lock()
+        lock.acquire()
+
+        try:
+            result = func(*args, **kwargs)
+        finally:
+            lock.release()
+
+        return result
+
+    return thread_lock_wrapper
