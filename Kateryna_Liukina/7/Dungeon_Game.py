@@ -1,6 +1,5 @@
-from Game_logger import logger
-from Game_logger import log_decorator
-from Game_logger import debug_decorator
+from Game_logger import logger, log_decorator, debug_decorator 
+from custom_exeption import InvalidDirectionError, InvalidMapSizeError, InvalidSaveDataError
 import game_map
 import player
 import math
@@ -17,12 +16,16 @@ def dungeon_game():
     Returns:
         None
     """
-    size_of_map = int(input("Enter size of map"))
-    game_map_ = game_map.GameMap([size_of_map] * 2, 0.1, 0.05)
-
+    while True:
+        try:
+            size_of_map = int(input("Enter size of map"))
+            game_map_ = game_map.GameMap([size_of_map] * 2, 0.1, 0.05)
+        except (InvalidMapSizeError, ValueError) as error:
+            logger.warning(error)
+        else:
+            break
+    
     player_ = player.Player(game_map_)
-
-    direction_map = {'up': [1, 0], 'down': [-1, 0], 'left': [0, -1], 'right': [0, 1]}
 
     game_over = False
     player_win = False
@@ -33,20 +36,26 @@ def dungeon_game():
 
         player_.generate_warning(game_map_, 1)
         player_.generate_warning(game_map_, 2)
-
-        game_input = input("Enter direction\n")
-        if game_input == "save":
-            save(game_map_, player_)
-            logger.info("Game is saved")
-            continue
-        elif game_input == "load":
-            game_map_, player_ = load()
-            logger.info("Game is loaded")
-            continue
-        else:
-            direction = direction_map[game_input]
-
-        player_.move(game_map_, direction)
+        
+        while True:
+            try:
+                game_input = input("Enter direction\n")
+                if game_input == "save":
+                    save(game_map_, player_)
+                    logger.info("Game is saved")
+                elif game_input == "load":
+                    game_map_, player_ = load()
+                    logger.info("Game is loaded")
+                else:               
+                    player_.move(game_map_, game_input)
+            except (InvalidDirectionError, InvalidSaveDataError) as error:
+                logger.warning(error)
+            except FileNotFoundError:
+                logger.warning("No saved game")
+            except (pickle.UnpicklingError, MemoryError):                
+                logger.warning("Invalid save file")
+            else:
+                break
 
         player_win = player_.is_won()
         game_over = player_win or player_.is_lost()
@@ -57,7 +66,7 @@ def dungeon_game():
         print("You lost.")
     print(game_map_)
 
-	
+    
 @log_decorator
 @debug_decorator
 def save(game_map_, player_):
@@ -72,7 +81,7 @@ def save(game_map_, player_):
     with open('save.pickable', 'wb') as handle:
         pickle.dump([game_map_.map_, player_.position, player_.hp, player_.treasure], handle)
 
-		
+        
 @log_decorator
 @debug_decorator
 def load():
@@ -83,7 +92,10 @@ def load():
     """
     with open('save.pickable', 'rb') as handle:
         game_save = pickle.load(handle)
-
+    
+    if not isinstance(game_save, list) or len(game_save) != 4:
+             InvalidSaveDataError
+    
     list_with_map = game_save[0]
     game_map_ = GameMap([len(list_with_map), len(list_with_map[0])], 0.1, 0.05)
     game_map_.map_ = list_with_map

@@ -2,7 +2,7 @@ from random import choice
 from math import floor
 from Game_logger import log_decorator
 from Game_logger import debug_decorator
-
+from custom_exeption import InvalidMapSizeError
 
 class GameMap:
 
@@ -18,6 +18,9 @@ class GameMap:
         Returns:
             none
         """
+        if map_size[0] < 5 and map_size[1] < 5:
+            raise InvalidMapSizeError("Map size must be greater than 4.")
+        
         self.size = map_size
         self.map_ = [[0] * map_size[1] for _ in range(map_size[0])]
         self.generatemap_(map_size, percent_of_traps, percent_of_treasures)
