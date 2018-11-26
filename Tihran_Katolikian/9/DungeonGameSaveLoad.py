@@ -3,8 +3,8 @@ import pickle
 import logging
 from LoggerDecorator import logger_decorator
 from sys import exit
-from NoSavedDataFileError import NoSavedDataFileError
-from CannotSaveGameError import CannotSaveGameError
+from DungeonGameErrors import NoSavedDataFileError
+from DungeonGameErrors import CannotSaveGameError
 
 
 SAVE_DATA_FILENAME = 'save.data'

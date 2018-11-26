@@ -1,4 +1,4 @@
-from NonUpdatableChildError import NonUpdatableClildError
+from DungeonGameErrors import NonUpdatableClildError
 
 
 class UpdateList:

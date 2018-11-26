@@ -5,7 +5,7 @@ from LoggerDecorator import logger_decorator
 import logging
 from DungeonMap import DungeonCell
 import DungeonGameConfig
-from CannotSaveGameError import CannotSaveGameError
+from DungeonGameErrors import CannotSaveGameError
 
 
 UP, LEFT, DOWN, RIGHT, SAVE = range(5)

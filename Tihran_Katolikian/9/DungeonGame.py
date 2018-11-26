@@ -6,7 +6,7 @@ import logging
 from DungeonMap import DungeonMap
 import DungeonGameConfig
 import DungeonGameSaveLoad
-from NoSavedDataFileError import NoSavedDataFileError
+from DungeonGameErrors import NoSavedDataFileError
 from Enemy import Enemy
 
 
