@@ -41,8 +41,9 @@ class DungeonGame:
 
         try: 
             file = open('savefile.txt', 'rb')
-        except IOError:
-            print("Some troubles with opening savefile.txt! Are you sure, it really exists?")
+        except IOError as error:
+            logging.error(error)
+            logging.info("Some troubles with opening savefile.txt! Are you sure, it really exists?")
 
         loaded = pickle.load(file)
 
@@ -69,8 +70,9 @@ class DungeonGame:
                 else:
                     break
 
-            except PlayerNameError:
-                print("Your name looks strange. Try again...")
+            except PlayerNameError as error:
+                logging.error(error)
+                logging.info("Your name looks strange. Try again...")
 
         self.my_player.set_player_name(player_name)
         self.my_player.spawn_player(self.my_game_step.my_game_map)
@@ -138,12 +140,12 @@ while True:
     try:
         if new_or_load not in ['n', 'l', 'new', 'load']:
             raise PlayerInputError(new_or_load)
-
         else:
             break
 
-    except PlayerInputError:
-        print("Something wrong inputed. Try again...")
+    except PlayerInputError as error:
+        logging.error(error)
+        logging.info("Something wrong inputed. Try again...")
 
 if new_or_load == 'n' or new_or_load == 'new':
     game.new_game()
