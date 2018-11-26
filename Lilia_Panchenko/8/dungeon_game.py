@@ -1,5 +1,7 @@
-from game_step import GameStep
 import pickle
+import logging
+
+from game_step import GameStep
 from player import Player
 
 from logger import debug_decorator
@@ -63,8 +65,9 @@ class DungeonGame:
                 else:
                     break
 
-            except PlayerNameError:
-                print("Your name looks strange. Try again...")
+            except PlayerNameError as error:
+                logging.error(error)
+                logging.info("Your name looks strange. Try again...")
 
         self.my_player.set_player_name(player_name)
         self.my_player.spawn_player(self.my_game_step.my_game_map)
@@ -127,12 +130,12 @@ while True:
     try:
         if new_or_load not in ['n', 'l', 'new', 'load']:
             raise PlayerInputError(new_or_load)
-
         else:
             break
 
-    except PlayerInputError:
-        print("Something wrong inputed. Try again...")
+    except PlayerInputError as error:
+        logging.error(error)
+        logging.info("Something wrong inputed. Try again...")
 
 if new_or_load == 'n' or new_or_load == 'new':
     game.new_game()
