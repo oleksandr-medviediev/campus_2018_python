@@ -47,7 +47,7 @@ class DungeonMap:
         size = len(self.dun_map[0])
         command = player.command
         if command not in COMMANDS:
-            raise dungeon_exception.CommandError
+            raise dungeon_exception.CommandError('Invalid command was entered!')
 
         dungeon_logger.logger.debug(f"Move with command: {command}")
     
