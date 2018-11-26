@@ -1,3 +1,4 @@
+# only 2 of them, but this one is highly(moderately) reusable 
 class OutOfMapError(Exception):
 
     def __init__(self, tile):
@@ -12,8 +13,3 @@ class AlreadyDeadError(Exception):
     def __init__(self):
         super().__init__('attempting to kill a player whose health is <= 0')
 
-
-class SaveNotCreatedError(Exception):
-
-    def __init__(self):
-        super().__init__('save is not yet created')

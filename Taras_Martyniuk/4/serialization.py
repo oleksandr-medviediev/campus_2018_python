@@ -1,9 +1,16 @@
 import pickle
 from logging_decors import log_decor
-from exceptions import SaveNotCreatedError
+from os.path import isfile
 
 
 SAVE_FILE = 'save.pkl'
+
+@log_decor
+def save_exists():
+    '''
+        True if save_file exists on distk
+    '''
+    return isfile(SAVE_FILE)
 
 
 @log_decor
@@ -24,11 +31,8 @@ def load():
         loads game state from file
         :returns: tuple (DungeonMap, Player)
     '''
-    try:
-        with open(SAVE_FILE, 'rb') as sf:
-            state = pickle.load(sf)
-            return state
-    except FileNotFoundError:
-        raise SaveNotCreatedError
+    with open(SAVE_FILE, 'rb') as sf:
+        state = pickle.load(sf)
+        return state
 
 

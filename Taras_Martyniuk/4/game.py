@@ -2,11 +2,10 @@ from DungeonMap import DungeonMap
 from Player import Player
 import DungeonMap as dm
 from logging_decors import log_decor, output_logger as olog, debug_file_console_logger as dlog
-from serialization import save, load
+from serialization import save, load, save_exists
 from utils import player_moves
 from threading import Event
 from Enemy import Enemy
-from exceptions import SaveNotCreatedError
 
 
 PLAYER_HP = 2
@@ -78,14 +77,13 @@ def run_turn(death_event, win_event, player, dmap):
         return
 
     elif input_result == Load:
-        try:
+        if not save_exists():
+            dlog.debug('Tried to load when savefile does not exist')
+            olog.info('You haven\'t saved it yet!')
+        else:
             dmap, player = load()
             dlog.debug('changed state to loaded:')
             olog.info('Loaded your game!\n')
-        # i think i should've just checked for the file's existence
-        except SaveNotCreatedError:
-            dlog.debug('Tried to load when savefile does not exist')
-            olog.info('You haven\'t saved it yet!')
         return
 
     tile_type = dmap.at(player.position)
