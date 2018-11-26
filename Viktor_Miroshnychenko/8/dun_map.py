@@ -86,6 +86,8 @@ class DungeonMap:
             player.change_score(1)
             dungeon_logger.logger.info('You picked the treasure')
 
+        elif cage_state is not 'empty':
+            raise dungeon_exception.MapCageError(self, position, cage_state)
 
     @dungeon_decorators.debug_time_decor
     @dungeon_decorators.debug_decor

@@ -58,7 +58,7 @@ class Game:
 
                 try:
                     self.dun_map.process_move(self.player)
-                except dungeon_exception.CommandError as error:
+                except (dungeon_exception.CommandError, dungeon_exception.MapCageError) as error:
                     dungeon_logger.logger.info(f'Invalid Player command: {error}')
                 
                 self.dun_map.print_map()
@@ -70,8 +70,7 @@ class Game:
                     game = Game()
                     game.player = self.player
                     game.dun_map = self.dun_map
-                    dungeon_serializer.serialize_dungeon_game(game
-                                                              )
+                    dungeon_serializer.serialize_dungeon_game(game)
                 else:
                     
                     game = dungeon_serializer.deserialize_dungeon_game()
