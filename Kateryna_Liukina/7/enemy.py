@@ -7,12 +7,16 @@ class Enemy:
     
     direction = [[1, 0], [-1, 0], [0, -1], [0, 1]]
     moving_interval = 3
-    
+	
+    @log_decorator
+    @debug_decorator
     def __init__(self, game_map_):
         self.position = game_map_.generate_coordinates()
         self._is_alive = True
     
-    
+	
+    @log_decorator
+    @debug_decorator
     def run_logic(self, game_map_, player_):
     
         while True:
