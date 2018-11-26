@@ -1,7 +1,7 @@
 from random import choice
 from logger import debug_decorator
 from logger import info_decorator
-
+import logging
 from custom_exception import MapSizeError
 
 
@@ -30,9 +30,9 @@ class GameMap:
         try:
             cell_amount = self.mapsize * self.mapsize // num
             
-        except ZeroDivisionError:
+        except ZeroDivisionError as error:
+            logging.error(error)
 
-            print("ZeroDivisionError!!!")
             return
 
         cells = [choice(range(self.mapsize * self.mapsize)) for i in range(cell_amount)]    
@@ -73,8 +73,10 @@ class GameMap:
             try:
                 map_size = int(map_size)
 
-            except ValueError:
-                print("You inputed something wrong! Try again...")
+            except ValueError as error:
+                logging.error(error)
+                logging.info("You inputed something wrong! Try again...")
+
                 continue
 
             try:    
@@ -83,7 +85,7 @@ class GameMap:
                 else:
                     break
 
-            except MapSizeError:
-                print("Looks like value, you have entered, is too small. Try to input something greater than 8...")
+            except MapSizeError as error:
+                logging.error(error)
 
         return int(map_size)
