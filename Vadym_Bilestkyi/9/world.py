@@ -1,5 +1,7 @@
+from threading import Thread
 from dungeon_logging import logger, methods_with_logging
 from dungeon_errors import OutOfMapError, NoSavedGamesError, InvalidMapSizeError
+from enemy import Enemy
 
 import random
 import map_generator
@@ -24,6 +26,8 @@ class World:
         self._map = None
         self._size = None
         self._player = None
+        self._enemy = None
+        self._enemy_thread = None
 
         def _init_new_map(size):
             if not isinstance(size, int):
@@ -58,6 +62,9 @@ class World:
     def clear_cell(self, x, y):
         self.place_cell(x, y, None)
 
+    def get_player(self):
+        return self._player
+
     def spawn_player(self, player):
         self._player = player
 
@@ -65,6 +72,26 @@ class World:
 
         while self.get_cell(*self._player.position) is not None:
             self._player.position = [random.choice(range(self._size)), random.choice(range(self._size))]
+
+    def spawn_enemy(self, enemy):
+        self._enemy = enemy
+
+        spawn_pos = [random.choice(range(self._size)), random.choice(range(self._size))]
+
+        while self.get_cell(*spawn_pos) is not None or spawn_pos == self._player.position:
+            spawn_pos = [random.choice(range(self._size)), random.choice(range(self._size))]
+
+        self._enemy.position = spawn_pos
+
+    def run_enemy(self):
+        self._enemy_thread = Thread(target=self._enemy.run_logic, args=(self,))
+        self._enemy_thread.setDaemon(True)
+        self._enemy_thread.start()
+
+    def stop_enemy(self):
+        if self._enemy_thread:
+            self._enemy.kill()
+            self._enemy_thread = None
 
     def save(self):
         saver.save([self._player, self._map], World.SAVE_DIR)
@@ -78,6 +105,8 @@ class World:
 
         world = World(map=map)
         world._player = player
+        world.spawn_enemy(Enemy())
+        world.run_enemy()
 
         return world
 
@@ -90,12 +119,12 @@ class World:
                 print('{} '.format(World.cell_repr[cell]), end='')
             print()
 
-    def get_neighbor_cells(self):
+    def get_neighbor_cells(self, position):
         neighbors = []
         for dx in [-1, 0, 1]:
             for dy in [-1, 0, 1]:
                 if (dx, dy) != (0, 0):
-                    neighbor_pos = self._player.get_neighbor_within(dx, dy)
+                    neighbor_pos = [position[0] + dx, position[1] + dy]
                     if self.is_inside(neighbor_pos):
                         neighbors.append(neighbor_pos)
 
@@ -105,12 +134,12 @@ class World:
         return all(0 <= coord < self._size for coord in pos)
 
     def is_trap_around(self):
-        neighbors = self.get_neighbor_cells()
+        neighbors = self.get_neighbor_cells(self._player.position)
         is_trap_around = any(self.get_cell(*neighbor) == 'Trap' for neighbor in neighbors)
         return is_trap_around
 
     def is_treasure_around(self):
-        neighbors = self.get_neighbor_cells()
+        neighbors = self.get_neighbor_cells(self._player.position)
         is_treasure_around = any(self.get_cell(*neighbor) == 'Treasure' for neighbor in neighbors)
         return is_treasure_around
 
@@ -123,7 +152,7 @@ class World:
     def update(self):
         if self.get_cell(*self._player.position) == 'Trap':
             self.clear_cell(*self._player.position)
-            self._player.hurt()
+            self._player.hurt('trap')
         elif self.get_cell(*self._player.position) == 'Treasure':
             self.clear_cell(*self._player.position)
             self._player.pickup_treasure()

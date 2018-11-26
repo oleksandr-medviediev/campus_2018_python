@@ -20,10 +20,10 @@ class Player:
     def is_dead(self):
         return self._hp == 0
 
-    def hurt(self):
+    def hurt(self, offender):
         if not self.is_dead():
             self._hp -= 1
-            logger.warning('You got hurt by trap. You left with {} hp'.format(self._hp))
+            logger.warning('You got hurt by {}. You left with {} hp'.format(offender, self._hp))
 
     def pickup_treasure(self):
         self._bag += 1

@@ -2,6 +2,7 @@ from dungeon_logging import logger, with_logging
 from dungeon_errors import OutOfMapError, NoSavedGamesError, InvalidMapSizeError
 from world import World
 from player import Player
+from enemy import Enemy
 
 import settings
 
@@ -36,6 +37,8 @@ def game_loop():
                 try:
                     world = World(size=int(user_input))
                     world.spawn_player(Player('urpoK'))
+                    world.spawn_enemy(Enemy())
+                    world.run_enemy()
                     logger.warning('New game started')
                 except (InvalidMapSizeError, ValueError) as error:
                     logger.warning(error)
