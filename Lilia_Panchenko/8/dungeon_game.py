@@ -38,8 +38,9 @@ class DungeonGame:
 
         try: 
             file = open('savefile.txt', 'rb')
-        except IOError:
-            print("Some troubles with opening savefile.txt! Are you sure, it really exists?")
+        except IOError as error:
+            logging.error(error)
+            logging.info("Some troubles with opening savefile.txt! Are you sure, it really exists?")
 
         loaded = pickle.load(file)
 
