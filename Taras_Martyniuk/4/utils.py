@@ -5,7 +5,7 @@ player_moves = {
     'left' : (-1, 0)
 }
 
-move_directions = player_moves.values()
+move_directions = list(player_moves.values())
 
 def tuple_add(left, right):
     '''

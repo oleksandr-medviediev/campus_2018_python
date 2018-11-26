@@ -5,6 +5,9 @@ from logging_decors import log_decor, output_logger as olog, debug_file_console_
 from serialization import save, load
 from utils import player_moves
 from threading import Event
+from Enemy import Enemy
+from exceptions import SaveNotCreatedError
+
 
 PLAYER_HP = 2
 TREAUSURES_FOR_WIN = 2
@@ -25,8 +28,15 @@ def play_game(size):
     olog.info('Note: you can input \'save\' any time to save the game, or \'load\' to load last saved one')
     player.position = start
 
+    enemy = Enemy(dmap)
+    enemy.start_patroling(dmap, player)
+
+    print(dmap.map_to_str(player.position, enemy.position))
+
     while not player_dead.is_set() or player_won.is_set():
         run_turn(player_dead, player_won, player, dmap)
+        # uncomment for perfect debug experience
+        print(dmap.map_to_str(player.position, enemy.position))
 
     won = player_won.is_set()
     lost = player_dead.is_set()
@@ -51,8 +61,7 @@ def run_turn(death_event, win_event, player, dmap):
         :param player: Player
     '''
     assert dmap.in_bounds(player.position)
-    # uncomment for perfect debug experience
-    print(dmap.map_to_str(player.position))
+
     olog.info(f'you stand at the tile {player.position}')
 
     if dmap.is_trap_nearby(player.position):
@@ -73,7 +82,8 @@ def run_turn(death_event, win_event, player, dmap):
             dmap, player = load()
             dlog.debug('changed state to loaded:')
             olog.info('Loaded your game!\n')
-        except FileNotFoundError:
+        # it feels like i should've just checked for the file's existence
+        except SaveNotCreatedError:
             dlog.debug('Tried to load when savefile does not exist')
             olog.info('You haven\'t saved it yet!')
         return

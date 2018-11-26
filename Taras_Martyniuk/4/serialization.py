@@ -1,5 +1,6 @@
 import pickle
 from logging_decors import log_decor
+from exceptions import SaveNotCreatedError
 
 
 SAVE_FILE = 'save.pkl'
@@ -23,7 +24,11 @@ def load():
         loads game state from file
         :returns: tuple (DungeonMap, Player)
     '''
-    with open(SAVE_FILE, 'rb') as sf:
-        state = pickle.load(sf)
-        return state
+    try:
+        with open(SAVE_FILE, 'rb') as sf:
+            state = pickle.load(sf)
+            return state
+    except FileNotFoundError:
+        raise SaveNotCreatedError
+
 

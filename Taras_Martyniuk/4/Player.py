@@ -1,6 +1,7 @@
 from DungeonMap import DungeonMap
 from logging_decors import log_decor, debug_file_console_logger as dlog
 from utils import move_directions, tuple_add
+from exceptions import AlreadyDeadError
 
 class Player:
     @log_decor
@@ -37,9 +38,11 @@ class Player:
             :returns: boolean indicating if the blow was fatal
         '''
         if self.health <= 0:
-            raise RuntimeError('already dead')
+            raise AlreadyDeadError
         self.__health -= 1
         dead = self.__health == 0
+
+        dlog.debug(f'Player lost health. Remaining: {self.health}')
 
         if dead:
             self.on_death()
@@ -52,6 +55,7 @@ class Player:
             adds a treasure to the bag
         '''
         self.__treasures += 1
+        dlog.info(f'+1 treasure: total now:{self.treasures}')
 
     
     @log_decor
