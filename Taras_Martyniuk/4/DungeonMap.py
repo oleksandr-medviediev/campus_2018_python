@@ -3,6 +3,7 @@ from itertools import product
 from logging_decors import log_decor, debug_file_console_logger as dlog
 from random import shuffle
 from math import floor
+from exceptions import OutOfMapError
 '''
     type aliases for module:
     Tile type enum - all possible objects for a dungeon tile
@@ -21,7 +22,7 @@ class DungeonMap:
         wrapper on a 2D array holding Tile type enums
         provides tile filtering methods
 
-        P.S - i really need to write that 'self' every time? Why would they do this to us? 
+        P.S - do i really need to write that 'self' every time? Why would they do this to us? 
     '''
     @log_decor
     def __init__(self, size):
@@ -30,6 +31,9 @@ class DungeonMap:
         where 1/10 tiles are treasures and other 2/10 - traps
         :param size: int, > 0
         '''
+        if size <= 0:
+            raise ValueError('size must be > 0')
+
         count = size * size
         trap_count = floor(count * TRAP_QUOTA)
         treasure_count = floor(count * TREASURE_QUOTA)
@@ -68,13 +72,12 @@ class DungeonMap:
                 return maybe_empty
 
     
-    # it's a pity i can't just write array_2D[(0, 0)]
     def at(self, tile):
         '''
             gets type of the Tile
             :param tile: Tile
         '''
-        assert self.in_bounds(tile)
+        # i am delegating potentially wrong indices to the [] operator which will throw anyway
         return self.tiles[tile[0]][tile[1]]
 
 
@@ -96,7 +99,8 @@ class DungeonMap:
             returns a list of all adjacent tiles types for param tile
             if it is a corner tile, returns only those that are in bounds
         '''
-        assert self.in_bounds(tile)
+        if not self.in_bounds(tile):
+            raise OutOfMapError(tile)
 
         deltas = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
@@ -129,24 +133,40 @@ class DungeonMap:
 
 
     @log_decor
-    def map_to_str(self, curr_pos=None):
+    def map_to_str(self, player_pos, enemy_pos):
         '''
             :param self: dungeon map
             :returns: string where each line is map's row, displaying types of all tiles
         '''
-        curr_pos_mark = 42
+        if not self.in_bounds(player_pos):
+            raise OutOfMapError(player_pos)
+
+        if not self.in_bounds(enemy_pos):
+            raise OutOfMapError(enemy_pos)
+
+        CURR_POS_MARK = 42
+        ENEMY_POS_MARK = -42
+
         tile_symbols = {
             Empty : '.',
             Treasure : '⛃',
             Trap : '💣',
-            curr_pos_mark : 'Y'
+            CURR_POS_MARK : 'Y',
+            ENEMY_POS_MARK : 'E'
         }
-        changed = self.at(curr_pos)
-        self.set_tile(curr_pos, curr_pos_mark)
+
+        player_tile_val = self.at(player_pos)
+        enemy_tile_val = self.at(enemy_pos)
+
+        # marking positions with special symbols to easily map them to needed chars
+        self.set_tile(player_pos, CURR_POS_MARK)
+        self.set_tile(enemy_pos, ENEMY_POS_MARK)
 
         row_to_str = lambda row : " ".join(map(lambda t: tile_symbols[t], row))
         printed = "\n".join(map(row_to_str, self.tiles))
-        self.set_tile(curr_pos, changed)
+
+        self.set_tile(player_pos, player_tile_val)
+        self.set_tile(enemy_pos, enemy_tile_val)
         return printed
 
 
