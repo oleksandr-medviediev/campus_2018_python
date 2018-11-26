@@ -6,6 +6,7 @@ import logging
 from DungeonMap import DungeonMap
 import DungeonGameConfig
 import DungeonGameSaveLoad
+from NoSavedDataFileError import NoSavedDataFileError
 
 
 class GameStartMode(Enum):
@@ -46,11 +47,15 @@ class DungeonGame:
         :return: True if should, False otherwise;
         :rtype: bool.
         '''
-        player_is_alive = self.__character.is_alive()
-        player_collected_all_treasures = self.__character.get_treasures_number() is\
-        DungeonGameConfig.NUMBER_OF_TREASURES_TO_WIN
+        if self.__character:
+            player_is_alive = self.__character.is_alive()
+            player_collected_all_treasures = self.__character.get_treasures_number() is\
+            DungeonGameConfig.NUMBER_OF_TREASURES_TO_WIN
+            should_run = player_is_alive and not player_collected_all_treasures
+        else:
+            should_run = True
 
-        return player_is_alive and not player_collected_all_treasures
+        return should_run
 
     
     @logger_decorator
@@ -75,16 +80,23 @@ class DungeonGame:
         It will work depends on 
         '''
         if self.__current_game_state is DungeonGameState.GAME_MENU:
-            if self.__game_start_mode is GameStartMode.LOAD_GAME:
-                player_position, dungeon_map = DungeonGameSaveLoad.load_game()
-                self.__dungeon_map.init_from_load(player_position, dungeon_map)
+            try:
+                if self.__game_start_mode is GameStartMode.LOAD_GAME:
+                    player_position, dungeon_map = DungeonGameSaveLoad.load_game()
+                    self.__dungeon_map.init_from_load(player_position, dungeon_map)
+                else:
+                    map_size = int(input('Map size (>= 5): '))
+                    self.__dungeon_map.generate_new_map(map_size)
+            except NoSavedDataFileError as error:
+                logging.error(f'User have chosen to load the game but we can\'t find game save data on address:\
+                {error}.')
+                logging.info('Sorry, but there is no game save data. Please, save the game firstly or find the\
+                save data file.')
+                self.process_game_start()
             else:
-                map_size = int(input('Map size (>= 5): '))
-                self.__dungeon_map.generate_new_map(map_size)
-
-            self.__character = Character('User', DungeonGameConfig.PLAYER_HP, self.__dungeon_map)
-            self.__current_game_state = DungeonGameState.GAMEPLAY
-            self.__update_list.add_children(self.__dungeon_map, self.__character)
+                self.__character = Character('User', DungeonGameConfig.PLAYER_HP, self.__dungeon_map)
+                self.__current_game_state = DungeonGameState.GAMEPLAY
+                self.__update_list.add_children(self.__dungeon_map, self.__character)
 
         elif self.__current_game_state is DungeonGameState.GAMEPLAY:
             logging.info(f'Current character stats: hp - {self.__character.get_hp()}, num of treasures - \

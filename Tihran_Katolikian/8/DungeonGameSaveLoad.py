@@ -2,6 +2,8 @@ from contextlib import contextmanager
 import pickle
 import logging
 from LoggerDecorator import logger_decorator
+from sys import exit
+from NoSavedDataFileError import NoSavedDataFileError
 
 
 SAVE_DATA_FILENAME = 'save.data'
@@ -31,6 +33,6 @@ def load_game():
     try:
         with open (SAVE_DATA_FILENAME, 'rb') as load_file:
             return pickle.load(load_file)
-    except FileNotFoundError:
+    except FileNotFoundError as error:
         logging.critical(f'Can\'t read save file {SAVE_DATA_FILENAME}')
-        raise
+        raise NoSavedDataFileError(SAVE_DATA_FILENAME)
