@@ -1,6 +1,8 @@
 from dungeon_logging import logger, with_logging
+from dungeon_errors import OutOfMapError, NoSavedGamesError, InvalidMapSizeError
 from world import World
 from player import Player
+
 import settings
 
 directions = {
@@ -29,14 +31,19 @@ def game_loop():
         user_input = input('New game(1)\nLoad game (2)\n')
 
         if user_input == '1':
-            world = World(size=10)
-            world.spawn_player(Player('urpoK'))
-            logger.warning('New game started')
+            while world is None:
+                user_input = input('Enter desired map size:')
+                try:
+                    world = World(size=int(user_input))
+                    world.spawn_player(Player('urpoK'))
+                    logger.warning('New game started')
+                except (InvalidMapSizeError, ValueError) as error:
+                    logger.warning(error)
         elif user_input == '2':
             try:
                 world = World.load()
                 logger.warning('Game loaded')
-            except RuntimeError as error:
+            except NoSavedGamesError as error:
                 logger.warning(error)
 
     won = False
@@ -57,14 +64,22 @@ def game_loop():
             user_input = input()
 
             input_is_valid = True
-            if user_input in directions.keys():
-                world.move_player(directions[user_input])
-            elif user_input == 'save':
+            if user_input == 'save':
                 world.save()
                 logger.warning('Game saved.')
-            else:
-                logger.warning('Invalid input. Try again.')
+
+            direction = None
+            try:
+                direction = directions[user_input]
+            except KeyError:
+                logger.warning('Invalid input (you must choose from \'w/a/s/d/save\' commands).')
                 input_is_valid = False
+
+            if direction:
+                try:
+                    world.move_player(direction)
+                except OutOfMapError as error:
+                    logger.warning(error)
 
         world.update()
 
