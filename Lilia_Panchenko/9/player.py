@@ -1,6 +1,7 @@
 from logger import debug_decorator
 from logger import info_decorator
 from random import choice
+import logging
 
 from custom_exception import PlayerInputError
 
@@ -51,8 +52,9 @@ class Player:
                 else:
                     break
 
-            except PlayerInputError:
-                print("Something wrong entered! Try again...")
+            except PlayerInputError as error:
+                logging.error(error)
+                logging.info("Something wrong entered! Try again...")
 
         return player_choice
 
