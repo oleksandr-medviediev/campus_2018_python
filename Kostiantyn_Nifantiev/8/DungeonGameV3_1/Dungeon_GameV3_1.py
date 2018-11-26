@@ -23,3 +23,4 @@ while True:
 
         my_logger.debug("Abandoning game")
         break
+

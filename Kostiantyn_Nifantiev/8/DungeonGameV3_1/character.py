@@ -1,7 +1,7 @@
 from dungeon_logger import my_logger
 from dungeon_logger import log_decorator
 from random import randint
-
+from my_exceptions import MoveError
 
 class Character:
     """
@@ -90,10 +90,18 @@ class Player(Character):
 
     @log_decorator
     def make_move(self, move_direction, width, height):
+        """
+        Used to change coordinates of character
+        """
+        try:
 
-        if not move_direction in set(['w', 'd', 's', 'a']):
+            if not move_direction in set(['w', 'd', 's', 'a']):
 
-            my_logger.info('Wrong direction! Try again!')
+                raise MoveError("Appeared while player has moved")
+
+        except MoveError as move_error:
+
+            my_logger.exception(move_error)
             return False
 
         old_x = self.player_x
