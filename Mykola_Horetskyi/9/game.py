@@ -72,6 +72,9 @@ class DungeonGame:
     player = Player()
     enemy = choice(enemies_list)
 
+    is_room_being_processed = False
+    is_enemy_encounter_being_processed = False
+
 
     @debug_decorator
     def __init__(self):
@@ -207,6 +210,14 @@ class DungeonGame:
         """
         Resolves possible trap encounters and prints feedback.
         """
+
+        #to prevent room and enemy encounter texts from mixing
+        while DungeonGame.is_enemy_encounter_being_processed:
+            pass
+
+        if not self.player.is_alive():
+            return        
+
         logger.info(text.tell_position.format(DungeonGame.player.position.x,\
          DungeonGame.player.position.y))
 
@@ -218,14 +229,6 @@ class DungeonGame:
 
         logger.debug("entered cell {}".format(current_cell))
 
-        if DungeonGame.enemy.position == DungeonGame.player.position:
-
-            logger.debug("enemy finds player")
-            self.process_hostile_encounter(DungeonGame.enemy)
-            self.respawn_enemy()
-
-            if not self.player.is_alive():
-                return
 
         current_cell = DungeonMap.cells_dict[current_cell]
 
@@ -364,11 +367,6 @@ class DungeonGame:
         logger.debug("enemy moves to {},{}".format(DungeonGame.enemy.position.x,\
         DungeonGame.enemy.position.y))
 
-        if DungeonGame.enemy.position == DungeonGame.player.position:
-            logger.debug("enemy finds player")
-            self.process_hostile_encounter(DungeonGame.enemy)
-            self.respawn_enemy()
-
 
     @debug_decorator
     def process_enemy(self):
@@ -378,6 +376,14 @@ class DungeonGame:
         time_of_last_turn = time.time()
 
         while not self.is_game_ended():
+
+            if (DungeonGame.enemy.position == DungeonGame.player.position
+            and not DungeonGame.is_room_being_processed):
+                logger.debug("enemy finds player")
+                DungeonGame.is_enemy_encounter_being_processed = True
+                self.process_hostile_encounter(DungeonGame.enemy)
+                DungeonGame.is_enemy_encounter_being_processed = False
+                self.respawn_enemy()
 
             current_time = time.time()
 
