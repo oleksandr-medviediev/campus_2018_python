@@ -1,6 +1,7 @@
 from random import shuffle
 from random import randint
 import logger_decorator
+import logger
 
 class DungeonGameMap:
 
@@ -111,7 +112,11 @@ class DungeonGameMap:
         """
         x = position[0]
         y = position[1]
-        self.generated_map[x][y] = '+'
+        try:
+            self.generated_map[x][y] = '+'
+            
+        except IndexError as index_error:
+            logger.logging_object.error(index_error)
 
 	
     @logger_decorator.time_logger_decorator
@@ -144,7 +149,8 @@ class DungeonGameMap:
         :param map_size: loaded map_size 
         :paramtype map_size: list(int,int)
         """
-        self.generated_map = loaded_map
+        self.generated_map = []
+        self.generated_map.extend(loaded_map)
         self.map_size_x = map_size[0]
         self.map_size_y = map_size[1]
 	
