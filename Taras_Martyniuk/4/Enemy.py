@@ -5,6 +5,7 @@ from logging_decors import log_decor, debug_file_console_logger as dlog, output_
 from exceptions import OutOfMapError
 import threading
 from functools import partial
+from time import sleep
 
 class Enemy:
     # sec
@@ -14,63 +15,78 @@ class Enemy:
     def __init__(self, dmap):
         '''
             sets position to a random empty tile within dmap
-            :param dmap: DungeonMap
+            :param dmap: DungeonMap DungeonMap to navigate 
         '''
         self.position = dmap.get_random_empty_tile()
-        self.patrol_repeat_timer = None
+        self.dungeon_map = dmap
+        self.patrol_stop_event = threading.Event()
         
-
     
-    def start_patroling(self, dmap, player):
+    def start_patroling(self, player):
         '''
             asynchronously moves in a random non-walled direction every MOVE_INTERVAL seconds
-            :param dmap: DungeonMap
             :param player: Player to chase (not really following himm still movign totally random)
         '''
+        self.patrol_stop_event.clear()
+
+        def patrol_with_pauses(self):
+            while not self.patrol_stop_event.is_set():
+                self.patrol(player)
+                sleep(self.MOVE_INTERVAL)
+
+        captured = partial(patrol_with_pauses, self)
+
+        patrol_thread = threading.Thread(name='patrol thread', target=captured)
+        # will end anyway when event is set, but i don't want to join on it, since it'll block us for 4 sec
+        patrol_thread.setDaemon(True)
+        patrol_thread.start()
+
+
+    @log_decor
+    def patrol(self, player):
+        '''
+            a single turn of patrol
+            attacks player if standing on the same tile, moves randomly and tries to attack again
+        '''
         self.try_attack_player(player)
-        self.move_randomly(dmap)
+        self.move_randomly()
         self.try_attack_player(player)
 
-        tile_val = dmap.at(self.position)
+        tile_val = self.dungeon_map.at(self.position)
         if tile_val == dm.Treasure:
             dlog.debug(f'enemy ate treasure at {self.position}')
 
         elif tile_val == dm.Trap:
             dlog.debug(f'enemy died from a trap at {self.position}')
-            self.position = dmap.get_random_empty_tile()
+            self.position = self.dungeon_map.get_random_empty_tile()
             dlog.debug(f'enemy respawned to {self.position}')
 
         # eats our treasure, or destroys the trap by activating it
-        dmap.set_tile(self.position, dm.Empty)
+        self.dungeon_map.set_tile(self.position, dm.Empty)
 
-        curried = partial(self.start_patroling, dmap, player)
-        self.patrol_repeat_timer = threading.Timer(self.MOVE_INTERVAL, curried)
-        self.patrol_repeat_timer.start()
 
+    @log_decor
     def stop_patroling(self):
         '''
             stops chasing player
         '''
-        if self.patrol_repeat_timer:
-            self.patrol_repeat_timer.cancel()
+        self.patrol_stop_event.set()
 
 
     @log_decor
-    def move_randomly(self, dmap):
+    def move_randomly(self):
         '''
             moves one delta in the random direction
             (not going into walls)
-
-            :param dmap: DungeonMap to navigate 
         '''
-        if not dmap.in_bounds(self.position):
+        if not self.dungeon_map.in_bounds(self.position):
             ValueError('enemie\'s position is out of bounds of argument DungeonMap')
             
         while True:
             rand_move_dt = move_directions[randrange(len(move_directions))]
 
             new_pos = tuple_add(self.position, rand_move_dt)
-            if dmap.in_bounds(new_pos):
+            if self.dungeon_map.in_bounds(new_pos):
                 self.position = new_pos
                 dlog.debug(f'enemy moved to {self.position}')
                 break

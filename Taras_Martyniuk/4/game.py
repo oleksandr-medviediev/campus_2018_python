@@ -29,7 +29,7 @@ def play_game(size):
     player.position = start
 
     enemy = Enemy(dmap)
-    enemy.start_patroling(dmap, player)
+    enemy.start_patroling(player)
 
     print(dmap.map_to_str(player.position, enemy.position))
 
