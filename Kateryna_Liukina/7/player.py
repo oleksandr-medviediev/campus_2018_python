@@ -37,7 +37,7 @@ class Player:
         if game_input not in self.direction_map.keys():
             raise InvalidDirectionError
         
-        direction = direction_map[game_input]
+        direction = self.direction_map[game_input]
         self.position[0] += direction[0]
         self.position[1] += direction[1]
 
