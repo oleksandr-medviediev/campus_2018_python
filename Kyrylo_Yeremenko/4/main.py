@@ -4,11 +4,14 @@ This module is starting point for task 4.1 from Coding Campus 2018 Python course
 """
 
 import logging
+import threading
 from dungeon_map import DungeonMap
 from player import Player
 import utils
 import log
 from decorators import log_decorator, debug_log_decorator
+from exceptions import InputError, MapInitError
+from enemy import ThreadEnemyWrapper
 import config
 
 SAVE_PATH = "save.dat"
@@ -16,85 +19,86 @@ logger = logging.getLogger(log.LOGGER_NAME)
 
 active_map = None
 active_player = None
+thread_enemy = None
 
 
-def predicate_map_size(string):
+def validator_map_size(string):
     """
-    Predicate for map size input
+    Validator for map size input
+    Raises InputError with error description if string is not valid
     :param string: String to check
-    :return: Tuple of bool and string, where bool signifies result, and string - error message
+    :return: Bool, if success
     """
-    bool_result = False
-    str_result = ""
+    result = False
 
     if string.isdigit():
 
         size = int(string)
         if 5 <= size <= 100:
-            bool_result = True
+            result = True
         else:
-            str_result = "Unacceptable map size! Try again"
+            raise InputError("Unacceptable map size! Try again")
     else:
-        str_result = "Input is not integer! Try again"
+        raise InputError("Input is not integer! Try again")
 
-    return bool_result, str_result
+    return result
 
 
-def predicate_movement_string(string):
+def validator_movement_string(string):
     """
-    Predicate for player move direction input
+    Validator for player move direction input
+    Raises InputError with error description if string is not valid
     :param string: String to check
-    :return: Tuple of bool and string, where bool signifies result, and string - error message
+    :return: Bool, if success
     """
-    bool_result = False
-    str_result = ""
+    result = False
 
     if string.lower() == "u":
-        bool_result = True
+        result = True
     elif string.lower() == "l":
-        bool_result = True
+        result = True
     elif string.lower() == "r":
-        bool_result = True
+        result = True
     elif string.lower() == "d":
-        bool_result = True
+        result = True
     else:
-        str_result = "Incorrect movement direction!\nPlayer can move up [U], left [L], right [R] or down [D]\n"
+        raise InputError("Incorrect movement direction!\nPlayer can move up [U], left [L], right [R] or down [D]\n")
 
-    return bool_result, str_result
+    return result
 
 
-def predicate_response(string):
+def validator_response(string):
     """
-    Predicate for yes/no response input
+    Validator for yes/no response input
+    Raises InputError with error description if string is not valid
     :param string: String to check
-    :return: Tuple of bool and string, where bool signifies result, and string - error message
+    :return: Bool, if success
     """
-    bool_result = False
-    str_result = ""
+    result = False
 
     if string.lower() == "n" or string.lower() == "y":
-        bool_result = True
+        result = True
     else:
-        str_result = "Incorrect answer!"
+        raise InputError("Incorrect answer!")
 
-    return bool_result, str_result
+    return result
 
 
-def predicate_command(string):
+def validator_command(string):
     """
-    Predicate for command input
+    Validator for command input
+    Raises InputError with error description if string is not valid
     :param string: String to check
-    :return: Tuple of bool and string, where bool signifies result, and string - error message
+    :return: Bool, if success
     """
-    bool_result = False
-    str_result = ""
+    result = False
 
     if string.lower() == "move" or string.lower() == "save":
-        bool_result = True
+        result = True
     else:
-        str_result = "Incorrect command!"
+        raise InputError("Incorrect command!")
 
-    return bool_result, str_result
+    return result
 
 
 @log_decorator
@@ -107,9 +111,19 @@ def play_game():
 
     while True:
 
+        active_map.print_map()
+
+        player_hitpoints = active_player.get_hitpoints()
         is_trap_nearby, is_treasure_nearby = active_map.check_nearby_tiles(active_player.position)
 
         print("\n\n")
+
+        if active_player.is_dead():
+
+            logger.info("Player is killed")
+            print("You grow weak and fall to the cold floor, dropping your bag beside you. You feel you can't go anymore further.")
+            print("Dungeon consumes you!")
+            break
 
         if is_trap_nearby:
             print("Your senses detect a trap in nearby tile. Watch your step!")
@@ -118,10 +132,10 @@ def play_game():
 
         logger.info(f"Player position {active_player.position}")
         print(f"Your position is ({active_player.position[1]}, {active_player.position[0]})")
-        print(f"Your health is {active_player.hitpoints} HP")
+        print(f"Your health is {player_hitpoints} HP")
         print(f"Your bag has space for {config.PLAYER_BAG_SIZE - active_player.bag } more chests.\n")
 
-        command = utils.get_input(predicate_command, "Input command [Save] or [Move]: ")
+        command = utils.get_input(validator_command, "Input command [Save] or [Move]: ")
         if command.lower() == "save":
 
             if utils.save_game(SAVE_PATH, active_map, active_player):
@@ -133,7 +147,7 @@ def play_game():
 
         while True:
 
-            move_direction = utils.get_input(predicate_movement_string, "Input direction to move in: ")
+            move_direction = utils.get_input(validator_movement_string, "Input direction to move in: ")
             if active_player.move(move_direction.lower(), active_map):
 
                 logger.info(f"Player moves {active_player.position[1]}, {active_player.position[0]}")
@@ -145,9 +159,9 @@ def play_game():
 
         if is_trap:
 
-            logger.info(f"Player is damaged by 1 hitpoint. Hitpoints left: {active_player.hitpoints - 1}")
+            logger.info(f"Player is damaged by 1 hitpoint. Hitpoints left: {player_hitpoints - 1}")
             print("You spring the trap and it firmly clenches around your leg.")
-            active_player.hitpoints -= 1
+            active_player.decrease_hitpoints()
 
             if active_player.is_dead():
 
@@ -182,7 +196,6 @@ def play_game():
     active_player.mark_last_pos(active_map)
     logger.info("Game over")
 
-
 @log_decorator
 @debug_log_decorator
 def init_game():
@@ -194,8 +207,17 @@ def init_game():
     global active_map
     global active_player
 
-    map_size = utils.get_input(predicate_map_size, "Input map size [5 - 100]: ")
-    active_map = DungeonMap(int(map_size))
+    while True:
+
+        map_size = utils.get_input(validator_map_size, "Input map size [5 - 100]: ")
+
+        try:
+            active_map = DungeonMap(int(map_size))
+        except MapInitError as exc:
+            print(f"Failed to create map! Error: f{str(exc)}")
+        else:
+            break
+
     active_player = Player(active_map)
 
 
@@ -209,11 +231,12 @@ def start_game():
 
     global active_map
     global active_player
+    global thread_enemy
 
-    active_map = DungeonMap(int(0))
+    active_map = DungeonMap(0, False)
     active_player = Player(active_map)
 
-    response = utils.get_input(predicate_response, "Do you wish to load last saved game? [Y\\N]: ")
+    response = utils.get_input(validator_response, "Do you wish to load last saved game? [Y\\N]: ")
 
     if response.lower() == 'y':
 
@@ -226,6 +249,9 @@ def start_game():
 
         logger.info("Starting new game.")
         init_game()
+
+    thread_enemy = ThreadEnemyWrapper(active_map, active_player)
+    thread_enemy.start()
 
 
 if __name__ == "__main__":
@@ -241,7 +267,9 @@ if __name__ == "__main__":
         print("\nGAME OVER\n")
         active_map.print_map()
 
-        response = utils.get_input(predicate_response, "Try again? [Y\\N]: ")
+        thread_enemy.join()
+
+        response = utils.get_input(validator_response, "Try again? [Y\\N]: ")
 
         if response.lower() == 'n':
             break

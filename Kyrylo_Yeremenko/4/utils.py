@@ -2,17 +2,19 @@ import pickle
 import logging
 
 import log
+from exceptions import InvalidDataLoadedError, InputError
 from decorators import log_decorator, debug_log_decorator
 
 
 logger = logging.getLogger(log.LOGGER_NAME)
 
+
 @log_decorator
 @debug_log_decorator
-def get_input(predicate, input_message):
+def get_input(input_validator, input_message):
     """
     Gets input from user satisfying given predicate
-    :param predicate: Predicate, accepts string, returns tuple of Bool and string (error message)
+    :param input_validator: Validates user input, raises InputError containing message
     :param input_message: Message to display user
     :return: Accepted string
     """
@@ -21,14 +23,19 @@ def get_input(predicate, input_message):
     while True:
 
         string = input(input_message)
-        predicate_result, predicate_error_string = predicate(string)
 
-        if predicate_result:
+        try:
+
+            input_validator(string)
+
+        except InputError as exc:
+
+            print(str(exc))
+
+        else:
 
             return_string = string
             break
-        else:
-            print(predicate_error_string)
 
     return return_string
 
@@ -70,6 +77,11 @@ def save_game(save_path, active_map, active_player):
 
             logger.info("Successfully saved game!")
 
+    except pickle.PicklingError:
+
+        return_value = False
+        logger.info("Could not save game! Couldn't pickle save data.")
+
     except (OSError, IOError) as exc:
 
         return_value = False
@@ -100,16 +112,34 @@ def load_game(load_path, active_map, active_player):
 
             if isinstance(save_data, list) and len(save_data) == 4:
 
-                active_map.game_map = save_data[0]
-                active_player.position = save_data[1]
-                active_player.hitpoints = save_data[2]
-                active_player.bag = save_data[3]
-                logger.info("Successfully loaded game.")
+                if isinstance(save_data[0], list):
+                    active_map.game_map = save_data[0]
+
+                else:
+                    raise InvalidDataLoadedError("Invalid game map format")
+
+                if active_map.is_index_valid(save_data[1]) and save_data[2] > 0 and save_data[2] >= 0:
+
+                    active_player.position = save_data[1]
+                    active_player.hitpoints = save_data[2]
+                    active_player.bag = save_data[3]
+                    logger.info("Successfully loaded game.")
+
+                else:
+                    raise InvalidDataLoadedError("Invalid player data")
 
             else:
+                raise InvalidDataLoadedError("Unpickled data has invalid format")
 
-                return_value = False
-                logger.info("Loading failed! Unpickled invalid data.")
+    except (MemoryError, pickle.UnpicklingError) as exc:
+
+        return_value = False
+        logger.info(f"Loading failed! File structure invalid, received {str(exc)}")
+
+    except InvalidDataLoadedError as exc:
+
+        return_value = False
+        logger.info(f"Loading failed! Data error: {str(exc)}")
 
     except (OSError, IOError) as exc:
 
