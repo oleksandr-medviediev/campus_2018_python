@@ -80,3 +80,4 @@ class Enemy:
         if self.gotcha_player(player):
             dlog.debug('damaged player')
             player.lose_health()
+            

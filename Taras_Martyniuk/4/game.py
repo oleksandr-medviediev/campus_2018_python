@@ -82,7 +82,7 @@ def run_turn(death_event, win_event, player, dmap):
             dmap, player = load()
             dlog.debug('changed state to loaded:')
             olog.info('Loaded your game!\n')
-        # it feels like i should've just checked for the file's existence
+        # i think i should've just checked for the file's existence
         except SaveNotCreatedError:
             dlog.debug('Tried to load when savefile does not exist')
             olog.info('You haven\'t saved it yet!')

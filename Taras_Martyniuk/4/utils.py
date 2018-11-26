@@ -12,3 +12,4 @@ def tuple_add(left, right):
         adds 2 2D tuples elementwise
     '''
     return (left[0] + right[0], left[1] + right[1])
+    
