@@ -29,7 +29,10 @@ class Game:
 
             size = input("Enter new map size\n")
 
-        size = int(size)
+        try:
+            size = int(size)
+        except ValueError as error:
+            dungeon_logger.logger(f'ValueError: {error}')
         self.dun_map = dun_map.DungeonMap(size)
 
 
