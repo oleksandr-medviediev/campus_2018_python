@@ -103,7 +103,7 @@ class DungeonMap(UpdateList):
         old_x, old_y = self.__player_position
         self.__player_position = new_position
         new_x, new_y = self.__player_position
-        previous_cell = self.__dungeon_map[new_x][new_y]
+        previous_cell = self.dungeon_map[new_x][new_y]
         self.dungeon_map[old_x][old_y] = DungeonCell.EMPTY
         self.dungeon_map[new_x][new_y] = DungeonCell.PLAYER
         return previous_cell

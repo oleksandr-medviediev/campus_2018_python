@@ -1,0 +1,180 @@
+[2018-11-26 03:19:23,151][main][<module>][DEBUG] : Game start
+[2018-11-26 03:19:23,152][LoggerDecorator][wrapper][DEBUG] : 'process_game_start' started!
+	Params: {'self': <DungeonGame.DungeonGame object at 0x037E0550>}
+
+[2018-11-26 03:19:23,153][DungeonGame][process_game_start][INFO] : Type 'new game' to start a new game or 'load' to old game from save: 
+[2018-11-26 03:19:25,283][LoggerDecorator][wrapper][DEBUG] : 'process_game_start' ended!
+	return value: 'None'
+[2018-11-26 03:19:25,285][LoggerDecorator][wrapper][DEBUG] : 'run_game' started!
+	Params: {'self': <DungeonGame.DungeonGame object at 0x037E0550>}
+
+[2018-11-26 03:19:26,344][LoggerDecorator][wrapper][DEBUG] : 'generate_map' started!
+	Params: {'self': <DungeonGameMapGenerator.DungeonGameMapGenerator object at 0x03817530>, 'map_size': 5}
+
+[2018-11-26 03:19:26,346][LoggerDecorator][wrapper][DEBUG] : '__choose_random_index_and_remove' started!
+	Params: {'self': <DungeonGameMapGenerator.DungeonGameMapGenerator object at 0x03817530>, 'array2D': [[0, 1, 2, 3, 4], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4]]}
+
+[2018-11-26 03:19:26,347][LoggerDecorator][wrapper][DEBUG] : '__choose_random_index_and_remove' ended!
+	return value: '(2, 2)'
+[2018-11-26 03:19:26,350][LoggerDecorator][wrapper][DEBUG] : '__choose_random_index_and_remove' started!
+	Params: {'self': <DungeonGameMapGenerator.DungeonGameMapGenerator object at 0x03817530>, 'array2D': [[0, 1, 2, 3, 4], [0, 1, 2, 3, 4], [0, 1, 3, 4], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4]]}
+
+[2018-11-26 03:19:26,351][LoggerDecorator][wrapper][DEBUG] : '__choose_random_index_and_remove' ended!
+	return value: '(2, 0)'
+[2018-11-26 03:19:26,353][LoggerDecorator][wrapper][DEBUG] : '__choose_random_index_and_remove' started!
+	Params: {'self': <DungeonGameMapGenerator.DungeonGameMapGenerator object at 0x03817530>, 'array2D': [[0, 1, 2, 3, 4], [0, 1, 2, 3, 4], [1, 3, 4], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4]]}
+
+[2018-11-26 03:19:26,355][LoggerDecorator][wrapper][DEBUG] : '__choose_random_index_and_remove' ended!
+	return value: '(0, 0)'
+[2018-11-26 03:19:26,358][LoggerDecorator][wrapper][DEBUG] : '__choose_random_index_and_remove' started!
+	Params: {'self': <DungeonGameMapGenerator.DungeonGameMapGenerator object at 0x03817530>, 'array2D': [[1, 2, 3, 4], [0, 1, 2, 3, 4], [1, 3, 4], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4]]}
+
+[2018-11-26 03:19:26,361][LoggerDecorator][wrapper][DEBUG] : '__choose_random_index_and_remove' ended!
+	return value: '(4, 1)'
+[2018-11-26 03:19:26,363][LoggerDecorator][wrapper][DEBUG] : 'generate_map' ended!
+	return value: '((4, 1), [[<DungeonCell.TREASURE: 2>, <DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>], [<DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>], [<DungeonCell.TRAP: 3>, <DungeonCell.EMPTY: 0>, <DungeonCell.TRAP: 3>, <DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>], [<DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>], [<DungeonCell.EMPTY: 0>, <DungeonCell.PLAYER: 1>, <DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>]])'
+[2018-11-26 03:19:26,366][LoggerDecorator][wrapper][DEBUG] : 'get_player_position' started!
+	Params: {'self': <DungeonMap.DungeonMap object at 0x011F6630>}
+
+[2018-11-26 03:19:26,367][LoggerDecorator][wrapper][DEBUG] : 'get_player_position' ended!
+	return value: '(4, 1)'
+[2018-11-26 03:19:26,368][LoggerDecorator][wrapper][DEBUG] : 'run_game' ended!
+	return value: 'None'
+[2018-11-26 03:19:26,371][LoggerDecorator][wrapper][DEBUG] : 'should_run' started!
+	Params: {'self': <DungeonGame.DungeonGame object at 0x037E0550>}
+
+[2018-11-26 03:19:26,372][LoggerDecorator][wrapper][DEBUG] : 'should_run' ended!
+	return value: 'True'
+[2018-11-26 03:19:26,375][LoggerDecorator][wrapper][DEBUG] : 'run_game' started!
+	Params: {'self': <DungeonGame.DungeonGame object at 0x037E0550>}
+
+[2018-11-26 03:19:26,383][DungeonGame][run_game][INFO] : Current character stats: hp - 3, num of treasures -             0
+[2018-11-26 03:19:26,388][LoggerDecorator][wrapper][DEBUG] : 'update' started!
+	Params: {'self': <DungeonMap.DungeonMap object at 0x011F6630>}
+
+[2018-11-26 03:19:26,390][LoggerDecorator][wrapper][DEBUG] : 'output' started!
+	Params: {'self': <DungeonMap.DungeonMap object at 0x011F6630>, 'dungeon_cell_to_output_symbol': {<DungeonCell.EMPTY: 0>: ' ', <DungeonCell.PLAYER: 1>: '*', <DungeonCell.TRAP: 3>: ' ', <DungeonCell.TREASURE: 2>: ' '}}
+
+[2018-11-26 03:19:26,392][DungeonMap][output][INFO] : -----
+[2018-11-26 03:19:26,404][DungeonMap][output][INFO] :      
+     
+     
+     
+ *   
+[2018-11-26 03:19:26,410][DungeonMap][output][INFO] : -----
+[2018-11-26 03:19:26,427][LoggerDecorator][wrapper][DEBUG] : 'output' ended!
+	return value: 'None'
+[2018-11-26 03:19:26,430][LoggerDecorator][wrapper][DEBUG] : '__get_cells_near' started!
+	Params: {'self': <DungeonMap.DungeonMap object at 0x011F6630>, 'position': (4, 1)}
+
+[2018-11-26 03:19:26,432][LoggerDecorator][wrapper][DEBUG] : '__get_cells_near' ended!
+	return value: '[<DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>]'
+[2018-11-26 03:19:26,434][LoggerDecorator][wrapper][DEBUG] : 'update' ended!
+	return value: 'None'
+[2018-11-26 03:19:26,436][LoggerDecorator][wrapper][DEBUG] : '__get_player_command' started!
+	Params: {'self': <Character.Character object at 0x03817070>}
+
+[2018-11-26 03:19:26,437][Character][__get_player_command][INFO] : Please, input your command. Use "w", "a", "s", "d" and "save" commands: 
+[2018-11-26 03:19:28,131][Character][__get_player_command][DEBUG] : User command is:d
+[2018-11-26 03:19:28,132][LoggerDecorator][wrapper][DEBUG] : 'get_size' started!
+	Params: {'self': <DungeonMap.DungeonMap object at 0x011F6630>}
+
+[2018-11-26 03:19:28,132][LoggerDecorator][wrapper][DEBUG] : 'get_size' ended!
+	return value: '5'
+[2018-11-26 03:19:28,133][LoggerDecorator][wrapper][DEBUG] : '__get_player_command' ended!
+	return value: '3'
+[2018-11-26 03:19:28,134][LoggerDecorator][wrapper][DEBUG] : 'move_player' started!
+	Params: {'self': <DungeonMap.DungeonMap object at 0x011F6630>, 'new_position': (4, 2)}
+
+[2018-11-26 03:19:28,135][LoggerDecorator][wrapper][DEBUG] : 'move_player' ended!
+	return value: 'DungeonCell.EMPTY'
+[2018-11-26 03:19:28,135][Character][update][INFO] : You found nothing. Keep exploring the map!:)
+[2018-11-26 03:19:28,138][LoggerDecorator][wrapper][DEBUG] : 'run_game' ended!
+	return value: 'None'
+[2018-11-26 03:19:28,140][LoggerDecorator][wrapper][DEBUG] : 'should_run' started!
+	Params: {'self': <DungeonGame.DungeonGame object at 0x037E0550>}
+
+[2018-11-26 03:19:28,141][LoggerDecorator][wrapper][DEBUG] : 'should_run' ended!
+	return value: 'True'
+[2018-11-26 03:19:28,142][LoggerDecorator][wrapper][DEBUG] : 'run_game' started!
+	Params: {'self': <DungeonGame.DungeonGame object at 0x037E0550>}
+
+[2018-11-26 03:19:28,144][DungeonGame][run_game][INFO] : Current character stats: hp - 3, num of treasures -             0
+[2018-11-26 03:19:28,147][LoggerDecorator][wrapper][DEBUG] : 'update' started!
+	Params: {'self': <DungeonMap.DungeonMap object at 0x011F6630>}
+
+[2018-11-26 03:19:28,149][LoggerDecorator][wrapper][DEBUG] : 'output' started!
+	Params: {'self': <DungeonMap.DungeonMap object at 0x011F6630>, 'dungeon_cell_to_output_symbol': {<DungeonCell.EMPTY: 0>: ' ', <DungeonCell.PLAYER: 1>: '*', <DungeonCell.TRAP: 3>: ' ', <DungeonCell.TREASURE: 2>: ' '}}
+
+[2018-11-26 03:19:28,149][DungeonMap][output][INFO] : -----
+[2018-11-26 03:19:28,152][DungeonMap][output][INFO] :      
+     
+     
+     
+  *  
+[2018-11-26 03:19:28,157][DungeonMap][output][INFO] : -----
+[2018-11-26 03:19:28,163][LoggerDecorator][wrapper][DEBUG] : 'output' ended!
+	return value: 'None'
+[2018-11-26 03:19:28,165][LoggerDecorator][wrapper][DEBUG] : '__get_cells_near' started!
+	Params: {'self': <DungeonMap.DungeonMap object at 0x011F6630>, 'position': (4, 2)}
+
+[2018-11-26 03:19:28,166][LoggerDecorator][wrapper][DEBUG] : '__get_cells_near' ended!
+	return value: '[<DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>]'
+[2018-11-26 03:19:28,167][LoggerDecorator][wrapper][DEBUG] : 'update' ended!
+	return value: 'None'
+[2018-11-26 03:19:28,169][LoggerDecorator][wrapper][DEBUG] : '__get_player_command' started!
+	Params: {'self': <Character.Character object at 0x03817070>}
+
+[2018-11-26 03:19:28,170][Character][__get_player_command][INFO] : Please, input your command. Use "w", "a", "s", "d" and "save" commands: 
+[2018-11-26 03:19:28,827][Character][__get_player_command][DEBUG] : User command is:w
+[2018-11-26 03:19:28,829][LoggerDecorator][wrapper][DEBUG] : 'get_size' started!
+	Params: {'self': <DungeonMap.DungeonMap object at 0x011F6630>}
+
+[2018-11-26 03:19:28,829][LoggerDecorator][wrapper][DEBUG] : 'get_size' ended!
+	return value: '5'
+[2018-11-26 03:19:28,830][LoggerDecorator][wrapper][DEBUG] : '__get_player_command' ended!
+	return value: '0'
+[2018-11-26 03:19:28,831][LoggerDecorator][wrapper][DEBUG] : 'move_player' started!
+	Params: {'self': <DungeonMap.DungeonMap object at 0x011F6630>, 'new_position': (3, 2)}
+
+[2018-11-26 03:19:28,832][LoggerDecorator][wrapper][DEBUG] : 'move_player' ended!
+	return value: 'DungeonCell.EMPTY'
+[2018-11-26 03:19:28,832][Character][update][INFO] : You found nothing. Keep exploring the map!:)
+[2018-11-26 03:19:28,835][LoggerDecorator][wrapper][DEBUG] : 'run_game' ended!
+	return value: 'None'
+[2018-11-26 03:19:28,837][LoggerDecorator][wrapper][DEBUG] : 'should_run' started!
+	Params: {'self': <DungeonGame.DungeonGame object at 0x037E0550>}
+
+[2018-11-26 03:19:28,839][LoggerDecorator][wrapper][DEBUG] : 'should_run' ended!
+	return value: 'True'
+[2018-11-26 03:19:28,841][LoggerDecorator][wrapper][DEBUG] : 'run_game' started!
+	Params: {'self': <DungeonGame.DungeonGame object at 0x037E0550>}
+
+[2018-11-26 03:19:28,842][DungeonGame][run_game][INFO] : Current character stats: hp - 3, num of treasures -             0
+[2018-11-26 03:19:28,845][LoggerDecorator][wrapper][DEBUG] : 'update' started!
+	Params: {'self': <DungeonMap.DungeonMap object at 0x011F6630>}
+
+[2018-11-26 03:19:28,847][LoggerDecorator][wrapper][DEBUG] : 'output' started!
+	Params: {'self': <DungeonMap.DungeonMap object at 0x011F6630>, 'dungeon_cell_to_output_symbol': {<DungeonCell.EMPTY: 0>: ' ', <DungeonCell.PLAYER: 1>: '*', <DungeonCell.TRAP: 3>: ' ', <DungeonCell.TREASURE: 2>: ' '}}
+
+[2018-11-26 03:19:28,847][DungeonMap][output][INFO] : -----
+[2018-11-26 03:19:28,851][DungeonMap][output][INFO] :      
+     
+     
+  *  
+     
+[2018-11-26 03:19:28,853][DungeonMap][output][INFO] : -----
+[2018-11-26 03:19:28,856][LoggerDecorator][wrapper][DEBUG] : 'output' ended!
+	return value: 'None'
+[2018-11-26 03:19:28,858][LoggerDecorator][wrapper][DEBUG] : '__get_cells_near' started!
+	Params: {'self': <DungeonMap.DungeonMap object at 0x011F6630>, 'position': (3, 2)}
+
+[2018-11-26 03:19:28,859][LoggerDecorator][wrapper][DEBUG] : '__get_cells_near' ended!
+	return value: '[<DungeonCell.TRAP: 3>, <DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>, <DungeonCell.EMPTY: 0>]'
+[2018-11-26 03:19:28,860][DungeonMap][update][INFO] : Warning! There is 1 traps nearby!
+[2018-11-26 03:19:28,862][LoggerDecorator][wrapper][DEBUG] : 'update' ended!
+	return value: 'None'
+[2018-11-26 03:19:28,864][LoggerDecorator][wrapper][DEBUG] : '__get_player_command' started!
+	Params: {'self': <Character.Character object at 0x03817070>}
+
+[2018-11-26 03:19:28,865][Character][__get_player_command][INFO] : Please, input your command. Use "w", "a", "s", "d" and "save" commands: 

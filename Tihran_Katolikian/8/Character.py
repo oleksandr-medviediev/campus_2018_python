@@ -8,12 +8,7 @@ import DungeonGameConfig
 from CannotSaveGameError import CannotSaveGameError
 
 
-class PlayerCommand(Enum):
-    UP = 0
-    LEFT = 1
-    DOWN = 2
-    RIGHT = 3
-    SAVE = 4
+UP, LEFT, DOWN, RIGHT, SAVE = range(5)
 
 
 class Character(UpdateList):
@@ -34,23 +29,23 @@ class Character(UpdateList):
         self.__dungeon_map = dungeon_map
         self.__position = dungeon_map.get_player_position()
         self.__move_commands = (
-            PlayerCommand.UP,
-            PlayerCommand.LEFT,
-            PlayerCommand.DOWN,
-            PlayerCommand.RIGHT
+            UP,
+            LEFT,
+            DOWN,
+            RIGHT
         )
         self.__text_to_command = {
-            'w' : PlayerCommand.UP,
-            'a' : PlayerCommand.LEFT,
-            's' : PlayerCommand.DOWN,
-            'd' : PlayerCommand.RIGHT,
-            'save' : PlayerCommand.SAVE
+            'w' : UP,
+            'a' : LEFT,
+            's' : DOWN,
+            'd' : RIGHT,
+            'save' : SAVE
         }
         self.__direction_to_vector = {
-            PlayerCommand.UP : (-1, 0),
-            PlayerCommand.LEFT : (0, -1),
-            PlayerCommand.DOWN: (1, 0),
-            PlayerCommand.RIGHT: (0, 1)
+            UP : (-1, 0),
+            LEFT : (0, -1),
+            DOWN: (1, 0),
+            RIGHT: (0, 1)
         }
 
 
@@ -104,13 +99,13 @@ class Character(UpdateList):
                 if command in self.__move_commands:
                     can_go_there = True
                     x, y = self.__position
-                    if command is PlayerCommand.UP and x is 0:
+                    if command is UP and x is 0:
                         can_go_there = False
-                    elif command is PlayerCommand.DOWN and x is map_size - 1:
+                    elif command is DOWN and x is map_size - 1:
                         can_go_there = False
-                    elif command is PlayerCommand.LEFT and y is 0:
+                    elif command is LEFT and y is 0:
                         can_go_there = False
-                    elif command is PlayerCommand.RIGHT and y is map_size - 1:
+                    elif command is RIGHT and y is map_size - 1:
                         can_go_there = False
 
                     if not can_go_there:

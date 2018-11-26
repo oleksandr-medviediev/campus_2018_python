@@ -9,14 +9,10 @@ import DungeonGameSaveLoad
 from NoSavedDataFileError import NoSavedDataFileError
 
 
-class GameStartMode(Enum):
-    NEW_GAME = 0
-    LOAD_GAME = 1
+NEW_GAME, LOAD_GAME = range(2)
 
 
-class DungeonGameState(Enum):
-    GAME_MENU = 0
-    GAMEPLAY = 1
+GAME_MENU, GAMEPLAY = range(2)
 
 
 class DungeonGame:
@@ -30,11 +26,11 @@ class DungeonGame:
         self.__dungeon_map = DungeonMap()
         self.__character = None
         self.__game_start_mode = None
-        self.__current_game_state = DungeonGameState.GAME_MENU
+        self.__current_game_state = GAME_MENU
 
         self.__text_to_menu = {
-            'new game' : GameStartMode.NEW_GAME,
-            'load' : GameStartMode.LOAD_GAME
+            'new game' : NEW_GAME,
+            'load' : LOAD_GAME
         }
 
         self.__update_list = UpdateList()
@@ -79,9 +75,9 @@ class DungeonGame:
         This method implements a single game frame.
         It will work depends on 
         '''
-        if self.__current_game_state is DungeonGameState.GAME_MENU:
+        if self.__current_game_state is GAME_MENU:
             try:
-                if self.__game_start_mode is GameStartMode.LOAD_GAME:
+                if self.__game_start_mode is LOAD_GAME:
                     player_position, dungeon_map = DungeonGameSaveLoad.load_game()
                     self.__dungeon_map.init_from_load(player_position, dungeon_map)
                 else:
@@ -95,10 +91,10 @@ class DungeonGame:
                 self.process_game_start()
             else:
                 self.__character = Character('User', DungeonGameConfig.PLAYER_HP, self.__dungeon_map)
-                self.__current_game_state = DungeonGameState.GAMEPLAY
+                self.__current_game_state = GAMEPLAY
                 self.__update_list.add_children(self.__dungeon_map, self.__character)
 
-        elif self.__current_game_state is DungeonGameState.GAMEPLAY:
+        elif self.__current_game_state is GAMEPLAY:
             logging.info(f'Current character stats: hp - {self.__character.get_hp()}, num of treasures - \
             {self.__character.get_treasures_number()}')
             self.__update_list.update()
