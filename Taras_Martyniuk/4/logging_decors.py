@@ -6,26 +6,32 @@ import inspect, itertools
 
 
 DEBUG = False
-
-
-# they said it on the docs that dict config is cooler than file config, 
-# but i still wanted the config to stay in file.
-with open('log_config.json') as f:
-    config_dict = json.load(f)
-    logging.config.dictConfig(config_dict)
-
-
+LOG_CONFIG_FILENAME = 'log_config.json'
 DEBUG_FILE_NAME = 'Debug Log File'
 DEBUG_FILE_CONSOLE_NAME = 'Debug Log File Console'
 OUTPUT_NAME = 'Output Log'
 
-# for tracing debug info, writes to console and file, more heavy on message metadata 
-debug_file_logger = logging.getLogger(DEBUG_FILE_NAME)
-debug_file_console_logger = logging.getLogger(DEBUG_FILE_CONSOLE_NAME)
-# for writing output to user - outputs message to console and file, with no metadata
-output_logger = logging.getLogger(OUTPUT_NAME)
+debug_file_logger = None
+debug_file_console_logger = None
+output_logger = None
 
-debug_file_console_logger.debug('Inited loggers')
+# they said it on the docs that dict config is cooler than file config, 
+# but i still wanted the config to stay in file.
+try:
+    with open(LOG_CONFIG_FILENAME) as f:
+        config_dict = json.load(f)
+        logging.config.dictConfig(config_dict)
+
+    # for tracing debug info, writes to console and file, more heavy on message metadata 
+    debug_file_logger = logging.getLogger(DEBUG_FILE_NAME)
+    debug_file_console_logger = logging.getLogger(DEBUG_FILE_CONSOLE_NAME)
+    # for writing output to user - outputs message to console and file, with no metadata
+    output_logger = logging.getLogger(OUTPUT_NAME)
+
+    debug_file_console_logger.debug('Inited loggers')
+
+except FileNotFoundError:
+    print(f'Log config file missing: {LOG_CONFIG_FILENAME}')
 
 
 def log_decor(func):

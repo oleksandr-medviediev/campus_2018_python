@@ -16,7 +16,6 @@ Empty, Treasure, Trap = range(3)
 TREASURE_QUOTA = 0.1
 TRAP_QUOTA = 0.2
 
-
 class DungeonMap:
     '''
         wrapper on a 2D array holding Tile type enums

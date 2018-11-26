@@ -6,6 +6,7 @@ from serialization import save, load, save_exists
 from utils import player_moves
 from threading import Event
 from Enemy import Enemy
+from pickle import UnpicklingError
 
 
 PLAYER_HP = 1
@@ -74,18 +75,18 @@ def run_turn(death_event, win_event, player, dmap):
     input_result = handle_user_input(player)
 
     if input_result == Save:
-        save(dmap, player)
-        olog.info('Saved your game!\n')
+        try:
+            save(dmap, player)
+            olog.info('Saved your game!\n')
+        except IOError:
+            olog.info('could not write to save file. Maybe folder of the game is somewhere protected?')
+            
         return
 
     elif input_result == Load:
-        if not save_exists():
-            dlog.debug('Tried to load when savefile does not exist')
-            olog.info('You haven\'t saved it yet!')
-        else:
-            dmap, player = load()
-            dlog.debug('changed state to loaded:')
-            olog.info('Loaded your game!\n')
+        deserialized = handle_load()
+        if deserialized is not None:
+            dmap, player = deserialized
         return
 
     tile_type = dmap.at(player.position)
@@ -102,6 +103,30 @@ def run_turn(death_event, win_event, player, dmap):
         player.lose_health()
 
     olog.info('\n')
+
+
+def handle_load():
+    '''
+        tries to load, telling user if the savefile does not exist
+        :returns: tuple (dmap, player) - deserialized DungeonMap and Player
+            or None if the load was unsuccessful
+    '''
+    if not save_exists():
+        dlog.debug('Tried to load when savefile does not exist')
+        olog.info('You haven\'t saved it yet!')
+        return None
+
+    try:
+        deserialized = load()
+        dlog.debug('changed state to loaded:')
+        olog.info('Loaded your game!\n')
+
+        return deserialized
+
+    except UnpicklingError:
+        olog.info('Could not load the save, savefile corrupted')
+        return None
+
 
 
 @log_decor

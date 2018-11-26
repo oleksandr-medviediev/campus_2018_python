@@ -34,5 +34,3 @@ def load():
     with open(SAVE_FILE, 'rb') as sf:
         state = pickle.load(sf)
         return state
-
-
