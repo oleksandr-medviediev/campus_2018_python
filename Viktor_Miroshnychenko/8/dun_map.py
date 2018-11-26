@@ -66,7 +66,10 @@ class DungeonMap:
         for cage in cages:
             dungeon_logger.logger.info(WARNINGS[cage])
 
-        self.dun_map[position[0]][position[1]] = 'y'
+        try:
+            self.dun_map[position[0]][position[1]] = 'y'
+        except IndexError as error:
+            dungeon_logger.logger.info(f'Player on wrong position/n IndexError: {error}')
 
         if cage_state == 'bomb':
             
