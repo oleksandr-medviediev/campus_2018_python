@@ -76,7 +76,10 @@ class DungeonMap:
 
         if cage_state == 'bomb':
             
-            player.applay_damage(1)
+            try:
+                player.applay_damage(1)
+            except dungeon_exception.DamageError as error:
+                dungeon_logger.logger.info(f'DamageError raised: {error}')
             dungeon_logger.logger.info('You picked the bomb')
         
         elif cage_state == 'treasue':

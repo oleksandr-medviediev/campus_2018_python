@@ -1,5 +1,6 @@
 import dungeon_decorators
 import dun_map
+import dungeon_exception as dexc
 
 
 MENU_COMMANDS = ['save', 'load']
@@ -47,6 +48,8 @@ class Player(Character):
         :type damage: int
         """
 
+        if damage < 0:
+            raise dexc.DamageError(f'{damage}')
         self.hit_points -= damage
 
 
