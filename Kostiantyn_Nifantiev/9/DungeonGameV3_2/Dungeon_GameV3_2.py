@@ -2,6 +2,11 @@ from dungeon_game import Game
 from dungeon_logger import my_logger
 
 
+"""
+https://test.pypi.org/project/game-map-pkg/
+"""
+
+
 game_instance = Game()
 
 while True:
