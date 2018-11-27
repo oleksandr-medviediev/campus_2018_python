@@ -1,10 +1,14 @@
 import View
 import DungeonSaver
+
 from Player import Player
 from World import World
+
 from DungeonLogger import main_logger
 from DungeonLogger import debugger_output
+
 from DataLoadError import DataLoadError
+from PlayerMoveError import PlayerMoveError
 
 
 @debugger_output()
@@ -33,11 +37,11 @@ Input move:'
             main_logger.info(user_input_fail)
             continue
 
-        is_valid = moves[move]()
+        is_valid = True
+        try:
+            moves[move]()
 
-        if is_valid:
-            world.update_player_position(player)
-        else:
+        except PlayerMoveError:
             main_logger.info(player_move_fail)
 
 

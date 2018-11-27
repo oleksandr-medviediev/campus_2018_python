@@ -1,9 +1,12 @@
 from random import randint
-from DungeonLogger import debugger_output
 from itertools import product
+
 from DungeonLogger import main_logger
+from DungeonLogger import debugger_output
+
 from WorldInitError import WorldInitError
 from DataLoadError import DataLoadError
+from PlayerMoveError import PlayerMoveError
 
 
 class World:
@@ -137,16 +140,18 @@ class World:
 
 
     @debugger_output()
-    def update_player_position(self, player):
+    def update_player_position(self, player, x, y):
         """
         Updates player according to it's position
 
         :param player: player object
+        :param x: x axis coordinate
+        :param y: y axis coordinate
         :rtype: None
         """
 
-        x = player.x
-        y = player.y
+        if not self._is_valid_position(x, y):
+            raise PlayerMoveError
 
         item = self.__world[y][x]
 
@@ -181,7 +186,7 @@ class World:
 
 
     @debugger_output()
-    def is_valid_position(self, x, y):
+    def _is_valid_position(self, x, y):
         """
         Returns True if position is valid, False otherwise
 

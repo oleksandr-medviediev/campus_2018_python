@@ -156,69 +156,41 @@ class Player:
     @debugger_output()
     def up(self):
         """
-        Moves player up if possible
-
-        :return: moved or not
-        :rtype: bool
+        Moves player up
         """
 
-        valid = self.__world.is_valid_position(self.x, self.y - 1)
-
-        if valid:
-            self.__y -= 1
-        
-        return valid
+        self.__world.update_player_position(self, self.x, self.y - 1)
+        self.__y -= 1
 
 
     @debugger_output()
     def down(self):
         """
-        Moves player up if possible
-
-        :return: moved or not
-        :rtype: bool
+        Moves player down
         """
 
-        valid = self.__world.is_valid_position(self.x, self.y + 1)
-
-        if valid:
-            self.__y += 1
-        
-        return valid
+        self.__world.update_player_position(self, self.x, self.y + 1)
+        self.__y += 1
 
 
     @debugger_output()
     def left(self):
         """
-        Moves player up if possible
-
-        :return: moved or not
-        :rtype: bool
+        Moves player left
         """
 
-        valid = self.__world.is_valid_position(self.x - 1, self.y)
-
-        if valid:
-            self.__x -= 1
-        
-        return valid
+        self.__world.update_player_position(self, self.x - 1, self.y)
+        self.__x -= 1
 
 
     @debugger_output()
     def right(self):
         """
-        Moves player up if possible
-
-        :return: moved or not
-        :rtype: bool
+        Moves player right
         """
 
-        valid = self.__world.is_valid_position(self.x + 1, self.y)
-
-        if valid:
-            self.__x += 1
-        
-        return valid
+        self.__world.update_player_position(self, self.x + 1, self.y)
+        self.__x += 1
 
 
     @debugger_output()

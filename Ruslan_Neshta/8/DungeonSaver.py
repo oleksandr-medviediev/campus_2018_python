@@ -1,5 +1,6 @@
 import json
 import pickle
+from os import path
 from DungeonLogger import debugger_output
 from DungeonLogger import main_logger
 
@@ -66,14 +67,12 @@ def load_game():
     :rtype: dict
     """
 
+    game = {}
     try:
-        game = load_pickle()
-
-    except FileNotFoundError:
-        game = load_json()
-    
-    except FileNotFoundError:
-        main_logger.info('Can\'t find file')
+        if path.isfile(SAVE):
+            main_logger.info('Can\'t find saved game')
+        else:
+            game = load_pickle()
 
     except IOError:
         main_logger.info('Can\'t read data from file')
