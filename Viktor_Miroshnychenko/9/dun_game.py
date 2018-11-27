@@ -54,10 +54,10 @@ class Game:
 
             self.player.get_command()
 
-            if self.player.command in dun_map.COMMANDS:
+            if self.player.command in dun_player.COMMANDS:
 
                 try:
-                    self.dun_map.process_move(self.player)
+                    self.player.process_move(self.dun_map)
                 except (dungeon_exception.CommandError, dungeon_exception.MapCageError) as error:
                     dungeon_logger.logger.info(f'Invalid Player command: {error}')
                 

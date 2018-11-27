@@ -1,8 +1,14 @@
 import dungeon_decorators
+import dungeon_logic
+import dungeon_exception
+import dungeon_logger
 import dun_map
 import dungeon_exception as dexc
 
 
+COMMANDS = ['r', 'l', 'u', 'd']
+WARNINGS = {'bomb':'Bomb is near you!',
+            'treasue':'Tresure is near you'}
 MENU_COMMANDS = ['save', 'load']
 
 
@@ -35,7 +41,7 @@ class Player(Character):
     def get_command(self):
 
         self.command = ""
-        while self.command not in MENU_COMMANDS and  self.command not in dun_map.COMMANDS:
+        while self.command not in MENU_COMMANDS and  self.command not in COMMANDS:
 
             self.command = input('Enter valid command\n')
 
@@ -63,4 +69,59 @@ class Player(Character):
 
         self.treasure_picked += diff
     
+    @dungeon_decorators.debug_time_decor
+    @dungeon_decorators.debug_decor
+    def process_move(self, dung_map):
+        """
+        :param dung_map: map of the game
+        :type dung_map: DungeonMap
+        """
+
+        position = self.position
+        size = len(dung_map.dun_map)
+        command = self.command
+        game_map = dung_map.dun_map
+
+        if command not in COMMANDS:
+            raise dungeon_exception.CommandError('Invalid command was entered!')
+
+        dungeon_logger.logger.debug(f"Move with command: {command}")
+    
+        try:
+            game_map[position[0]][position[1]] = '0'
+        except TypeError as error:
+            dungeon_logger.logger.info(f'TypeError occured: {error}')
+        move_ret_val = dungeon_logic.make_move_if_possible(position, size, command)
+        
+        if move_ret_val == False:
+
+            dungeon_logger.logger.info('Move is not possible')
+            game_map[position[0]][position[1]] = 'y'
+
+            return
+        
+        cage_state = dungeon_logic.check_pos(game_map, position)
+        cages = dungeon_logic.check_closest_pos(game_map, position, size)
+        for cage in cages:
+            dungeon_logger.logger.info(WARNINGS[cage])
+
+        try:
+            game_map[position[0]][position[1]] = 'y'
+        except IndexError as error:
+            dungeon_logger.logger.info(f'Player on wrong position/n IndexError: {error}')
+
+        if cage_state == 'bomb':
+            
+            try:
+                self.applay_damage(1)
+            except dungeon_exception.DamageError as error:
+                dungeon_logger.logger.info(f'DamageError raised: {error}')
+            dungeon_logger.logger.info('You picked the bomb')
+        
+        elif cage_state == 'treasue':
+            self.change_score(1)
+            dungeon_logger.logger.info('You picked the treasure')
+
+        elif cage_state is not 'empty':
+            raise dungeon_exception.MapCageError(game_map, position, cage_state)
 
