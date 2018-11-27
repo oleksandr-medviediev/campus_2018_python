@@ -1,7 +1,10 @@
+import time
+import threading
 import dungeon_logger
 import dungeon_decorators
 import dun_player
 import dun_map
+import dungeon_enemy
 import dungeon_serializer
 import dungeon_exception
 
@@ -12,6 +15,8 @@ class Game:
 
         self.player = dun_player.Player()
         self.dun_map = dun_map.DungeonMap(5)
+        self.enemy = dungeon_enemy.Enemy()
+        self.closing = False
 
         dungeon_logger.logger.info('Default map size = 3\n')
         command = input("Press 'Y' to change map size\n")
@@ -43,7 +48,17 @@ class Game:
         """
 
         self.dun_map.set_player_on_map(self.player)
+        self.enemy.position = dun_map.dungeon_map_generate.set_character_randomly(self.dun_map.dun_map)
 
+    def enemy_update(self):
+
+        while self.closing is False:
+            time.sleep(1)
+            self.enemy.process_move(self.dun_map)
+            if self.enemy.position == self.player.position:
+
+                self.enemy.attack(self.player)
+                dungeon_logger.logger.info('You were attacked by enemy!')
 
     def run_game(self):
         """
@@ -77,12 +92,24 @@ class Game:
                     self.player = game.player
                     self.dun_game = game.dun_map
 
+        self.closing = True
         if self.player.hit_points == 0:
             dungeon_logger.logger.info('You LOST')
         elif self.player.treasure_picked == 3:
             dungeon_logger.logger.info('You WON')
 
 
+    def run(self):
+
+        game_thread = threading.Thread(target=self.run_game)
+        enemy_thread = threading.Thread(target=self.enemy_update)
+
+        game_thread.start()
+        enemy_thread.start()
+        game_thread.join()
+        enemy_thread.join()
+
+
 game = Game()
 game.init_game()
-game.run_game()
+game.run()

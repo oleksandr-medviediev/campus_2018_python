@@ -41,7 +41,7 @@ def generate_map(size):
 
 @dungeon_decorators.debug_time_decor
 @dungeon_decorators.debug_decor
-def set_player_randomly(dung_map):
+def set_character_randomly(dung_map):
     """
     :param dung_map: map that player must be placed on
     :type dung_map: list[list[]]

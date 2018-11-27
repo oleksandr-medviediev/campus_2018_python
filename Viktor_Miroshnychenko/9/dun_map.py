@@ -26,7 +26,7 @@ class DungeonMap:
         :type player: Player
         """
 
-        player.position = dungeon_map_generate.set_player_randomly(self.dun_map)
+        player.position = dungeon_map_generate.set_character_randomly(self.dun_map)
 
     @dungeon_decorators.debug_time_decor
     @dungeon_decorators.debug_decor
