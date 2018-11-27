@@ -1,0 +1,118 @@
+2018-11-26 19:17:10,221 - Your name is..
+2018-11-26 19:17:11,963 - While your country goes through economic recession, you're fired from your job. With no money to pay for food or rent you stumble on a notice informing about prospects of great fortunes for people who would dare to explore dungeons. You immediately set off to a local goverment administration for more details.
+2018-11-26 19:17:12,435 - At administration minimum of your questions are answered clearly and the only thing you understood is that you need a special license in order to explore the dungeon. You're quite sure that your country isn't Great Britain but keep your remarks to yourself and hope you won't need a license for torch or flashlight.
+2018-11-26 19:17:12,754 - After spending your last money on license you are surprised that exept for your name and address the only blanksyou have to fill is the one about your proficiency:
+'Please specify if you have one of following proficiencies:
+melee - you are proficient in close combat, if you are a former soldier, that's one for you
+magic - you specialize in arcane arts. For wizards and such.
+guile - you are a cunning person with set of rather unscrupulous skills.A thief with good eye for heavy purse who can also snatch it without owner noticing would be a fine example.
+If no of specified three peoficiencies will be chosen then you will have none. You can choose no more than one proficiency. This information will not be shared with judicial branch of goverment, you can chose guile.
+2018-11-26 19:17:17,499 - After getting your license you're recieve a rather impressive list of awailable dungeons. They come in many different variations. Please specify width of your dungeon:
+2018-11-26 19:17:18,091 - non-numeric input from user
+2018-11-26 19:17:18,091 - please enter number between 5 50
+2018-11-26 19:17:22,795 - Now you have to specify dungeon height, even thought it's not vertical but just another horizontal dimention.
+2018-11-26 19:17:24,148 - empty map generated
+2018-11-26 19:17:24,149 - treasures generated
+2018-11-26 19:17:24,149 - traps generated
+2018-11-26 19:17:24,149 - enemy spawned at 0,0
+2018-11-26 19:17:24,156 - You enter the room with coordinates 4,0.
+2018-11-26 19:17:24,220 - entered cell e
+2018-11-26 19:17:24,226 - That's the place where you entered dungeon.
+You hope you will be able to leave it as well.
+2018-11-26 19:17:24,301 - Something tells you that the treasure is near.
+2018-11-26 19:17:24,379 - You decide to:
+2018-11-26 19:17:26,587 - 
+? ? ? ? ?
+? ? ? ? p
+2018-11-26 19:17:26,661 - You decide to:
+2018-11-26 19:17:27,150 - enemy moves to 0,1
+2018-11-26 19:17:28,698 - You enter the room with coordinates 4,1.
+2018-11-26 19:17:28,776 - entered cell 0
+2018-11-26 19:17:28,782 - Room is empty exept for some broken pieces of furniture and you.
+2018-11-26 19:17:28,854 - You have a feeling in your gut that treasure is nearby.
+2018-11-26 19:17:28,920 - You decide to:
+2018-11-26 19:17:30,151 - enemy moves to 0,0
+2018-11-26 19:17:31,197 - You enter the room with coordinates 3,1.
+2018-11-26 19:17:31,268 - entered cell x
+2018-11-26 19:17:31,274 - You find treasure. You are rich!
+2018-11-26 19:17:31,352 - The passages leading from this room have an eerie feel about them.
+2018-11-26 19:17:31,424 - But that's not all.
+2018-11-26 19:17:31,490 - You have a feeling in your gut that treasure is nearby.
+2018-11-26 19:17:31,562 - You decide to:
+2018-11-26 19:17:33,152 - enemy moves to 1,0
+2018-11-26 19:17:36,153 - enemy moves to 0,0
+2018-11-26 19:17:37,535 - 
+0 b c p 0
+0 0 x x e
+2018-11-26 19:17:37,607 - You decide to:
+2018-11-26 19:17:39,154 - enemy moves to 0,1
+2018-11-26 19:17:42,155 - enemy moves to 0,0
+2018-11-26 19:17:45,156 - enemy moves to 0,1
+2018-11-26 19:17:46,900 - You enter the room with coordinates 2,1.
+2018-11-26 19:17:46,960 - entered cell c
+2018-11-26 19:17:46,966 - Suddenly surroundings get even more darker even though it would seem impossible and you hear a ghostly voice speaking in a language long forgotten.
+2018-11-26 19:17:47,040 - You don't have to understand the voice to know that it's a curse.
+2018-11-26 19:17:47,106 - Dealing with curses was your thesis in magic academy.You cast appropriate spell in 1.3 seconds after curse activating and observe as darkness dissapears along with wailing voice.
+2018-11-26 19:17:47,165 - The passages leading from this room have an eerie feel about them.
+2018-11-26 19:17:47,231 - But that's not all.
+2018-11-26 19:17:47,303 - You have a feeling in your gut that treasure is nearby.
+2018-11-26 19:17:47,387 - You decide to:
+2018-11-26 19:17:48,157 - enemy moves to 0,0
+2018-11-26 19:17:51,158 - enemy moves to 0,1
+2018-11-26 19:17:52,751 - You enter the room with coordinates 2,0.
+2018-11-26 19:17:52,817 - entered cell x
+2018-11-26 19:17:52,823 - You find treasure. You are rich!
+2018-11-26 19:17:52,889 - You have a feeling in your gut that treasure is nearby.
+2018-11-26 19:17:52,961 - You decide to:
+2018-11-26 19:17:54,159 - enemy moves to 0,0
+2018-11-26 19:17:54,636 - You enter the room with coordinates 1,0.
+2018-11-26 19:17:54,690 - entered cell 0
+2018-11-26 19:17:54,696 - This room is empty
+2018-11-26 19:17:54,756 - You fell danger lurking nearby.
+2018-11-26 19:17:54,834 - You decide to:
+2018-11-26 19:17:56,402 - You can't do that. You can hovewer:
+2018-11-26 19:17:57,160 - enemy moves to 0,1
+2018-11-26 19:17:57,638 - You enter the room with coordinates 0,0.
+2018-11-26 19:17:57,704 - entered cell 0
+2018-11-26 19:17:57,710 - This room is remarkebly unremarkable.
+2018-11-26 19:17:57,782 - You decide to:
+2018-11-26 19:17:59,284 - You carefully check the wall but there doesn't seem to be any passage.
+2018-11-26 19:17:59,356 - You decide to:
+2018-11-26 19:18:00,160 - enemy moves to 0,0
+2018-11-26 19:18:00,160 - enemy finds player
+2018-11-26 19:18:00,160 - You certainly didn't expect the Spanish Inqusition.
+2018-11-26 19:18:01,051 - There is just a wall in that direcion.
+2018-11-26 19:18:01,055 - You are charged that you did on diverse dates commit heresy against the Holy Church.
+2018-11-26 19:18:01,059 - You decide to:
+2018-11-26 19:18:01,064 - You plead innocent but for no awail. You are fastened to the rack. Luckily it seems that inquisitors are rather busy people because after giving the rack a few turns and poking you with soft cushionsthey sat you in a comfy chair and hurry away to get another victim.
+2018-11-26 19:18:10,303 - enemy spawned at 4,1
+2018-11-26 19:18:10,303 - enemy moves to 3,1
+2018-11-26 19:18:10,299 - You can't do that. You can hovewer:
+2018-11-26 19:18:13,304 - enemy moves to 2,1
+2018-11-26 19:18:13,385 - 
+? ? % % +
+p - + ? +
+2018-11-26 19:18:13,463 - You decide to:
+2018-11-26 19:18:16,305 - enemy moves to 1,1
+2018-11-26 19:18:16,683 - You enter the room with coordinates 1,0.
+2018-11-26 19:18:16,743 - entered cell 0
+2018-11-26 19:18:16,749 - There is nothing in this room that's worth your attention.
+2018-11-26 19:18:16,803 - The passages leading from this room have an eerie feel about them.
+2018-11-26 19:18:16,869 - You decide to:
+2018-11-26 19:18:18,428 - You enter the room with coordinates 2,0.
+2018-11-26 19:18:18,487 - entered cell 0
+2018-11-26 19:18:18,493 - Room is empty exept for some broken pieces of furniture and you.
+2018-11-26 19:18:18,559 - Something tells you that the treasure is near.
+2018-11-26 19:18:18,625 - You decide to:
+2018-11-26 19:18:19,306 - enemy moves to 2,1
+2018-11-26 19:18:19,763 - You enter the room with coordinates 3,0.
+2018-11-26 19:18:19,823 - entered cell x
+2018-11-26 19:18:19,829 - You find treasure. You are rich!
+2018-11-26 19:18:19,889 - You can hardly can belive it, but it seems you've found all treasure in this dungeon. The task of taking it back somehow doesn't seem hard at all.
+2018-11-26 19:18:19,900 - DungeonGame.player won
+2018-11-26 19:18:23,554 - Here is the map of the dungeon.
+2018-11-26 19:18:23,560 - 
+0 b 0 0 0
+0 0 0 p e
+2018-11-26 19:18:25,490 - Would you like to play again?
+2018-11-26 19:18:26,810 - user exits game
