@@ -4,7 +4,7 @@ import dungeon_game_map as mm
 import dungeon_game_save_and_load as io
 import dungeon_game_logger as log
 import dungeon_game_exceptions as exc
-import _thread
+import threading
 import time
 
 
@@ -13,6 +13,7 @@ class DungeonGame:
     __player = pm.Player()
     __enemy = em.Enemy()
     __io_manager = io.GameIO()
+    __lock = threading.Lock()
 
 
     def initialize(self):
@@ -93,7 +94,8 @@ class DungeonGame:
             "save": ""
         }
 
-        _thread.start_new_thread(self.update_enemy)
+        enemy_thread = threading.Thread(target=self.update_enemy, name="enemy_thread")
+        enemy_thread.start()
 
         while True:
             if self.__player.is_player_dead():
@@ -164,6 +166,8 @@ class DungeonGame:
 
             self.__game_map.update_map(old_position)
             self.__game_map.print_map()
+
+        enemy_thread.join()
 
     
     def update_player_directions(self):
@@ -275,6 +279,8 @@ class DungeonGame:
         while True:
             time.sleep(3)
 
+            self.__lock.acquire()
+
             if self.__player.is_player_dead() or self.__player.is_player_win():
                 break
 
@@ -293,6 +299,8 @@ class DungeonGame:
 
             print("\n\n\n")
             self.__game_map.print_map()
+
+            self.__lock.release()
 
 
 if __name__ == ('__main__'):
