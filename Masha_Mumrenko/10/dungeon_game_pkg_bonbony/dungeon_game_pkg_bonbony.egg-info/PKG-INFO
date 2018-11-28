@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: dungeon-game-pkg-bonbony
+Version: 0.0.1
+Summary: A dungeon game package bu bonbony
+Home-page: https://github.com/bonbony/campus_2018_python/tree/master/Masha_Mumrenko
+Author: Mumrenko Masha
+Author-email: mr.mashaishere@gmail.com
+License: UNKNOWN
+Description: # Learning Python - Dungeon Game Package
+        
+        A game for fun, a game for knowledge :) by @bonbony
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
