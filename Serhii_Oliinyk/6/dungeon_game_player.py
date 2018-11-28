@@ -1,3 +1,6 @@
+import dungeon_game_logger as log
+
+
 class Character:
     def __init__(self):
         self.__health = 3
@@ -42,6 +45,7 @@ class Player(Character):
 
         result = False
         if self.treasure_number == 3:
+            log.logger.info("\nYou win!\n")
             result = True
         
         return result
@@ -59,9 +63,32 @@ class Player(Character):
 
         result = False
         if self.health == 0:
+            log.logger.info("\nYou lose!\n")
             result = True
 
         return result
+    
+
+    def is_player_dead(self):
+        """
+        Check if player dead.
+
+        :return: True or False.
+        :rtype: bool.
+
+        """
+        return self.health == 0
+
+
+    def is_player_win(self):
+        """
+        Check if player win.
+
+        :return: True or False.
+        :rtype: bool.
+
+        """
+        return self.treasure_number == 3
 
 
     @property

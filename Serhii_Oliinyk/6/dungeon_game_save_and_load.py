@@ -1,3 +1,6 @@
+import dungeon_game_logger as log
+
+
 class GameIO:
     def save_game(self, game_matrix):
         """
@@ -16,7 +19,7 @@ class GameIO:
             save_file.write(string)
 
         save_file.close()
-    
+
 
     def load_game(self):
         """
@@ -26,19 +29,20 @@ class GameIO:
         :rtype: list.
 
         """
-
-        load_file = open("file.txt", "r")
         game_matrix = []
-    
-        data = load_file.readlines()
-        load_file.close()
 
-        player_position = []
+        try:
+            load_file = open("file.txt", "r")
+            
+            data = load_file.readlines()
+            load_file.close()
 
-        for i in range(len(data)):
-            line = data[i].split(' ')
-            line.pop()
+            for i in range(len(data)):
+                line = data[i].split(' ')
+                line.pop()
 
-            game_matrix.append(line)
+                game_matrix.append(line)
+        except IOError:
+            log.logger.error("IOError exception. Could not open file to read data.")
 
         return game_matrix

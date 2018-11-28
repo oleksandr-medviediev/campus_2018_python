@@ -5,6 +5,7 @@ import dungeon_game_logger as log
 class GameMap:
     __game_matrix = []
     __player_position = []
+    __enemy_position = []
 
     
     def create_map(self, map_size):
@@ -17,6 +18,8 @@ class GameMap:
         :return: None.
 
         """
+        self.__map_size = map_size
+
         for i in range (map_size):
             line = ["_" for j in range(map_size)]
             self.__game_matrix.append(line)
@@ -59,8 +62,29 @@ class GameMap:
                 self.__player_position = [row, column]
                 break
         
+        self.spawn_enemy()
+        
         self.print_map()
-    
+
+
+    def spawn_enemy(self):
+        """
+        Spawn and respawn enemy on map.
+
+        :return: None.
+
+        """
+        while True:
+            map_size = len(self.__game_matrix)
+
+            row = randrange(map_size)
+            column = randrange(map_size)
+
+            if self.__game_matrix[row][column] == "_":
+                self.__game_matrix[row][column] = "e"
+                self.__enemy_position = [row, column]
+                break
+
 
     @property
     def game_matrix(self):
@@ -83,6 +107,11 @@ class GameMap:
     def player_position(self):
         return self.__player_position
 
+    
+    @property
+    def enemy_position(self):
+        return self.__enemy_position
+
 
     def update_map(self, old_position):
         """
@@ -102,6 +131,34 @@ class GameMap:
 
         self.__game_matrix[old_x][old_y] = "_"
         self.__game_matrix[x][y] = "p"
+
+
+    def update_enemy_position(self, old_enemy_position, enemy_position):
+        """
+        Update enemy position on the map.
+
+        :param old_enemy_position: old enemy position.
+        :type old_enemy_position: list.
+
+        :param new_enemy_position: new enemy position.
+        :type new_enemy_position: list.
+
+        :return: None.
+
+        """
+        old_x = old_enemy_position[0]
+        old_y = old_enemy_position[1]
+
+        if self.__game_matrix[old_x][old_y] == "e":
+            self.__game_matrix[old_x][old_y] = "_"
+
+        new_x = enemy_position[0]
+        new_y = enemy_position[1]
+
+        if self.__game_matrix[new_x][new_y] == "_":
+            self.__game_matrix[new_x][new_y] = "e"
+
+        self.__enemy_position = enemy_position
 
 
     def print_map(self):
