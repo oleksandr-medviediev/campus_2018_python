@@ -13,6 +13,8 @@ def query_logging_mode():
     """
     Query logging mode and set corresponding global variable.
 
+    TestPyPI link: https://test.pypi.org/project/dungeon-game-vkuksa/
+
     :return: None.
     """
     mode = input('Select logging mode:\n1. Debug\n2. Useful\n3. Both\n(press 1-3 or any key to skip)\n')
