@@ -1,0 +1,13 @@
+Metadata-Version: 1.1
+Name: map-test-package
+Version: 0.0.2
+Summary: Package contsains file for creating map for dungeon game.
+Home-page: https://github.com/Serhiyko/Python_project_packaging
+Author: Serhii Oliinyk
+Author-email: UNKNOWN
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
