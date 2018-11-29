@@ -1,4 +1,8 @@
 import unittest
+
+import sys
+sys.path.append("..")
+
 from game_map import GameMap
 from player import Player
 

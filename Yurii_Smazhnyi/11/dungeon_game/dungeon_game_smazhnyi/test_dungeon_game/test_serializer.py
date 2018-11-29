@@ -1,5 +1,11 @@
 import unittest
+
+import sys
+sys.path.append("..")
+
+from game_map import GameMap
 from serializer import Serializer
+
 
 class TestSerializer(unittest.TestCase):
 
