@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: dungeon-game-stereotype-pkg
+Version: 0.0.5
+Summary: The dungeon game package
+Home-page: https://github.com/Stereotype97/campus_2018_python/tree/Dmytro_Skorobohatskyi
+Author: Dmytro Skorobohatskyi
+Author-email: skorobogatskiidima@gmail.com
+License: UNKNOWN
+Description: # Dungeon Game Package
+        
+        This is a simple dungeon game package.
+        You need find the treasure, do not get trapped and run away from enemy.
+        You can see it on https://github.com/Stereotype97/campus_2018_python/tree/Dmytro_Skorobohatskyi
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
