@@ -1,1 +1,1 @@
-name = TKDungeonGamePkg
+name = 'TKDungeonGamePkg'
