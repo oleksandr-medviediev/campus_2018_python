@@ -99,12 +99,12 @@ class Map:
         self.cell_quantities = {
             "nothing": size.x * size.x - treasures - traps,
             "treasure": treasures,
-            "traps": traps
+            "trap": traps
         }
 
         # map
         self.__game_map = \
-            generate_random_map(self.probabilities, self.reprs, size=self.size.x)
+            generate_random_map(self.cell_quantities, self.reprs, size=self.size.x, probabilistic=False)
 
         # view
         self.view = Position(1, 1)

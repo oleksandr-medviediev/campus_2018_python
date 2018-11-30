@@ -9,6 +9,11 @@ from game_world import GameWorld
 
 
 def main():
+    """
+    Main function - starter for dungeon game.
+    Package - pip install dungeon-game-mykhailovskyi.
+    URL: https://pypi.org/project/dungeon-game-mykhailovskyi/
+    """
     print("Wilkommen im Dungeon Game!\n")
     print("To save/load game just enter save/load during your turn")
 
