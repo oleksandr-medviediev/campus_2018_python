@@ -10,5 +10,5 @@ class PlayerDiedError(DungeonGameError):
 
 class PlayerBagFullError(DungeonGameError):
 
-    def __str_(self):
+    def __str__(self):
         return 'Player Bag is full!'
