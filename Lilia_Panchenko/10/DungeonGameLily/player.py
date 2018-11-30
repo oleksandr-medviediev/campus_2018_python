@@ -1,8 +1,8 @@
-from logger import my_logger
+from .logger import my_logger
 from random import choice
 import logging
 
-from custom_exception import PlayerInputError
+from .custom_exception import PlayerInputError
 
 
 class Player:

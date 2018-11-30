@@ -1,5 +1,5 @@
-from game_map import GameMap
-from logger import my_logger
+from .game_map import GameMap
+from .logger import my_logger
 
 
 class GameStep:

@@ -1,11 +1,11 @@
 import threading
 import time
 
+from random import choice
+from .enemy import Enemy
+
 
 exitFlag = 0
-
-from random import choice
-from enemy import Enemy
 
 class EnemyThread(threading.Thread):
     """

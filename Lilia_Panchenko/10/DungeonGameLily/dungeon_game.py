@@ -1,16 +1,16 @@
 import pickle
 import logging
 
-from game_step import GameStep
-from player import Player
+from .game_step import GameStep
+from .player import Player
 
-from logger import my_logger
+from .logger import my_logger
 
-from custom_exception import PlayerInputError
-from custom_exception import PlayerNameError
+from .custom_exception import PlayerInputError
+from .custom_exception import PlayerNameError
 
-from enemy import Enemy
-from thread_enemy import EnemyThread
+from .enemy import Enemy
+from .thread_enemy import EnemyThread
 
 
 class DungeonGame:
@@ -117,9 +117,9 @@ class DungeonGame:
 
     @my_logger.debug_decorator
     @my_logger.info_decorator
-    def process_game(self):
+    def process_game_cycle(self):
         """
-        Function to run game process
+        Function to run game cycle
         : return : None
         """
         print(f"\nWelcome to dungeon game, {self.my_player.name}! Let's play!\n\nYou can save your game in any time by typing 'save'"+
@@ -145,33 +145,37 @@ class DungeonGame:
         self.my_game_step.print_game_map(self.my_player.position)
 
 
-my_logger.set_debug_logging()
-my_logger.set_info_logging()
+    @my_logger.debug_decorator
+    @my_logger.info_decorator
+    def start(self):    
+        """
+        Function to start game. Call to start all processes
+        : return : None
+        """
+        my_logger.set_debug_logging()
+        my_logger.set_info_logging()
 
-game = DungeonGame()
+        while True:
 
+            new_or_load = input("Do you want to play a new game or load old one? [(N)ew / (L)oad]: ")
+            new_or_load = new_or_load.casefold()
 
-while True:
+            try:
+                if new_or_load not in ['n', 'l', 'new', 'load']:
+                    raise PlayerInputError(new_or_load)
+                else:
+                    break
 
-    new_or_load = input("Do you want to play a new game or load old one? [(N)ew / (L)oad]: ")
-    new_or_load = new_or_load.casefold()
+            except PlayerInputError as error:
+                logging.error(error)
+                logging.info("Something wrong inputed. Try again...")
 
-    try:
-        if new_or_load not in ['n', 'l', 'new', 'load']:
-            raise PlayerInputError(new_or_load)
+        if new_or_load == 'n' or new_or_load == 'new':
+            self.new_game()
+
         else:
-            break
+            self.load_game()
 
-    except PlayerInputError as error:
-        logging.error(error)
-        logging.info("Something wrong inputed. Try again...")
-
-if new_or_load == 'n' or new_or_load == 'new':
-    game.new_game()
-
-else:
-    game.load_game()
-
-enemy_move_thread = EnemyThread(1, "Enemy_Move_Thread", game.my_enemy, game.my_game_step.my_game_map.mapsize)
-enemy_move_thread.start()
-game.process_game()
+        enemy_move_thread = EnemyThread(1, "Enemy_Move_Thread", self.my_enemy, self.my_game_step.my_game_map.mapsize)
+        enemy_move_thread.start()
+        self.process_game_cycle()

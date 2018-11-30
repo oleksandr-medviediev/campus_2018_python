@@ -1,4 +1,4 @@
-from logger import my_logger
+from .logger import my_logger
 from random import choice
 
 

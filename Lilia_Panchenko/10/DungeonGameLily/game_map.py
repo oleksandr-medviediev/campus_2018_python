@@ -1,7 +1,7 @@
 from random import choice
-from logger import my_logger
+from .logger import my_logger
 import logging
-from custom_exception import MapSizeError
+from .custom_exception import MapSizeError
 
 
 class GameMap:

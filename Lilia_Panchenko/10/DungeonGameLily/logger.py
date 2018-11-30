@@ -116,7 +116,7 @@ class Logger:
                 if len(args) > 0:
                     f_args_names = inspect.signature(f).parameters
                     args_with_names = {k: v for (k, v) in zip(f_args_names, args)}
-                    self.m_debugLogger.debug("Arguments:" + form_args_string(args_with_names))
+                    self.m_debugLogger.debug("Arguments:" + self.form_args_string(args_with_names))
 
                 to_return = f(*args, **kwargs)
                 self.m_debugLogger.debug("Result value:" + str(to_return))
@@ -136,7 +136,7 @@ class Logger:
         @wraps(f)
         def wrapped(*args, **kwargs):
 
-            if is_info:
+            if self.is_info:
 
                 self.m_infoLogger.info(f"Function {f.__name__} started")
 
