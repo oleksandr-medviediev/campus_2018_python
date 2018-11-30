@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Name: dungeon-game
+Version: 0.0.1
+Summary:  Study pakage
+Home-page: https://github.com/viktor-viktor/campus_2018_python
+Author: Viktor Mitoshnychenko
+License: UNKNOWN
+Description: Package with dungeon game.
+        This is a package was created to understand a process of package creating. 
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
