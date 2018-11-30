@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: TKDungeonGamePkg
+Version: 0.0.1
+Summary: Dungeon game
+Home-page: https://github.com/SleepingSoul/campus_2018_python
+Author: Tihran Katolikian
+Author-email: moreggmoreskill@icloud.com
+License: UNKNOWN
+Description: # Dungeon game tasks
+        ```
+        This is my completed CodingCampus Python tasks.
+        ```
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
