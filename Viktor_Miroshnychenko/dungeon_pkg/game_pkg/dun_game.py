@@ -9,10 +9,13 @@ import dungeon_serializer
 import dungeon_exception
 
 
+"""
+:package with the game: https://test.pypi.org/project/dungeon-game/
+"""
+
 class Game:
 
     def __init__(self):
-
         self.player = dun_player.Player()
         self.dun_map = dun_map.DungeonMap(5)
         self.enemy = dungeon_enemy.Enemy()
