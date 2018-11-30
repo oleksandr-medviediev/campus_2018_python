@@ -1,7 +1,0 @@
-README.md
-setup.py
-dungeongamelily2.egg-info/PKG-INFO
-dungeongamelily2.egg-info/SOURCES.txt
-dungeongamelily2.egg-info/dependency_links.txt
-dungeongamelily2.egg-info/entry_points.txt
-dungeongamelily2.egg-info/top_level.txt
