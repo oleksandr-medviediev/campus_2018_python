@@ -40,7 +40,7 @@ class GameSession:
 
         self.__player = Player(start_row, start_col, player_health)
         self.__enemy = Enemy(map_scale)
-        self.__end_of_game = threading.Event()
+        self.__is_running = False
 
         self.__lock = threading.Lock()
 
@@ -95,7 +95,7 @@ class GameSession:
         """enemy moving loop
         """
 
-        while True:
+        while self.__is_running:
 
             time.sleep(1)
 
@@ -110,7 +110,7 @@ class GameSession:
 
                     if self.__player.health == 0:
                         log_info("Enemy has killed the player!")
-                        self.__end_of_game.set()
+                        self.__is_running = False
 
             self.__lock.release()
 
@@ -122,7 +122,7 @@ class GameSession:
 
         border = self.__terrain.scale - 1
 
-        while True:
+        while self.__is_running:
 
             curr_row, curr_col = self.__player.position
 
@@ -142,13 +142,13 @@ class GameSession:
                 log_debug("player has died")
                 log_debug("game ends")
                 log_info("You have died!")
-                self.__end_of_game.set()
+                self.__is_running = False
 
             if self.__player.bag >= self.__win_condition:
                 log_debug("player has found enough")
                 log_debug("game ends")
                 log_info("You have found enogh treasure!")
-                self.__end_of_game.set()
+                self.__is_running = False
 
             if self.__structure_is_near('t'):
 
@@ -165,6 +165,9 @@ class GameSession:
             while not moved:
 
                 command = input("What to do?: ")
+
+                if not self.__is_running:
+                    break
 
                 if command == 'up':
 
@@ -253,6 +256,7 @@ class GameSession:
             start_col int -- start position column
             squares_map [str] -- game map
         """
+        self.__is_running = True
 
         enemy_thread = threading.Thread(target=self.__enemy_move)
         player_thread = threading.Thread(target=self.__player_move)
@@ -260,13 +264,14 @@ class GameSession:
         enemy_thread.setDaemon(True)
         player_thread.setDaemon(True)
 
-        log_info("Type \"up/down/left/right\" to move")
-        log_info("Type \"save\" to save current game")
-
         player_thread.start()
         enemy_thread.start()
 
-        self.__end_of_game.wait()
+        while self.__is_running:
+            time.sleep(1)
+
+        log_info("Type \"up/down/left/right\" to move")
+        log_info("Type \"save\" to save current game")
 
         log_info(self.__terrain)
         log_info("* - stands for a treasure")
