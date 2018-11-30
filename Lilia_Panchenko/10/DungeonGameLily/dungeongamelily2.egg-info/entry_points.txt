@@ -1,0 +1,3 @@
+[console_scripts]
+startgame = dungeongame:start
+
