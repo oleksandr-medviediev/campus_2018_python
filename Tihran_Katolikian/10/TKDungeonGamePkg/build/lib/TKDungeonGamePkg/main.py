@@ -3,11 +3,6 @@ import logging.config
 from DungeonGame import DungeonGame
 
 
-'''
-https://test.pypi.org/project/TKDungeonGamePkg/
-'''
-
-
 LOG_FILE_NAME = 'DungeonGameLogger.config'
 logging.config.fileConfig(LOG_FILE_NAME)
 
