@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: dungeon-game-package-ydzhuryn
+Version: 0.0.5
+Summary: dungeon game package ydzhuryn
+Home-page: https://github.com/yehordzhurynskyi/campus_2018_python/tree/Yehor-Dzhurynskyi
+Author: Yehor Dzhurynskyi
+Author-email: yehor.dzhurynskyi@ubisoft.com
+License: UNKNOWN
+Description: # Dungeon Game Package
+        
+        This is a simple dungeon game package. You can use
+        [Github-flavored Markdown](https://github.com/yehordzhurynskyi/campus_2018_python/tree/Yehor-Dzhurynskyi)
+        to write your content.
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
