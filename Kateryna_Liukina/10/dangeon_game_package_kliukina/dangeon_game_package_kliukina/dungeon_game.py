@@ -7,7 +7,9 @@ import pickle
 from . import enemy
 from threading import Thread
 
-
+"""
+https://test.pypi.org/project/dungeon-game-kliukina/
+"""
 
 @log_decorator
 @debug_decorator
