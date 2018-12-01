@@ -11,9 +11,6 @@ import config
 from decorators import log_decorator, debug_log_decorator
 from exceptions import MapInitError
 
-RATIO_TRAPS = 10.0
-RATIO_TREASURE = 20.0
-
 logger = logging.getLogger(log.LOGGER_NAME)
 
 
@@ -24,6 +21,9 @@ class DungeonMap:
     SYMBOL_TREASURE = '@'
     SYMBOL_PLAYER = '+'
     SYMBOL_LASTPOS = 'X'
+
+    RATIO_TRAPS = 10.0
+    RATIO_TREASURE = 20.0
 
     def __init__(self, size, do_generate=True):
         """
@@ -46,8 +46,8 @@ class DungeonMap:
         :return: None
         """
 
-        trap_count = int((size ** 2) / RATIO_TRAPS)
-        treasure_count = int((size ** 2) / RATIO_TREASURE)
+        trap_count = int((size ** 2) / DungeonMap.RATIO_TRAPS)
+        treasure_count = int((size ** 2) / DungeonMap.RATIO_TREASURE)
 
         if trap_count <= 0:
             raise MapInitError("Error initializing trap count. Try larger map size.")
