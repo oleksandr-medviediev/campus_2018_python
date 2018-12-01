@@ -21,6 +21,7 @@ class PlayerInput:
                     log.info("treasure is near")
                 elif game_terrain.terrain[i][j] == '◉':
                     log.info("trap is near")
+                
 
 
 player_input = PlayerInput()

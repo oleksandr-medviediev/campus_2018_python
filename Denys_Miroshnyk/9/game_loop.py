@@ -61,6 +61,15 @@ class GameLoop:
             else:
                 game_terrain.terrain[enemy.position[0]][
                                      enemy.position[1]] = '👾'
+            log.info("enemy moved somewhere")
+            
+            x = enemy.position[0]
+            y = enemy.position[1]
+
+            for i in range(x - 1, x + 2):
+                for j in range(y - 1, y + 2):
+                    if game_terrain.terrain[i][j] == '웃':
+                        log.info("enemy is near")
             sleep(3)
 
     def perform_player_action(self):
