@@ -18,7 +18,21 @@ At start player has hp=3 and a bag=0.
 
 1. Download python 3.7 from official [website](https://www.python.org/downloads/).
 2. Install python. You can follow this [manual](https://realpython.com/installing-python/) if you need some help with installation.
-3. Profit. You can play dungeon game now!
+3. Install dungeon_game_test_package_v_1_0001.
+
+### Installing
+
+To install dungeon_game_test_pac
+
+```
+pip install -i https://test.pypi.org/simple/ dungeon-game-test-package-v-1-0001
+```
+
+or
+
+```
+python -m pip install -i https://test.pypi.org/simple/ dungeon-game-test-package-v-1-0001
+```
 
 ## Authors
 
