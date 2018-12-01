@@ -4,11 +4,10 @@ This module lists decorators for task 6.1 from Coding Campus 2018 Python course
 """
 
 import logging
-import log
-import config
 import inspect
 import functools
-
+import dungeon_game.log as log
+import dungeon_game.config as config
 
 logger = logging.getLogger(log.LOGGER_NAME)
 

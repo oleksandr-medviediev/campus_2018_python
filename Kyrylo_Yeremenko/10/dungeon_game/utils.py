@@ -1,12 +1,12 @@
 import pickle
 import logging
 
-import log
-from exceptions import InvalidDataLoadedError, InputError
-from decorators import log_decorator, debug_log_decorator
+from dungeon_game.log import LOGGER_NAME
+from dungeon_game.exceptions import InvalidDataLoadedError, InputError
+from dungeon_game.decorators import log_decorator, debug_log_decorator
 
 
-logger = logging.getLogger(log.LOGGER_NAME)
+logger = logging.getLogger(LOGGER_NAME)
 
 
 @log_decorator

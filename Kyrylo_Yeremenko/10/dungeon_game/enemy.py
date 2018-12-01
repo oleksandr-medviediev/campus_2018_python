@@ -7,11 +7,11 @@ import random
 import logging
 import datetime
 import threading
-from dungeon_map import DungeonMap
-import utils
-import log
-import config
-from decorators import log_decorator, debug_log_decorator
+from dungeon_game.dungeon_map import DungeonMap
+import dungeon_game.utils as utils
+import dungeon_game.log as log
+import dungeon_game.config as config
+from dungeon_game.decorators import log_decorator, debug_log_decorator
 
 logger = logging.getLogger(log.LOGGER_NAME)
 

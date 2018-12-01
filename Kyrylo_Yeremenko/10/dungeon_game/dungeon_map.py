@@ -5,11 +5,11 @@ This module generates map for task 4.1 from Coding Campus 2018 Python course
 
 import logging
 import random
-import utils
-import log
-import config
-from decorators import log_decorator, debug_log_decorator
-from exceptions import MapInitError
+import dungeon_game.utils as utils
+import dungeon_game.log as log
+import dungeon_game.config as config
+from dungeon_game.decorators import log_decorator, debug_log_decorator
+from dungeon_game.exceptions import MapInitError
 
 RATIO_TRAPS = 10.0
 RATIO_TREASURE = 20.0

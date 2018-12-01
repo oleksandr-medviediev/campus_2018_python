@@ -5,14 +5,14 @@ This module is starting point for task 4.1 from Coding Campus 2018 Python course
 
 import logging
 import threading
-from dungeon_map import DungeonMap
-from player import Player
-import utils
-import log
-from decorators import log_decorator, debug_log_decorator
-from exceptions import InputError, MapInitError
-from enemy import ThreadEnemyWrapper
-import config
+from .dungeon_map import DungeonMap
+from .player import Player
+import dungeon_game.utils as utils
+import dungeon_game.log as log
+from dungeon_game.decorators import log_decorator, debug_log_decorator
+from dungeon_game.exceptions import InputError, MapInitError
+from dungeon_game.enemy import ThreadEnemyWrapper
+import dungeon_game.config as config
 
 SAVE_PATH = "save.dat"
 logger = logging.getLogger(log.LOGGER_NAME)
@@ -110,8 +110,6 @@ def play_game():
     """
 
     while True:
-
-        active_map.print_map()
 
         player_hitpoints = active_player.get_hitpoints()
         is_trap_nearby, is_treasure_nearby = active_map.check_nearby_tiles(active_player.position)
@@ -254,7 +252,11 @@ def start_game():
     thread_enemy.start()
 
 
-if __name__ == "__main__":
+def run():
+    """
+    Runs game
+    :return: None
+    """
 
     print("Welcome to Dungeon Game!")
     log.init_logger()
