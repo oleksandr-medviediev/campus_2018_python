@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="dungeon_game_",
+    name="dungeon_game_yeremenko",
     version="1.0.0",
     author="Kirill Yeremenko",
     author_email="erem275@gmail.com",
