@@ -1,0 +1,15 @@
+[2018-12-01 21:32:19,147][INFO] enter your action :
+[2018-12-01 21:32:19,148][INFO] enemy moved somewhere
+[2018-12-01 21:32:19,156][INFO] ('up', 'down', 'right', 'left', 'load', 'save')
+[2018-12-01 21:32:21,420][INFO] trap is near
+[2018-12-01 21:32:21,432][INFO] enter your action :
+[2018-12-01 21:32:21,443][INFO] ('up', 'down', 'right', 'left', 'load', 'save')
+[2018-12-01 21:32:22,164][INFO] enemy moved somewhere
+[2018-12-01 21:32:25,349][INFO] enter your action :
+[2018-12-01 21:32:25,362][INFO] ('up', 'down', 'right', 'left', 'load', 'save')
+[2018-12-01 21:32:28,012][INFO] enemy moved somewhere
+[2018-12-01 21:32:40,815][INFO] enter your action :
+[2018-12-01 21:32:40,840][INFO] ('up', 'down', 'right', 'left', 'load', 'save')
+[2018-12-01 21:32:43,829][INFO] enemy moved somewhere
+[2018-12-01 21:32:47,845][INFO] enter your action :
+[2018-12-01 21:32:47,872][INFO] ('up', 'down', 'right', 'left', 'load', 'save')
