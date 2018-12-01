@@ -50,7 +50,7 @@ class GameTerrain:
             self.init_free_cell(TRAP)
 
         character.position = self.init_free_cell(PLAYER)
-        enemy.respawn()
+        self.respawn_enemy()
 
 
     @debug_log_decorator
@@ -71,5 +71,12 @@ class GameTerrain:
                     log.debug(
                         f'find_player_position: player position is x = {j}, y = {i}')
                     return [i, j]
+
+    
+    @debug_log_decorator
+    def respawn_enemy(self):
+        enemy.position = game_terrain.init_free_cell('👾')
+        enemy.previous_cell = '🟋'
+
 
 game_terrain = GameTerrain(10)
