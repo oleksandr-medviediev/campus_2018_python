@@ -255,6 +255,7 @@ def start_game():
 def run():
     """
     Runs game
+    Package link: https://test.pypi.org/project/dungeon-game-yeremenko/
     :return: None
     """
 
