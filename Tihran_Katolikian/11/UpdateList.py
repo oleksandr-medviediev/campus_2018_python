@@ -30,6 +30,15 @@ class UpdateList:
         else:
             raise NonUpdatableClildError(child)
 
+
+    def get_children(self):
+        '''
+        Returns all children of UpdateList class.
+        :return: children;
+        :rtype: a list of UpdateLists.
+        '''
+        return self.__children
+
     
     def add_children(self, *children):
         '''
