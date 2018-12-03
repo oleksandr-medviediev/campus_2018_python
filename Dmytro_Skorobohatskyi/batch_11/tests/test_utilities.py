@@ -1,4 +1,7 @@
 import unittest
+import sys
+
+sys.path.append('..')
 
 import constants
 from utilities import Utilities
