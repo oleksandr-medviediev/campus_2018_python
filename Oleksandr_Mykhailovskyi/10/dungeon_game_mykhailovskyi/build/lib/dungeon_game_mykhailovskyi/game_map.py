@@ -1,10 +1,10 @@
 from map_generator import generate_random_map
 
-from logging_utility import logger
-from logging_utility import logging_debug_decorator
-from logging_utility import logging_info_decorator
+from .logging_utility import logger
+from .logging_utility import logging_debug_decorator
+from .logging_utility import logging_info_decorator
 
-from game_exceptions import LogicalError
+from .game_exceptions import LogicalError
 
 
 class Position:
@@ -99,12 +99,12 @@ class Map:
         self.cell_quantities = {
             "nothing": size.x * size.x - treasures - traps,
             "treasure": treasures,
-            "trap": traps
+            "traps": traps
         }
 
         # map
         self.__game_map = \
-            generate_random_map(self.cell_quantities, self.reprs, size=self.size.x, probabilistic=False)
+            generate_random_map(self.probabilities, self.reprs, size=self.size.x)
 
         # view
         self.view = Position(1, 1)

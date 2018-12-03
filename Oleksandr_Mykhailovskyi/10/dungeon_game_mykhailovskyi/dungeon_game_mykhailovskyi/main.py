@@ -1,19 +1,12 @@
 import string
 
-import savegame_utility
+import .logging_utility
+from .logging_utility import logger
 
-import logging_utility
-from logging_utility import logger
-
-from game_world import GameWorld
+from .game_world import GameWorld
 
 
 def main():
-    """
-    Main function - starter for dungeon game.
-    Package - pip install dungeon-game-mykhailovskyi.
-    URL: https://pypi.org/project/dungeon-game-mykhailovskyi/
-    """
     print("Wilkommen im Dungeon Game!\n")
     print("To save/load game just enter save/load during your turn")
 

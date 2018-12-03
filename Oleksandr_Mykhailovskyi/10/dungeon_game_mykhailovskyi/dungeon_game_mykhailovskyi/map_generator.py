@@ -1,8 +1,8 @@
 import random
 
-from logging_utility import logger
-from logging_utility import logging_debug_decorator
-from logging_utility import logging_info_decorator
+from .logging_utility import logger
+from .logging_utility import logging_debug_decorator
+from .logging_utility import logging_info_decorator
 
 
 @logging_debug_decorator
@@ -35,7 +35,7 @@ def format_map(game_map, x):
     for dstep in range(0, x):
         formatted_map.append([])
         for j in range(0, x):
-            formatted_map[dstep].append(game_map[j + dstep * x])
+            formatted_map[dstep].append(game_map[j + dstep])
 
     return formatted_map
 
@@ -88,7 +88,7 @@ def generate_map(size, cell_quantities, cell_reprs):
         raise TypeError(f'{type(size)} is not int.')
 
     game_map = []
-    for name, value in cell_quantities.items():
+    for name, value in cell_quantities:
         for _ in range(value):
             game_map.append(cell_reprs[name])
 
