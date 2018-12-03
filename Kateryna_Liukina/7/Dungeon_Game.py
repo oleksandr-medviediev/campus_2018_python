@@ -100,9 +100,9 @@ def load():
              InvalidSaveDataError
     
     list_with_map = game_save[0]
-    game_map_ = GameMap([len(list_with_map), len(list_with_map[0])], 0.1, 0.05)
+    game_map_ = game_map.GameMap([len(list_with_map), len(list_with_map[0])], 0.1, 0.05)
     game_map_.map_ = list_with_map
-    player_ = Player(game_map_)
+    player_ = player.Player(game_map_)
     player_.position = game_save[1]
     player_.hp = game_save[2]
     player_.treasure = game_save[3]
@@ -124,7 +124,3 @@ def run_enemy(game_map_, player_):
     enemy_thread = Thread(target = enemy_.run_logic, args = (game_map_, player_))
     enemy_thread.setDaemon(True)
     enemy_thread.start()
-
-
-dungeon_game()
-
