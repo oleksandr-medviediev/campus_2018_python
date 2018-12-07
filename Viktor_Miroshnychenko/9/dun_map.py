@@ -7,12 +7,15 @@ import dun_player
 import dungeon_exception
 
 
+<<<<<<< HEAD
 
 COMMANDS = ['r', 'l', 'u', 'd']
 WARNINGS = {'bomb':'Bomb is near you!',
             'treasue':'Tresure is near you'}
 
 
+=======
+>>>>>>> 6a66457d695f7ed377f8e8ac6b65e9f554e1689f
 class DungeonMap:
 
     def __init__(self, size):
@@ -32,6 +35,7 @@ class DungeonMap:
         :type player: Player
         """
 
+<<<<<<< HEAD
         player.position = dungeon_map_generate.set_player_randomly(self.dun_map)
 
 
@@ -88,6 +92,9 @@ class DungeonMap:
 
         elif cage_state is not 'empty':
             raise dungeon_exception.MapCageError(self, position, cage_state)
+=======
+        player.position = dungeon_map_generate.set_character_randomly(self.dun_map)
+>>>>>>> 6a66457d695f7ed377f8e8ac6b65e9f554e1689f
 
     @dungeon_decorators.debug_time_decor
     @dungeon_decorators.debug_decor
