@@ -29,5 +29,3 @@ class TestEnemy(utest.TestCase):
             self.enemy.position = (0, 0)
             self.enemy.move_randomly()
             self.assertTrue(self.dmap.in_bounds(self.enemy.position)) 
-
-

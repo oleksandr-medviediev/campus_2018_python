@@ -44,4 +44,3 @@ class TestPlayer(utest.TestCase):
         dead_player.lose_health()
 
         self.assertRaises(AlreadyDeadError, lambda: dead_player.lose_health())
-        
