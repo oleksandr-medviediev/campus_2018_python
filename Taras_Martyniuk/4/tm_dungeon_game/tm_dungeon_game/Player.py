@@ -12,6 +12,9 @@ class Player:
             :param onDeath: parameterless callback, executed when player dies
         """   
         assert isinstance(health, int)
+        if health <= 0:
+            raise ValueError('health must be > 0')
+
         self.position = (0, 0)
         self.dungeon_map = dmap
         self.on_death = on_death
@@ -72,7 +75,6 @@ class Player:
             :param new_pos: tile delta for movement in the range of 1 (e.g 0, 1),
                 must be in bounds of dungeon_map
             :returns: True if the try was successful else False 
-                
         """   
         if move_dt not in move_directions:
             raise ValueError(f'move delta must be one of {move_directions}')

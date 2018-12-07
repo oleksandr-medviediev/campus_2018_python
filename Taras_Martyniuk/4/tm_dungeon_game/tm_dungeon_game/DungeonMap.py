@@ -33,6 +33,7 @@ class DungeonMap:
         '''
         if size <= 0:
             raise ValueError('size must be > 0')
+        self.size = size
 
         count = size * size
         trap_count = floor(count * TRAP_QUOTA)

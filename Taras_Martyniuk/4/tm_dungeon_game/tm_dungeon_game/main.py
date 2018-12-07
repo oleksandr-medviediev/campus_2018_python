@@ -1,5 +1,6 @@
 from logging_decors import log_decor, output_logger as olog
 from game import play_game
+from .tm_dungeon_game.tests import test_enemy
 
 SIZE = 10
 ZORK_INTRO = '''
