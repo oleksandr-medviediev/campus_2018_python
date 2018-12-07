@@ -1,14 +1,20 @@
 import dungeon_decorators
+<<<<<<< HEAD
+=======
 import dungeon_logic
 import dungeon_exception
 import dungeon_logger
+>>>>>>> 6a66457d695f7ed377f8e8ac6b65e9f554e1689f
 import dun_map
 import dungeon_exception as dexc
 
 
+<<<<<<< HEAD
+=======
 COMMANDS = ['r', 'l', 'u', 'd']
 WARNINGS = {'bomb':'Bomb is near you!',
             'treasue':'Tresure is near you'}
+>>>>>>> 6a66457d695f7ed377f8e8ac6b65e9f554e1689f
 MENU_COMMANDS = ['save', 'load']
 
 
@@ -41,7 +47,11 @@ class Player(Character):
     def get_command(self):
 
         self.command = ""
+<<<<<<< HEAD
+        while self.command not in MENU_COMMANDS and  self.command not in dun_map.COMMANDS:
+=======
         while self.command not in MENU_COMMANDS and  self.command not in COMMANDS:
+>>>>>>> 6a66457d695f7ed377f8e8ac6b65e9f554e1689f
 
             self.command = input('Enter valid command\n')
 
@@ -69,6 +79,8 @@ class Player(Character):
 
         self.treasure_picked += diff
     
+<<<<<<< HEAD
+=======
     @dungeon_decorators.debug_time_decor
     @dungeon_decorators.debug_decor
     def process_move(self, dung_map):
@@ -124,4 +136,5 @@ class Player(Character):
 
         elif cage_state is not 'empty':
             raise dungeon_exception.MapCageError(game_map, position, cage_state)
+>>>>>>> 6a66457d695f7ed377f8e8ac6b65e9f554e1689f
 
